@@ -31,6 +31,7 @@ export default {
 .page-doc-history {
   article {
     padding: 15px;
+    word-break: break-word;
     .diffinsert {
       color: #690;
     }

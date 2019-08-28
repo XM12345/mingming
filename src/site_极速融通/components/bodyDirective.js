@@ -14,7 +14,7 @@ function parseBody(body, bodyComponents, type) {
         if (width == 0 && height == 0) {
           return `<img src="${picture.mobject_url || picture.cover_url}" alt="" />`;
         } else {
-          return `<img src="${picture.mobject_url || picture.cover_url}" width="${width}" height="${height}" alt="" />`;
+          return `<img src="${picture.mobject_url || picture.cover_url}" width="${width}" max-height="${height}" alt="" />`;
         }
       } else {
         return result;
@@ -25,7 +25,7 @@ function parseBody(body, bodyComponents, type) {
         if (width == 0 && height == 0) {
           return `<img src="${picture.url || picture.thumbnail_url}" alt="" />`;
         } else {
-          return `<img src="${picture.url || picture.thumbnail_url}" width="${width}" height="${height}" alt="" />`;
+          return `<img src="${picture.url || picture.thumbnail_url}" width="${width}" max-height="${height}" alt="" />`;
         }
       } else {
         return result;

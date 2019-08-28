@@ -158,6 +158,7 @@ export default {
         min-height: 19px;
         color: #333;
         margin-left: 84px;
+        word-break: break-word;
       }
     }
   }

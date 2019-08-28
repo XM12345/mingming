@@ -146,6 +146,7 @@ export default {
 
       span {
         display: block;
+        word-break: break-word;
         color: #333;
       }
     }

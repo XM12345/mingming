@@ -21,7 +21,7 @@
         :key="item.key"
         @click="handle(item.key)"
       >{{item.name}}</span>
-    </footer> -->
+    </footer>-->
   </div>
 </template>
 
@@ -69,8 +69,11 @@ export default {
 
 <style lang="scss">
 .page-news-content {
-  article {
-    overflow-x: hidden;
+  .s-main {
+    border-bottom: 10px solid #f4f6f9;
+    article {
+      overflow-x: hidden;
+    }
   }
   .s-footer {
     @each $img in subject, clue {

@@ -55,7 +55,8 @@
     <!-- 删除 -->
     <mt-popup class="mint-popup-delete" v-model="isDelete" position="center">
       <div class="s-de">
-        <p>确定要删除这条图文吗？</p>
+        <p>提示</p>
+        <p class="s-de-info">是否确定删除此图文？</p>
         <div>
           <button class="s-de-cancel" @click="cancel">取消</button>
           <button class="s-de-confirm" @click="del">删除</button>

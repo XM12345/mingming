@@ -69,4 +69,10 @@ export default class Weibo extends BaseModel {
     // http://v1.api.domain.com/internal/users/current/articles/{article-ids, 逗号分隔}/collection/cancle
     return super.$post(`/internal/users/current/articles/${article_ids}/collection/cancle`);
   }
+
+  delete(article_id: ID) {
+    // 删除文章
+    // http://v1.api.domain.com/internal/articles/{article-id}
+    return super.$delete(`/internal/articles/${article_id}`);
+  }
 }

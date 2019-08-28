@@ -8,7 +8,7 @@
       :key="item.id"
     >
       <img :src="item.thumbnail_url" alt v-if="type == 'doc'" />
-      <img :src="item.cover_url" alt v-else />
+      <img :src="item.cover_url || item.url" alt v-else />
       <div>
         <p v-if="type=='clue'">{{item.mobject_name}}</p>
         <p>{{item.name}}</p>

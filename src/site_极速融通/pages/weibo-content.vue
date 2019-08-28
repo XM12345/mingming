@@ -60,6 +60,17 @@
         <button class="s-success" @click="comments">发表</button>
       </footer>
     </mt-popup>
+    <!-- 删除 -->
+    <mt-popup class="mint-popup-delete" v-model="isDelete" position="center">
+      <div class="s-de">
+        <p>提示</p>
+        <p class="s-de-info">是否确定删除此文章？</p>
+        <div>
+          <button class="s-de-cancel" @click="cancel">取消</button>
+          <button class="s-de-confirm" @click="del">删除</button>
+        </div>
+      </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -74,8 +85,10 @@ export default {
       comment: '',
       isComment: false,
       isAudit: false,
+      isDelete: false,
       operate_able: [
         { key: 'audit_', name: '审核' },
+        { key: 'delete', name: '删除' },
         { key: 'publish', name: '发布' },
         /* { key: 'collect', name: '收藏' }, */
         { key: 'comment', name: '批注' }
@@ -131,6 +144,8 @@ export default {
     handle(key) {
       if (key == 'comment') {
         this.isComment = true;
+      } else if (key == 'delete') {
+        this.isDelete = true;
       } else if (key == 'audit_') {
         this.isAudit = true;
       } else if (key == 'publish') {
@@ -150,6 +165,15 @@ export default {
       } else {
         this.$toast('批注不能为空');
       }
+    },
+    del() {
+      // 删除
+      this.$Model.Weibo.delete(this.article_id).then(() => {
+        this.$router.back();
+      });
+    },
+    cancel() {
+      this.isDelete = false;
     },
     pass(isPass) {
       let data = {
@@ -227,7 +251,7 @@ export default {
     }
   }
   .s-footer {
-    @each $img in audit_, comment, publish, collect {
+    @each $img in audit_, comment, delete, publish, collect {
       span.s-#{$img} {
         background-image: url('../images/detail/#{$img}@2x.png');
       }

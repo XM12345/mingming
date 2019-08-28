@@ -40,7 +40,8 @@
       </mt-popup>
       <mt-popup class="mint-popup-delete" v-model="isDelete" position="center">
         <div class="s-de">
-          <p>确定要删除这条图文吗？</p>
+          <p>提示</p>
+          <p class="s-de-info">是否确定删除此图文？</p>
           <div>
             <button class="s-de-cancel" @click="cancel">取消</button>
             <button class="s-de-confirm" @click="del">删除</button>
@@ -147,7 +148,9 @@ export default {
       // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发
       this.operate_able = [{ name: '详情', key: 'content' }];
       operateAble.forEach((item, index) => {
-        if (operateAble[index] == 3) {
+        if (operateAble[index] == 2) {
+          this.operate_able.push({ name: '审核', key: 'audit_' });
+        } else if (operateAble[index] == 3) {
           this.operate_able.push({ name: '删除', key: 'delete' });
         } else if (operateAble[index] == 8) {
           this.operate_able.push({ name: '群发', key: 'publish' });
@@ -157,7 +160,7 @@ export default {
       });
     },
     handle(key) {
-      if (key == 'content' || key == 'comment') {
+      if (key == 'content' || key == 'comment' || key == 'audit_') {
         this.content();
       } else if (key == 'delete') {
         this.isDelete = true;
@@ -308,7 +311,7 @@ export default {
       text-align: center;
       padding: 8px 0;
       background-color: #fff;
-      box-shadow: 0 0 5px #eee;
+      border-top: 1px solid #efefef;
       span {
         flex-grow: 1;
         font-size: 12px;
@@ -325,31 +328,33 @@ export default {
     }
   }
   .mint-popup-delete {
-    width: 58vw;
+    width: 75vw;
     box-shadow: 1px 1px 50px #ccc;
-    padding: 15px;
     border-radius: 5px;
     .s-de {
       p,
       div {
         text-align: center;
+        color: #333;
+        font-size: 14px;
+      }
+      &-info {
+        margin: 32px 0;
       }
       div {
-        padding: 15px 0;
+        border-top: 1px solid #eee;
         button {
-          width: 58px;
-          height: 30px;
-          margin: 0 10px;
+          width: 50%;
+          padding: 10px 0;
           border: none;
-          border-radius: 3px;
+          background: none;
         }
       }
       &-cancel {
-        color: #333;
+        border-right: 1px solid #eee !important;
       }
       &-confirm {
-        color: #fff;
-        background-color: #1890ff;
+        color: #1890ff;
       }
     }
   }
