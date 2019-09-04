@@ -112,10 +112,13 @@ export default {
           { key: '状态', name: content.audit_node_state }
         ];
       } else if (type == 'subject') {
+        let targets = content.targets.map(item => item.name).toString();
         this.contents = [
           { key: '拟报栏目', name: content.col_name },
           { key: '新闻类别', name: content.category_name },
-          { key: '选题来源', name: content.source_name }
+          { key: '采访地址', name: content.geo_address },
+          { key: '选题来源', name: content.source_name },
+          { key: '发布渠道', name: targets }
         ];
       } else if (type == 'task') {
         let creationTime = this.constructor.filter('ds_time')(content.creation_time, 'yyyy-MM-dd hh:mm');
