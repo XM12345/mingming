@@ -19,13 +19,12 @@ export default {
         { name: '通稿库', key: 'clue' },
         { name: '电视文稿', key: 'doc' },
         { name: '选题', key: 'subject' },
-        /* { name: '播出系统', key: 'system' } */
+        { name: '播出系统', key: 'stream' }
       ]
     };
   },
   created() {
     this.tabKey = this.navItems[0].key || '';
-    //this.$Model.Doc.follow('doc').then(data => {});
   },
   methods: {
     onSwitch(key) {

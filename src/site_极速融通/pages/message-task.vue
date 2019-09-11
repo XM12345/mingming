@@ -16,7 +16,7 @@ export default {
       tabKey: '',
       navItems: [
         { name: '素材库', key: 'media' },
-        /* { name: '协同任务', key: 'task' }, */
+        { name: '协同任务', key: 'task' },
         { name: '电视文稿', key: 'doc' },
         { name: '选题', key: 'subject' }
       ]
@@ -24,7 +24,6 @@ export default {
   },
   created() {
     this.tabKey = this.navItems[0].key || '';
-    //this.$Model.Doc.message('doc').then(data => {});
   },
   methods: {
     onSwitch(key) {

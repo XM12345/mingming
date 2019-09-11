@@ -55,8 +55,8 @@ export default {
         this.$Model.Doc.message('doc').then(data => {
           this.contents = data;
         });
-      } else if (activeKey == 'subject') {
-        this.$Model.Subject.message('subject').then(data => {
+      } else if (activeKey == 'subject' || activeKey == 'task') {
+        this.$Model.Subject.message(activeKey).then(data => {
           this.contents = data;
         });
       } else if (activeKey == 'media') {
@@ -72,8 +72,8 @@ export default {
         this.$Model.Doc.postMessage('doc', data).then(() => {
           i.is_check = !i.is_check;
         });
-      } else if (activeKey == 'subject') {
-        this.$Model.Subject.postMessage('subject', data).then(() => {
+      } else if (activeKey == 'subject' || activeKey == 'task') {
+        this.$Model.Subject.postMessage(activeKey, data).then(() => {
           i.is_check = !i.is_check;
         });
       } else if (activeKey == 'media') {

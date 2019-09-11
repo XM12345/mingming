@@ -61,7 +61,7 @@ export default {
           is_follow: this.tree[index].is_follow
         };
         this.$Model.Subject.postFollow(item.id, data).then(() => {});
-      } else if (ackey == 'clue' || ackey == 'media') {
+      } else if (ackey == 'clue' || ackey == 'media' || ackey == 'stream') {
         let checked = document.querySelectorAll('.isChecked');
         let checked_ids = [];
         checked.forEach(item => {
@@ -79,7 +79,11 @@ export default {
           if (!checked_ids.length) {
             checked_ids = 0; // 全部取消传0
           }
-          this.$Model.Media.attention(checked_ids.toString()).then(() => {});
+          if (ackey == 'media') {
+            this.$Model.Media.attention(checked_ids.toString()).then(() => {});
+          } else if (ackey == 'stream') {
+            this.$Model.Stream.putColumns(checked_ids.toString()).then(() => {});
+          }
         }
       }
     }

@@ -8,12 +8,13 @@ import Weixin from './weixin';
 import Weibo from './weibo';
 import Subject from './subject';
 import News from './news';
+import Stream from './stream';
 import RunTime from '@/DS/util';
 
 // 引入server_config
 // const server_config = require('../../../server_config');
 // let apiAddress = server_config.serverSettingsUrl;
- let apiAddress = RunTime.getUrl();
+let apiAddress = RunTime.getUrl();
 
 export default {
   Base: new BaseModel(),
@@ -25,5 +26,6 @@ export default {
   Weixin: new Weixin(apiAddress + '/weixin/internal'),
   Weibo: new Weibo(apiAddress + '/microblog'),
   Subject: new Subject(apiAddress + '/subject/internal'),
-  News: new News(apiAddress + '/news/public')
+  News: new News(apiAddress + '/news/public'),
+  Stream: new Stream(apiAddress + '/stream/public')
 };

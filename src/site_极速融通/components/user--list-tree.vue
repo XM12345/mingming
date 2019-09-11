@@ -30,11 +30,11 @@ export default {
       let { activeKey } = this;
       if (activeKey == 'doc') {
         this.$Model.Doc.getColumns().then(data => {
-          this.contents = data.filter(item => !item.parent_id || item.parent_id == 0);
+          this.contents = data.filter(item => !item.parent_id);
         });
       } else if (activeKey == 'subject') {
         this.$Model.Subject.getColumns().then(data => {
-          this.contents = data.filter(item => !item.parent_id || item.parent_id == 0);
+          this.contents = data.filter(item => !item.parent_id);
         });
       } else if (activeKey == 'clue') {
         this.$Model.Clue.tree().then(data => {
@@ -42,7 +42,11 @@ export default {
         });
       } else if (activeKey == 'media') {
         this.$Model.Media.getColumns().then(data => {
-          this.contents = data.filter(item => !item.parent_id || item.parent_id == 0);
+          this.contents = data.filter(item => !item.parent_id);
+        });
+      } else if (activeKey == 'stream') {
+        this.$Model.Stream.getColumns().then(data => {
+          this.contents = data.filter(item => !item.parent_id);
         });
       }
     }
