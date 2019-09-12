@@ -25,6 +25,7 @@ export default {
     let { notice_id } = params;
     this.$Model.General.notice(notice_id).then(data => {
       this.content = data;
+      this.$title(data.title);
     });
   }
 };

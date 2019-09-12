@@ -88,6 +88,7 @@ export default {
       }
       Model.then(data => {
         this.content = data;
+        this.$title(data.title);
       });
       this.tabKey = this.navItems[0].key || '';
     },

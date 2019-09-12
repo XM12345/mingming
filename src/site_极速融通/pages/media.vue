@@ -39,6 +39,7 @@ export default {
     let { medium_id } = params;
     this.$Model.Media.media(medium_id).then(data => {
       this.content = data;
+      this.$title(data.name)
       this.tabKey = this.navItems[0].key || '';
     });
   },

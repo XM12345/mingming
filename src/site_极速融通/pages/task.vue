@@ -18,7 +18,7 @@
           <h-parse-body :content="content"></h-parse-body>
         </div>
         <div ref="message">
-          <list-message :content="content" type="task" v-if="content"></list-message>
+          <list-message :content="content" :isFresh="isFresh" type="task" v-if="content"></list-message>
         </div>
         <div ref="subject">
           <task--list-subject :subject="content.subject"></task--list-subject>
@@ -53,7 +53,8 @@ export default {
       ],
       tabKey: '',
       operate_able: [],
-      task_id: undefined
+      task_id: undefined,
+      isFresh: false
     };
   },
   created() {
@@ -63,10 +64,21 @@ export default {
     this.init();
     this.tabKey = this.navItems[0].key || '';
   },
+  mounted() {
+    // app 任务详情点击完成刷新任务状态
+    window.DfsxWeb.freshState = this.fresh;
+  },
   methods: {
     init() {
       this.$Model.Subject.task(this.task_id).then(data => {
         this.content = data;
+        this.$title(data.name);
+      });
+    },
+    fresh() {
+      this.$Model.Subject.task(this.task_id).then(data => {
+        this.content.status_name = data.status_name;
+        this.isFresh = true;
       });
     },
     onSwitch(key) {

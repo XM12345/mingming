@@ -118,6 +118,7 @@ export default {
     init() {
       this.$Model.Weibo.article(this.article_id).then(data => {
         this.content = data;
+        this.$title(data.title);
         let { account } = data;
         let { account_id } = account;
         this.account_id = account_id;

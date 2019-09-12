@@ -39,6 +39,7 @@ router.beforeEach((to, from, next) => {
     next();
   }
 }); */
+
 let ds = DS;
 Vue.prototype.$Model = Model;
 Vue.prototype.$RunTime = RunTime;
@@ -70,6 +71,10 @@ Vue.prototype.$toMedia = function $toMedia(id: any) {
   }
 };
 
+Vue.prototype.$title = function $title(title: any) {
+  document.title = title;
+};
+
 // axois拦截
 axios.interceptors.response.use(
   response => {
@@ -97,6 +102,7 @@ declare module 'vue/types/vue' {
     $login: any;
     $back: any;
     $toMedia: any;
+    $title: any;
   }
 }
 Vue.config.productionTip = false;

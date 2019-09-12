@@ -100,6 +100,7 @@ export default {
     init() {
       this.$Model.Doc.series(this.series_id).then(data => {
         this.content = data;
+        this.$title(data.title);
         let { operate_able } = data;
         this.operate_able = [];
         // 2-审核，3-删除，4-恢复，5-撤销，6-批注, 9- 提交, 10-彻底删除

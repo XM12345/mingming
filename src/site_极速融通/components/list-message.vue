@@ -27,6 +27,9 @@ export default {
     content: {
       default: ''
     },
+    isFresh: {
+      default: false
+    },
     type: {
       type: String,
       default: ''
@@ -51,6 +54,11 @@ export default {
   watch: {
     content() {
       this.init();
+    },
+    isFresh() {
+      if (this.isFresh == true) {
+        this.init();
+      }
     }
   },
   methods: {

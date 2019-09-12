@@ -68,6 +68,7 @@ export default {
       this.subjectId = subject_id;
       this.$Model.Subject.subject(subject_id).then(data => {
         this.content = data;
+        this.$title(data.title);
       });
     },
     onSwitch(key) {

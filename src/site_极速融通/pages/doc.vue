@@ -60,6 +60,7 @@ export default {
     this.docId = doc_id;
     this.$Model.Doc.doc(doc_id).then(data => {
       this.content = data;
+      this.$title(data.title);
     });
     this.tabKey = this.navItems[0].key || '';
   },

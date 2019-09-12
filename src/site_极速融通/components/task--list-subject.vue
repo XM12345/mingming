@@ -1,7 +1,7 @@
 <template>
   <div class="task--list-subjects subject--list-tasks">
     <h3>关联选题</h3>
-    <router-link class="item" :to="`/subjects/${subject.id}`">
+    <router-link class="item" :to="`/subjects/${subject.id}`" v-if="subject">
       <p>{{subject.title}}</p>
       <footer>
         <span>{{subject.creator_nickname || subject.creator_username}}</span>
@@ -17,7 +17,7 @@
 export default {
   props: {
     subject: {
-      default: {}
+      type: Object
     }
   }
 };

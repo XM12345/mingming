@@ -44,6 +44,7 @@ export default {
     init() {
       this.$Model.News.news(this.news_id).then(data => {
         this.content = data;
+        this.$title(data.title);
       });
     },
     handle(key) {
