@@ -51,8 +51,8 @@ export default {
     init() {
       let Model;
       let { activeKey } = this;
-      if (activeKey == 'doc') {
-        this.$Model.Doc.message('doc').then(data => {
+      if (activeKey == 'doc' || activeKey == 'series') {
+        this.$Model.Doc.message(activeKey).then(data => {
           this.contents = data;
         });
       } else if (activeKey == 'subject' || activeKey == 'task') {
@@ -68,8 +68,8 @@ export default {
     select(i, index) {
       let { activeKey } = this;
       let data = [i.id];
-      if (activeKey == 'doc') {
-        this.$Model.Doc.postMessage('doc', data).then(() => {
+      if (activeKey == 'doc' || activeKey == 'series') {
+        this.$Model.Doc.postMessage(activeKey, data).then(() => {
           i.is_check = !i.is_check;
         });
       } else if (activeKey == 'subject' || activeKey == 'task') {

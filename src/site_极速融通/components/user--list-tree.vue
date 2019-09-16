@@ -28,8 +28,8 @@ export default {
     init() {
       let Model;
       let { activeKey } = this;
-      if (activeKey == 'doc') {
-        this.$Model.Doc.getColumns().then(data => {
+      if (activeKey == 'doc' || activeKey == 'series') {
+        this.$Model.Doc.getColumns(activeKey).then(data => {
           this.contents = data.filter(item => !item.parent_id);
         });
       } else if (activeKey == 'subject') {

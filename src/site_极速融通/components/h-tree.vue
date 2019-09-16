@@ -49,12 +49,12 @@ export default {
     select(item, index) {
       let { ackey } = this;
       this.tree[index].is_follow = !this.tree[index].is_follow;
-      if (ackey == 'doc') {
+      if (ackey == 'doc' || ackey == 'series') {
         let data = {
           type: 1,
           is_follow: this.tree[index].is_follow
         };
-        this.$Model.Doc.postFollow(item.id, 'doc', data).then(() => {});
+        this.$Model.Doc.postFollow(item.id, ackey, data).then(() => {});
       } else if (ackey == 'subject') {
         let data = {
           type: 1,

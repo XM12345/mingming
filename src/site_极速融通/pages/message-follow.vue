@@ -18,6 +18,7 @@ export default {
         { name: '素材库', key: 'media' },
         { name: '通稿库', key: 'clue' },
         { name: '电视文稿', key: 'doc' },
+        { name: '串联单', key: 'series' },
         { name: '选题', key: 'subject' },
         { name: '播出系统', key: 'stream' }
       ]
