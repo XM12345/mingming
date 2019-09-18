@@ -1,7 +1,7 @@
 <template>
   <div class="page-news-content page-detail">
     <h-topbar></h-topbar>
-    <div class="s-main page-detail-main" :style="{'bottom':operate_able.length ? '70px' : '0'}">
+    <div class="s-main page-detail-main">
       <div class="s-intro">
         <div class="s-intro-mes">
           <p>{{content.title}}</p>
@@ -12,16 +12,8 @@
           </footer>
         </div>
       </div>
-      <h-parse-body :content="content"></h-parse-body>
+      <h-parse-body :content="content" type="news"></h-parse-body>
     </div>
-    <!-- <footer class="s-footer" v-if="operate_able.length">
-      <span
-        :class="`s-${item.key}`"
-        v-for="item in operate_able"
-        :key="item.key"
-        @click="handle(item.key)"
-      >{{item.name}}</span>
-    </footer>-->
   </div>
 </template>
 
@@ -30,8 +22,7 @@ export default {
   data() {
     return {
       news_id: undefined,
-      content: '',
-      operate_able: []
+      content: ''
     };
   },
   created() {
@@ -46,23 +37,6 @@ export default {
         this.content = data;
         this.$title(data.title);
       });
-    },
-    handle(key) {
-      if (key == 'subject') {
-        this.topic();
-      } else if (key == 'clue') {
-        this.copy();
-      }
-    },
-    topic() {
-      this.$Model.News.topic(this.news_id).then(data => {
-        this.$toast('生成选题成功');
-      });
-    },
-    copy() {
-      this.$Model.News.copy(this.news_id).then(data => {
-        this.$toast('生成通稿成功');
-      });
     }
   }
 };
@@ -74,13 +48,6 @@ export default {
     border-bottom: 10px solid #f4f6f9;
     article {
       overflow-x: hidden;
-    }
-  }
-  .s-footer {
-    @each $img in subject, clue {
-      span.s-#{$img} {
-        background-image: url('../images/detail/#{$img}@2x.png');
-      }
     }
   }
 }

@@ -1,7 +1,8 @@
 <template>
   <div class="h-parse-body">
+    <!-- news:attachments -->
     <article
-      v-ds-body="[content.content || content.body, content.attachments || content.mobjects, type]"
+      v-ds-body="[content.content || content.body, content.body_components || content.attachments, type]"
       ref="bodyContent"
     ></article>
   </div>

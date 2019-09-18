@@ -1,75 +1,49 @@
 let emotion = require('../../libs/emotion.json');
 
 function parseBody(body, bodyComponents, type) {
-  /* type：1-图片，2-视频，3-音频 */
-  let pictures = bodyComponents.filter(item => item.type == 1);
-  let videos = bodyComponents.filter(item => item.type == 2);
-  let audios = bodyComponents.filter(item => item.type == 3);
-
+  let { pictures = [], videos = [], audios = [] } = bodyComponents;
+  if (type == 'news') {
+    /* type：1-图片，2-视频，3-音频 */
+    pictures = bodyComponents.filter(item => item.type == 1);
+    videos = bodyComponents.filter(item => item.type == 2);
+    audios = bodyComponents.filter(item => item.type == 3);
+  }
   let replacePicture = (result, id, width, height) => {
     let picture;
-    if (type == 'mobjects') {
-      picture = pictures.find(item => item.mobject_id == id);
-      if (picture) {
-        if (width == 0 && height == 0) {
-          return `<img src="${picture.mobject_url || picture.cover_url}" alt="" />`;
-        } else {
-          return `<img src="${picture.mobject_url || picture.cover_url}" width="${width}" max-height="${height}" alt="" />`;
-        }
+    picture = pictures.find(item => item.id == id);
+    if (picture) {
+      if (width == 0 && height == 0) {
+        return `<img src="${picture.url}" alt="" />`;
       } else {
-        return result;
+        return `<img src="${picture.url}" width="${width}" alt="" />`;
       }
     } else {
-      picture = pictures.find(item => item.id == id);
-      if (picture) {
-        if (width == 0 && height == 0) {
-          return `<img src="${picture.url || picture.thumbnail_url}" alt="" />`;
-        } else {
-          return `<img src="${picture.url || picture.thumbnail_url}" width="${width}" max-height="${height}" alt="" />`;
-        }
-      } else {
-        return result;
-      }
+      return result;
     }
   };
 
   let replaceVideo = (result, id, width, height) => {
     let video;
-    if (type == 'mobjects') {
-      video = videos.find(item => item.mobject_id == id);
-      if (video) {
-        return `<video controls="controls" src="${video.mobject_url}" poster="${video.cover_url}"></video>`;
-      } else {
-        return result;
-      }
+    video = videos.find(item => item.id == id);
+    let { version } = video;
+    if (version.length) {
+      return `<video controls="controls" src="${version[0].url}" poster="${video.cover_url}"></video>`;
     } else {
-      video = videos.find(item => item.id == id);
-      if (video) {
-        return `<video controls="controls" src="${video.url}" poster="${video.thumbnail_url}"></video>`;
-      } else {
-        return result;
-      }
+      return result;
     }
   };
 
   let replaceAudio = (result, id, width, height) => {
     let audio;
-    if (type == 'mobjects') {
-      audio = audios.find(item => item.mobject_id == id);
-      if (audio) {
-        return `<audio controlsList="nodownload" controls="controls" src="${audio.mobject_url}"></audio>`;
-      } else {
-        return result;
-      }
+    audio = audios.find(item => item.id == id);
+    let { version } = audio;
+    if (version.length) {
+      return `<audio controlsList="nodownload" controls="controls" src="${version[0].url}"></audio>`;
     } else {
-      audio = audios.find(item => item.id == id);
-      if (audio) {
-        return `<audio controlsList="nodownload" controls="controls" src="${audio.url}"></audio>`;
-      } else {
-        return result;
-      }
+      return result;
     }
   };
+
   let replaceEmotion = (result, value) => {
     let finalEmotion = emotion.find(item => item.value == result);
     if (finalEmotion) {

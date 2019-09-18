@@ -30,10 +30,10 @@ export default class Doc extends BaseModel {
     return super.$get(`/users/current/follow/columns/${app}`, { params });
   }
 
-  getColumns() {
+  getColumns(app: string) {
     // 获取用户关注栏目列表（数据转换）
     let children: any = {};
-    return this.follow('doc').then(data => {
+    return this.follow(app).then(data => {
       data.forEach((item: any) => {
         let { parent_id } = item;
         children[item.id] = children[item.id] || [];
