@@ -28,6 +28,8 @@ function parseBody(body, bodyComponents, type) {
     let { version } = video;
     if (version.length) {
       return `<video controls="controls" src="${version[0].url}" poster="${video.cover_url}"></video>`;
+    } else if (type == 'news') {
+      return `<video controls="controls" src="${video.url}"></video>`;
     } else {
       return result;
     }
@@ -39,6 +41,8 @@ function parseBody(body, bodyComponents, type) {
     let { version } = audio;
     if (version.length) {
       return `<audio controlsList="nodownload" controls="controls" src="${version[0].url}"></audio>`;
+    } else if (type == 'news') {
+      return `<audio controlsList="nodownload" controls="controls" src="${audio.url}"></audio>`;
     } else {
       return result;
     }
