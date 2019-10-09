@@ -79,7 +79,7 @@ interface IDfsxNative {
   userToken: string | null;
   login?: () => void;
   back?: () => void;
-  toMedia?: (id: any) => void;
+  toMedia?: (obj: any) => void;
   getUrl?: () => string;
 }
 
@@ -190,9 +190,9 @@ class DSRunTime extends DSEvent {
       return false;
     }
   }
-  nativeMedia(id: any) {
+  nativeMedia(obj: any) {
     if (this._DfsxNative && this._DfsxNative.toMedia) {
-      this._DfsxNative.toMedia(id);
+      this._DfsxNative.toMedia(obj);
       return true;
     } else {
       return false;

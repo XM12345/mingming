@@ -8,7 +8,7 @@
         <div
           class="s-columns"
           @click="isColSpread = ! isColSpread,isStatusSpread=false, spreadData = columns"
-          v-if="activeKey!='recycle'"
+          v-if="activeKey!='recycle' && activeKey != 'mine'"
         >
           <span :class="{active: isColSpread}">{{columnName || '所有栏目'}}</span>
           <mark :class="{active: isColSpread}"></mark>
@@ -64,13 +64,11 @@ export default {
         { name: '审核串联单', key: 'audit' },
         { name: '回收站', key: 'recycle' }
       ],
+      pk: 'series.view',
       spreadData: []
     };
   },
   created() {
-    this.$Model.Doc.columns().then(data => {
-      this.columns = data.filter(item => !item.parent_id || item.parent_id == 0);
-    });
     // 子组件向父组件传递值
     this.list();
     this.activeKey = this.$route.query['key'] || this.footerNavs[0].key;
@@ -81,12 +79,23 @@ export default {
       this.columnName = '';
       this.status = -1;
       this.statusName = '';
+      this.pk = 'series.view';
       if (this.activeKey == 'audit') {
         this.status = 9;
+        this.pk = 'series.audit';
+      }
+
+      if (this.activeKey == 'audit' || this.activeKey == 'list') {
+        this.getColumns();
       }
     }
   },
   methods: {
+    getColumns() {
+      this.$Model.Doc.columns(this.pk).then(data => {
+        this.columns = data.filter(item => !item.parent_id || item.parent_id == 0);
+      });
+    },
     list(value) {
       if (value) {
         this.seriesList = value;

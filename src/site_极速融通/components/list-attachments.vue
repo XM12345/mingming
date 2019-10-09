@@ -1,21 +1,20 @@
 <template>
   <div class="page-cms--list-attachments">
     <h3>素材列表</h3>
-    <h-link
+    <div
       class="page-cms--list-attachments-item"
-      :to="item"
       v-for="item in correlations"
       :key="item.id"
+      @click="download(item)"
     >
-      <img :src="item.thumbnail_url" alt v-if="type == 'doc'" />
-      <img :src="item.cover_url || item.url" alt v-else />
+      <img :src="item.thumbnail_url || item.cover_url || item.url" alt />
       <div>
         <p v-if="type=='clue'">{{item.mobject_name}}</p>
         <p>{{item.name}}</p>
         <!-- -1、文件夹0、未知1、图片 2、视频 3、音频 -->
         <span>{{item.type | filter_type}} | {{item.last_modification_time || item.creation_time | ds_time}}</span>
       </div>
-    </h-link>
+    </div>
   </div>
 </template>
 <script>
@@ -32,6 +31,9 @@ export default {
     type: {
       type: String,
       default: ''
+    },
+    columnId: {
+      default: undefined
     }
   },
   data() {
@@ -69,6 +71,35 @@ export default {
           this.correlations = data;
         });
       }
+    },
+    download(item) {
+      let { type, mediumId, columnId } = this;
+      let result = {
+        type: type,
+        media: JSON.stringify({
+          id: item.id || item.mobject_id,
+          type: item.type,
+          name: item.name || item.mobject_name,
+          url: item.url || item.mobject_url,
+          cover_url: item.thumbnail_url || item.cover_url,
+          creation_time: item.creation_time,
+          versions: item.versions
+        }),
+        extension: ''
+      };
+      if (type == 'clue') {
+        result.extension = JSON.stringify({
+          column_id: columnId,
+          content_id: mediumId,
+          medium_id: item.id || item.mobject_id
+        });
+      } else if (type == 'subject' || type == 'doc') {
+        result.extension = JSON.stringify({
+          content_id: mediumId
+        });
+      }
+      // 回调原生跳转下载
+      this.$toMedia(JSON.stringify(result));
     }
   }
 };

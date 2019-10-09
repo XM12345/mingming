@@ -62,12 +62,12 @@ Vue.prototype.$back = function $back() {
   }
 };
 
-Vue.prototype.$toMedia = function $toMedia(id: any) {
-  if (RunTime.nativeMedia(id)) {
+Vue.prototype.$toMedia = function $toMedia(obj: any) {
+  if (RunTime.nativeMedia(obj)) {
     // needRefresh
     // 回调原生跳转到素材详情
   } else {
-    router.push(`/media/${id}`);
+    Vue.prototype.$toast('请下载App');
   }
 };
 

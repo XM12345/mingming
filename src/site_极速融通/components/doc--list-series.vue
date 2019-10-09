@@ -48,7 +48,7 @@ export default {
       default: true
     },
     name: {
-      default: ''
+      default: undefined
     }
   },
   data() {
@@ -72,8 +72,10 @@ export default {
     col() {
       this.loadFirst();
     },
-    status() {
-      this.loadFirst();
+    status(cur, old) {
+      if (cur != old) {
+        this.loadFirst();
+      }
     },
     activeKey() {
       this.loadFirst();

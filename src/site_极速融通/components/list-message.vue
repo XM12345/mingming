@@ -120,7 +120,10 @@ export default {
           { key: '状态', name: content.audit_node_state }
         ];
       } else if (type == 'subject') {
-        let targets = content.targets.map(item => item.name).toString();
+        let targets;
+        if (content.targets) {
+          targets = content.targets.map(item => item.name).toString();
+        }
         this.contents = [
           { key: '拟报栏目', name: content.col_name },
           { key: '新闻类别', name: content.category_name },
@@ -130,7 +133,10 @@ export default {
         ];
       } else if (type == 'task') {
         let creationTime = this.constructor.filter('ds_time')(content.creation_time, 'yyyy-MM-dd hh:mm');
-        let users = content.users.map(item => item.nickname).toString();
+        let users;
+        if (content.users) {
+          users = content.users.map(item => item.nickname).toString();
+        }
         this.contents = [
           { key: '标题', name: content.name },
           { key: '创建人', name: content.creator_nickname },

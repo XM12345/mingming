@@ -145,7 +145,7 @@ export default {
       this.isOperate = !this.isOperate;
       this.oper_id = item.id;
       let { operateAble } = item;
-      // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发
+      // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发, 9-提交
       this.operate_able = [{ name: '详情', key: 'content' }];
       operateAble.forEach((item, index) => {
         if (operateAble[index] == 2) {
@@ -153,9 +153,11 @@ export default {
         } else if (operateAble[index] == 3) {
           this.operate_able.push({ name: '删除', key: 'delete' });
         } else if (operateAble[index] == 8) {
-          this.operate_able.push({ name: '群发', key: 'publish' });
+          this.operate_able.push({ name: '发布', key: 'publish' });
         } else if (operateAble[index] == 6) {
           this.operate_able.push({ name: '批注', key: 'comment' });
+        } else if (operateAble[index] == 9) {
+          this.operate_able.push({ name: '提交', key: 'accept' });
         }
       });
     },
@@ -166,6 +168,8 @@ export default {
         this.isDelete = true;
       } else if (key == 'publish') {
         this.publish();
+      } else if (key == 'accept') {
+        this.commit();
       }
     },
     content() {
@@ -185,6 +189,15 @@ export default {
     publish() {
       let { accountId, oper_id } = this;
       this.$router.push(`/weixin/${accountId}/content/${oper_id}/publish/now`);
+    },
+    commit() {
+      // 提交群发图文
+      let { accountId, oper_id } = this;
+      this.$Model.Weixin.commit(accountId, oper_id).then(() => {
+        this.$toast('提交成功');
+        this.isOperate = false;
+        this.loadFirst();
+      });
     }
   }
 };
@@ -320,7 +333,7 @@ export default {
         background-position: center top;
         padding-top: 38px;
       }
-      @each $img in audit_, revoke, delete, comment, content, publish {
+      @each $img in audit_, revoke, delete, comment, content, publish, accept {
         span.s-#{$img} {
           background-image: url('../images/detail/#{$img}@2x.png');
         }

@@ -57,8 +57,8 @@ export default {
         { name: '待审', value: 9 },
         { name: '已通过', value: 10 },
         /*  { name: '入库', value: 11 }, */
-        { name: '已发布', value: 12 }
-        /*  { name: '发布失败', value: 13 } */
+        { name: '已发布', value: 12 },
+        { name: '发布失败', value: 13 }
       ]
     };
   },

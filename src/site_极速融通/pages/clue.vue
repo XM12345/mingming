@@ -37,6 +37,7 @@
             :mediumId="clueId"
             :content="content.mobjects"
             type="clue"
+            :columnId="content.column_id"
             v-if="content.mobjects"
           ></list-attachments>
         </div>

@@ -2,10 +2,11 @@ import BaseModel from './baseModel';
 type ID = number | string;
 
 export default class Doc extends BaseModel {
-  async columns() {
+  async columns(pk: any) {
     // 获取所有栏目
-    // http://v1.api.domain.com/internal/columns
-    let data = await super.$get('/columns');
+    // http://v1.api.domain.com/internal/columns?pk={permission-key1},{permission-key2}...
+    let params = { pk };
+    let data = await super.$get('/columns', { params });
     let children: any = {};
     data.forEach((item: any) => {
       let { parent_id } = item;
@@ -23,17 +24,27 @@ export default class Doc extends BaseModel {
     return contents;
   }
 
-  follow(app: string, type = 1) {
+  async follow(app: string, pk: string, type = 1) {
     // 获取用户关注栏目列表
     // http://v1.api.domain.com/internal/users/current/follow/columns/{app}?type={type}
-    let params = { type };
-    return super.$get(`/users/current/follow/columns/${app}`, { params });
+    let columns = await super.$get(`/users/current/follow/columns/${app}`, { params: { type } });
+    let root_columns = await super.$get('/columns', { params: { pk } });
+    root_columns.map((item: any) => {
+      item.is_follow = false;
+      columns.forEach((i: any) => {
+        if (i.id == item.id && i.is_follow == true) {
+          item.is_follow = true;
+        }
+      });
+      return item;
+    });
+    return root_columns;
   }
 
-  getColumns(app: string) {
+  getColumns(app: string, pk = 'doc.view') {
     // 获取用户关注栏目列表（数据转换）
     let children: any = {};
-    return this.follow(app).then(data => {
+    return this.follow(app, pk).then(data => {
       data.forEach((item: any) => {
         let { parent_id } = item;
         children[item.id] = children[item.id] || [];

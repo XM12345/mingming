@@ -119,4 +119,10 @@ export default class Weixin extends BaseModel {
     } */
     return super.$post(`/accounts/${account_id}/contents/${content_id}/publish`, data);
   }
+
+  commit(account_id: ID, content_id: ID) {
+    // 提交群发
+    // http://v1.api.domain.com/internal/accounts/{account-id}/contents/{content-id}/commit
+    return super.$post(`/accounts/${account_id}/contents/${content_id}/commit`);
+  }
 }

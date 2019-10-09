@@ -25,9 +25,9 @@ function parseBody(body, bodyComponents, type) {
   let replaceVideo = (result, id, width, height) => {
     let video;
     video = videos.find(item => item.id == id);
-    let { version } = video;
-    if (version.length) {
-      return `<video controls="controls" src="${version[0].url}" poster="${video.cover_url}"></video>`;
+    let { versions } = video;
+    if (versions.length) {
+      return `<video controls="controls" src="${versions[0].url}" poster="${video.cover_url}"></video>`;
     } else if (type == 'news') {
       return `<video controls="controls" src="${video.url}"></video>`;
     } else {
@@ -38,9 +38,9 @@ function parseBody(body, bodyComponents, type) {
   let replaceAudio = (result, id, width, height) => {
     let audio;
     audio = audios.find(item => item.id == id);
-    let { version } = audio;
-    if (version.length) {
-      return `<audio controlsList="nodownload" controls="controls" src="${version[0].url}"></audio>`;
+    let { versions } = audio;
+    if (versions.length) {
+      return `<audio controlsList="nodownload" controls="controls" src="${versions[0].url}"></audio>`;
     } else if (type == 'news') {
       return `<audio controlsList="nodownload" controls="controls" src="${audio.url}"></audio>`;
     } else {

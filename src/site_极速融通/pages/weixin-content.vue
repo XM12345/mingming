@@ -108,7 +108,7 @@ export default {
         this.content.accountName = this.account_name;
         let { operateAble } = data;
         this.operate_able = [];
-        // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发
+        // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发, 9-提交
         operateAble.forEach((item, index) => {
           if (operateAble[index] == 2) {
             this.operate_able.push({ name: '审核', key: 'audit_' });
@@ -118,8 +118,10 @@ export default {
             this.operate_able.push({ name: '撤销', key: 'revoke' });
           } else if (operateAble[index] == 6) {
             this.operate_able.push({ name: '批注', key: 'comment' });
-          } else if (operateAble[index] == 7) {
+          } else if (operateAble[index] == 8) {
             this.operate_able.push({ name: '发布', key: 'publish' });
+          } else if (operateAble[index] == 9) {
+            this.operate_able.push({ name: '提交', key: 'accept' });
           }
         });
         // 获取可撤销/退回状态
@@ -147,6 +149,8 @@ export default {
         this.isComment = true;
       } else if (key == 'publish') {
         this.publish();
+      } else if (key == 'accept') {
+        this.commit();
       }
     },
     pass(is_approved) {
@@ -159,6 +163,7 @@ export default {
       this.$Model.Weixin.audit(this.account_id, this.content_id, data).then(() => {
         this.isAudit = false;
         this.comment = '';
+        this.init();
       });
     },
     revoke() {
@@ -191,6 +196,14 @@ export default {
     publish() {
       let { account_id, content_id } = this;
       this.$router.push(`/weixin/${account_id}/content/${content_id}/publish/now`);
+    },
+    commit() {
+      // 提交群发图文
+      let { account_id, content_id } = this;
+      this.$Model.Weixin.commit(account_id, content_id).then(() => {
+        this.$toast('提交成功');
+        this.init();
+      });
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -205,7 +218,7 @@ export default {
 <style lang="scss">
 .page-weixin-content {
   .s-footer {
-    @each $img in audit_, revoke, delete, comment, publish {
+    @each $img in audit_, revoke, delete, comment, publish, accept {
       span.s-#{$img} {
         background-image: url('../images/detail/#{$img}@2x.png');
       }

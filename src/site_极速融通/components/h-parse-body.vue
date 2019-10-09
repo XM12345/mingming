@@ -2,7 +2,7 @@
   <div class="h-parse-body">
     <!-- news:attachments -->
     <article
-      v-ds-body="[content.content || content.body, content.body_components || content.attachments, type]"
+      v-ds-body="[content.content || content.body, content.body_components || content.attachments || content.mobjects, type]"
       ref="bodyContent"
     ></article>
   </div>
@@ -28,9 +28,11 @@ export default {
 <style lang="scss">
 .h-parse-body {
   background: #fff;
-  padding: 10px 15px 30px;
+  overflow: hidden;
   article {
+    padding: 10px 15px 70px;
     word-break: break-word;
+    overflow: hidden;
     img,
     video {
       max-width: 100%;

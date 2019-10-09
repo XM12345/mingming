@@ -29,7 +29,11 @@ export default {
       let Model;
       let { activeKey } = this;
       if (activeKey == 'doc' || activeKey == 'series') {
-        this.$Model.Doc.getColumns(activeKey).then(data => {
+        let pk = 'doc.view';
+        if (activeKey == 'series') {
+          pk = 'series.view';
+        }
+        this.$Model.Doc.getColumns(activeKey, pk).then(data => {
           this.contents = data.filter(item => !item.parent_id);
         });
       } else if (activeKey == 'subject') {

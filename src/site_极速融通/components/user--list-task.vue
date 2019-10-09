@@ -67,12 +67,13 @@ export default {
     },
     select(i, index) {
       let { activeKey } = this;
-      let data = [i.id];
       if (activeKey == 'doc' || activeKey == 'series') {
-        this.$Model.Doc.postMessage(activeKey, data).then(() => {
-          i.is_check = !i.is_check;
-        });
+        i.is_check = !i.is_check;
+        let data = this.contents.map(item => item.types).flat() || [];
+        let data_ids = data.filter(item => item.is_check == true).map(v => v.id);
+        this.$Model.Doc.postMessage(activeKey, data_ids).then(() => {});
       } else if (activeKey == 'subject' || activeKey == 'task') {
+        let data = [i.id];
         this.$Model.Subject.postMessage(activeKey, data).then(() => {
           i.is_check = !i.is_check;
         });
