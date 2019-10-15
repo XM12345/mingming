@@ -11,6 +11,11 @@
 body {
   margin: 0;
 }
+/* 解决ios滚动不流畅 */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
 #app {
   height: 100vh;
   background-color: #fff;

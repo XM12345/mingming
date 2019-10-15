@@ -1,6 +1,6 @@
 <template>
   <div class="page-cms--list-attachments">
-    <h3>素材列表</h3>
+    <h3>附件</h3>
     <div
       class="page-cms--list-attachments-item"
       v-for="item in correlations"
