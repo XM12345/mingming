@@ -2,12 +2,6 @@ let emotion = require('../../libs/emotion.json');
 
 function parseBody(body, bodyComponents, type) {
   let { pictures = [], videos = [], audios = [] } = bodyComponents;
-  if (type == 'news') {
-    /* type：1-图片，2-视频，3-音频 */
-    pictures = bodyComponents.filter(item => item.type == 1);
-    videos = bodyComponents.filter(item => item.type == 2);
-    audios = bodyComponents.filter(item => item.type == 3);
-  }
   let replacePicture = (result, id, width, height) => {
     let picture;
     picture = pictures.find(item => item.id == id);

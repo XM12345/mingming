@@ -10,6 +10,18 @@
         </p>
       </header>
       <h-parse-body :content="content"></h-parse-body>
+      <div class="s-attachments" v-if="content.attachments && content.attachments.length">
+        <h3>附件</h3>
+        <a
+          :href="`${item.url}?d=${item.title}`"
+          :download="item.title"
+          v-for="item in content.attachments"
+          :key="item.id"
+        >
+          <p>{{item.title}}</p>
+          <span>{{item.size | ds_size}}</span>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +39,8 @@ export default {
       this.content = data;
       this.$title(data.title);
     });
+    // 标记已读
+    this.$Model.General.read(notice_id).then(() => {});
   }
 };
 </script>
@@ -35,7 +49,7 @@ export default {
 <style lang="scss">
 .page-notice-detail {
   &-main {
-    padding: 15px;
+    padding: 10px;
     border-top: 10px solid #f4f6f9;
     .main-header {
       text-align: center;
@@ -48,6 +62,7 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         overflow: hidden;
+        word-break: break-word;
       }
       p {
         margin: 10px 0;
@@ -61,8 +76,43 @@ export default {
     }
     .h-parse-body {
       article {
-        color:#333;
+        color: #333;
         font-size: 15px;
+
+        table {
+          width: auto !important;
+          height: auto !important;
+          border: 1px solid #ccc;
+          border-collapse: collapse;
+          word-break: normal;
+          text-align: center;
+          td {
+            width: auto !important;
+            border: 1px solid #ccc;
+            padding: 12px 10px;
+          }
+        }
+      }
+    }
+    .s-attachments {
+      h3 {
+        font-size: 14px;
+        font-weight: normal;
+        margin: 0;
+        color: #333;
+      }
+      a {
+        display: block;
+        font-size: 12px;
+        padding: 10px 0;
+        p {
+          margin: 0;
+          margin-bottom: 5px;
+          color: #333;
+        }
+        span {
+          color: #999;
+        }
       }
     }
   }

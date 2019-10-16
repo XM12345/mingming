@@ -11,4 +11,9 @@ export default class General extends BaseModel {
     // http://v1.api.example.com/internal/notices/{notice-id}
     return super.$get(`/notices/${notice_id}`);
   }
+  read(notice_id: ID) {
+    // 标记公告已读
+    // http://v1.api.example.com/internal/members/current/notices/{notice-id}/read
+    return super.$post(`/members/current/notices/${notice_id}/read`);
+  }
 }

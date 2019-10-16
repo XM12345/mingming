@@ -134,10 +134,10 @@ export default {
             this.$toast('没有更多内容了');
             this.allLoaded = true;
           }
-          this.$refs.loadmore.onTopLoaded();
+          this.$refs.loadmore.onBottomLoaded();
         },
         e => {
-          this.$refs.loadmore.onTopLoaded();
+          this.$refs.loadmore.onBottomLoaded();
         }
       );
     },

@@ -5,19 +5,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-
-    }
-  },
-  created() {
-  }
-}
-</script>
-
-
 <style lang="scss">
 .page-notice {
   height: 100%;
