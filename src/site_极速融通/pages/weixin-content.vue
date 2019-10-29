@@ -176,6 +176,7 @@ export default {
     del() {
       // 删除
       this.$Model.Weixin.delete(this.account_id, this.content_id).then(() => {
+        this.$toast('删除成功');
         this.$router.back();
       });
     },

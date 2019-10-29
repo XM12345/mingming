@@ -155,10 +155,10 @@ export default class Doc extends BaseModel {
     // http://v1.api.domain.com/internal/series/{series-id}/commit
     return super.$post(`/series/${series_id}/commit`);
   }
-  recycle(page = 1, { name = '', size = 30 }: any = {}) {
+  recycle(page = 1, { name = '', status = 9, size = 30 }: any = {}) {
     // 回收站列表
     // http://v1.api.domain.com/internal/series/recycle?page={page}&size={size}&name={name}
-    let params = { page, name, size };
+    let params = { page, name, status, size };
     return super.$get('/series/recycle', { params });
   }
   restore(data: Array<any>) {
@@ -187,6 +187,12 @@ export default class Doc extends BaseModel {
     // 清空回收站
     // http://v1.api.domain.com/internal/series/recycle/clear
     return super.$post('/series/recycle/clear');
+  }
+
+  items(id: ID) {
+    // 获取串联单预设项内容
+    // http://v1.api.domain.com/internal/series/items/{id}
+    return super.$get(`/series/items/${id}`);
   }
 
   doc(doc_id: ID) {

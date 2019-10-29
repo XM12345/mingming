@@ -4,43 +4,55 @@
       <router-link to="/search/series"></router-link>
     </h-topbar>
     <div class="page-series-main">
-      <header>
+      <section class="h-selectbar">
+        <header class="s-header">
+          <div
+            class="s-columns"
+            @click="isColSpread = ! isColSpread,isStatusSpread=false, spreadData = columns"
+            v-if="activeKey!='recycle' && activeKey != 'mine'"
+          >
+            <span :class="{active: isColSpread}">{{columnName}}</span>
+            <mark :class="{active: isColSpread}"></mark>
+          </div>
+          <div
+            class="s-status"
+            @click="isStatusSpread = ! isStatusSpread,isColSpread=false,spreadData = allStatus"
+          >
+            <span :class="{active: isStatusSpread}">{{statusName}}</span>
+            <mark :class="{active: isStatusSpread}"></mark>
+          </div>
+          <ul class="header-dropdown" v-if="isColSpread ||isStatusSpread">
+            <li
+              :class="[item.value==status?'active':'']"
+              v-for="item in spreadData"
+              :key="item.value"
+              @click="select(item)"
+              v-if="isStatusSpread"
+            >
+              {{item.name}}
+              <span v-if="item.value == status">√</span>
+            </li>
+            <doc--list-columns :tree="spreadData" v-if="isColSpread" @select="select"></doc--list-columns>
+          </ul>
+        </header>
         <div
-          class="s-columns"
-          @click="isColSpread = ! isColSpread,isStatusSpread=false, spreadData = columns"
-          v-if="activeKey!='recycle' && activeKey != 'mine'"
-        >
-          <span :class="{active: isColSpread}">{{columnName || '所有栏目'}}</span>
-          <mark :class="{active: isColSpread}"></mark>
-        </div>
-        <div
-          class="s-status"
-          @click="isStatusSpread = ! isStatusSpread,isColSpread=false,spreadData = allStatus"
-        >
-          <span :class="{active: isStatusSpread}">{{statusName || '所有状态'}}</span>
-          <mark :class="{active: isStatusSpread}"></mark>
-        </div>
-        <ul class="header-dropdown" v-if="isColSpread ||isStatusSpread">
-          <li
-            v-for="item in spreadData"
-            :key="item.value"
-            @click="select(item)"
-            v-if="isStatusSpread"
-          >{{item.name}}</li>
-          <doc--list-columns :tree="spreadData" v-if="isColSpread" @select="select"></doc--list-columns>
-        </ul>
-      </header>
+          class="header-modal"
+          v-if="isColSpread || isStatusSpread"
+          @click="isStatusSpread = false,isColSpread=false"
+        ></div>
+      </section>
       <div class="s-contents">
         <p class="s-contents-nodata" v-if="!seriesList.length"></p>
-        <doc--list-series :col="col" :status="status" :activeKey="activeKey" @data="list"></doc--list-series>
+        <doc--list-series
+          :col="col"
+          :status="status"
+          :activeKey="activeKey"
+          @data="list"
+          v-if="(activeKey == 'list' || activeKey == 'audit' ? col : 'true')"
+        ></doc--list-series>
       </div>
     </div>
     <h-footer :footerNavs="footerNavs" @switchTo="switchTo"></h-footer>
-    <div
-      class="header-modal"
-      v-if="isColSpread || isStatusSpread"
-      @click="isStatusSpread = false,isColSpread=false"
-    ></div>
   </div>
 </template>
 
@@ -50,14 +62,27 @@ export default {
     return {
       activeKey: '',
       columns: [],
-      columnName: null,
+      columnName: '所有栏目',
       seriesList: [],
-      col: '',
+      col: undefined,
       status: -1,
       statusName: null,
       isColSpread: false,
       isStatusSpread: false,
-      allStatus: [{ name: '草稿', value: 0 }, { name: '待审', value: 9 }, { name: '通过', value: 10 }],
+      allStatus: [],
+      listStatus: [
+        { name: '全部', value: -1 },
+        { name: '草稿', value: 0 },
+        { name: '待审', value: 9 },
+        { name: '通过', value: 10 }
+      ],
+      auditStatus: [
+        { name: '待审', value: 9 },
+        { name: '一审', value: 1 },
+        { name: '二审', value: 2 },
+        { name: '三审', value: 3 },
+        { name: '已审', value: 10 }
+      ],
       footerNavs: [
         { name: '我的串联单', key: 'mine' },
         { name: '串联单库', key: 'list' },
@@ -75,26 +100,34 @@ export default {
   },
   watch: {
     activeKey() {
-      this.col = '';
-      this.columnName = '';
-      this.status = -1;
-      this.statusName = '';
       this.pk = 'series.view';
+      this.getStatus();
       if (this.activeKey == 'audit') {
-        this.status = 9;
         this.pk = 'series.audit';
       }
 
       if (this.activeKey == 'audit' || this.activeKey == 'list') {
         this.getColumns();
+      } else {
+        this.col = '';
       }
     }
   },
   methods: {
     getColumns() {
       this.$Model.Doc.columns(this.pk).then(data => {
-        this.columns = data.filter(item => !item.parent_id || item.parent_id == 0);
+        this.columns = data.filter(item => !item.parent_id);
+        if (data.length) {
+          this.col = data[0].id;
+          this.columnName = data[0].name;
+        }
       });
+    },
+    getStatus() {
+      let { activeKey, listStatus, auditStatus } = this;
+      this.allStatus = activeKey == 'audit' ? auditStatus : listStatus;
+      this.status = this.allStatus[0].value;
+      this.statusName = this.allStatus[0].name;
     },
     list(value) {
       if (value) {
@@ -120,6 +153,7 @@ export default {
 </script>
 
 <style lang="scss">
+$default-color: #1890ff;
 .page-series {
   height: 100%;
   background-color: #f4f6f9;
@@ -129,52 +163,6 @@ export default {
     top: 41px;
     bottom: 54px;
     width: 100%;
-
-    header {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      padding: 15px;
-      div {
-        &.s-columns,
-        &.s-status {
-          display: inline-block;
-          span {
-            color: #666;
-            font-size: 15px;
-            &.active {
-              color: #1890ff;
-            }
-          }
-          mark {
-            display: inline-block;
-            margin-left: 5px;
-            border: 5px solid;
-            background: none;
-            border-color: #666 transparent transparent;
-            transition: all 0.5s;
-            &.active {
-              transform: rotate(180deg) translate(0px, 3px);
-              border-color: #1890ff transparent transparent;
-            }
-          }
-        }
-      }
-      ul.header-dropdown {
-        position: absolute;
-        width: 100%;
-        max-height: 60vh;
-        overflow-y: auto;
-        left: 0;
-        top: 50px;
-        z-index: 2000;
-        background: #f9f9f9;
-        li {
-          padding: 15px;
-          font-size: 15px;
-        }
-      }
-    }
     .s-contents {
       position: relative;
       width: 100%;
@@ -200,15 +188,6 @@ export default {
         }
       }
     }
-  }
-  .header-modal {
-    position: absolute;
-    width: 100%;
-    top: 100px;
-    bottom: 0;
-    z-index: 500;
-    background: #333;
-    opacity: 0.7;
   }
 }
 </style>

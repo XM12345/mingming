@@ -24,7 +24,7 @@
               </footer>
             </div>
             <!-- 0、未提交，1、已提交，2、已发布，3、已回收 -->
-            <mark v-if="content.state">{{content.state | filter_state}}</mark>
+            <mark>{{content.state | filter_state}}</mark>
           </div>
           <h-parse-body :content="content"></h-parse-body>
         </div>

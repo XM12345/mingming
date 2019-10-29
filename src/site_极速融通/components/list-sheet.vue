@@ -1,16 +1,25 @@
 <template>
   <div class="list-sheet">
-    <router-link class="item" :to="`/docs/${item.id}`" v-for="item in contents" :key="item.key">
+    <section class="item" v-for="item in contents" :key="item.key" @click="view(item)">
       <div>
         <p>{{item.title}}</p>
         <span>{{item.creator_nickname || item.creator_username}} | {{item.text_duration | filter_duration}}</span>
       </div>
       <mark :class="item.status | filter_class">{{item.status | filter_status}}</mark>
-    </router-link>
+    </section>
     <a class="s-spread" v-if="items.length > 3" @click="spread">
       {{isSpread ? '收起': `查看全部文稿 (${items.length})`}}
       <mark :class="{active:isSpread}"></mark>
     </a>
+    <mt-popup class="mint-popup-view" v-model="isView">
+      <div>
+        <h1>
+          {{pre_item.title}}
+          <!--  <span>✕</span> -->
+        </h1>
+        <p>{{pre_item.content}}</p>
+      </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -25,7 +34,9 @@ export default {
   data() {
     return {
       contents: [],
-      isSpread: false
+      pre_item: {},
+      isSpread: false,
+      isView: false
     };
   },
   filters: {
@@ -38,9 +49,9 @@ export default {
     },
     filter_duration(duration) {
       if (duration > 0) {
-        let h = (((duration / 60 / 60) | 0) + '').padStart(2,'0');
-        let m = (((duration / 60) % 60 | 0) + '').padStart(2,'0');
-        let s = (duration % 60 + '').padStart(2,'0');
+        let h = (((duration / 60 / 60) | 0) + '').padStart(2, '0');
+        let m = (((duration / 60) % 60 | 0) + '').padStart(2, '0');
+        let s = ((duration % 60) + '').padStart(2, '0');
         return h + ':' + m + ':' + s;
       } else {
         return '00:00:00';
@@ -57,6 +68,19 @@ export default {
         this.contents = this.items;
       } else {
         this.contents = this.items.slice(0, 3);
+      }
+    },
+    view(item) {
+      // type: 1-文稿,2-预设项
+      let { type, id } = item;
+      if (type == 1) {
+        this.$router.push(`/docs/${id}`);
+      }
+      if (type == 2) {
+        this.$Model.Doc.items(id).then(data => {
+          this.isView = true;
+          this.pre_item = data;
+        });
       }
     }
   }
@@ -130,6 +154,34 @@ export default {
       transition: all 0.5s;
       &.active {
         transform: rotate(-135deg) translate(-2px, 8px);
+      }
+    }
+  }
+  .mint-popup-view {
+    width: 80%;
+    div {
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      h1 {
+        font-weight: 400;
+        font-size: 15px;
+        color: #606266;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin: 0;
+        padding: 0 15px;
+      }
+      p {
+        padding: 15px;
+        min-height: 80px;
+        max-height: 45vw;
+        overflow-y: auto;
+        margin: 0;
+        color: #606266;
+        font-size: 13px;
       }
     }
   }

@@ -40,6 +40,24 @@ export default {
       text-decoration: line-through;
       font-style: oblique;
     }
+    p {
+      overflow: hidden;
+    }
+    img,
+    video,
+    p,
+    section,
+    div,
+    table.ul,
+    span,
+    article,
+    h1,
+    h1,
+    h3,
+    h4,
+    h5 {
+      max-width: 100% !important;
+    }
   }
 }
 </style>

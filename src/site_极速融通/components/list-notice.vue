@@ -4,10 +4,11 @@
       :to="`/notices/${item.id}`"
       v-for="item in contents"
       :key="item.id"
-      :class="{'readed':readedData.includes(item.id)}"
-      @click.native="readed(item.id)"
+      :class="{'readed':item.has_read}"
+      @click.native="item.has_read = true"
     >
       <div>
+        <label v-if="!item.has_read"></label>
         <p>{{item.title}}</p>
         <span>{{item.author_nickname || item.author_name}} | {{parseInt(item.creation_time) | ds_time}}</span>
       </div>
@@ -19,27 +20,13 @@
 export default {
   data() {
     return {
-      contents: [],
-      readedData: []
+      contents: []
     };
   },
   created() {
-    let localData = JSON.parse(localStorage.getItem('noticeReaded'));
-    if (localData) {
-      this.readedData = localData;
-    }
     this.$Model.General.notices().then(data => {
       this.contents = data;
     });
-  },
-  methods: {
-    readed(id) {
-      if (this.readedData.includes(id)) {
-      } else {
-        this.readedData.push(id);
-      }
-      localStorage.setItem('noticeReaded', JSON.stringify(this.readedData));
-    }
   }
 };
 </script>
@@ -54,6 +41,16 @@ export default {
     border-bottom: 1px solid #f1f1f1;
 
     div {
+      position: relative;
+      label {
+        position: absolute;
+        top: 6px;
+        right: 0px;
+        width: 6px;
+        height: 6px;
+        background-color: #ed4040;
+        border-radius: 50%;
+      }
       p {
         margin: 0;
         padding-bottom: 10px;

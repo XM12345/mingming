@@ -1,7 +1,7 @@
 <template>
   <div class="list-comments">
     <h3>批注</h3>
-    <div class="list-comments-item" v-for="item in logs" :key="item.id">
+    <div class="list-comments-item" v-for="item in logs" :key="item.id" v-if="item.content || item.body || item.detail">
       <!-- doc&&series:avatar_url,weixin:avatarUrl,media:creator_cover_url -->
       <h-img :imgUrl="item.avatar_url || item.avatarUrl || item.icon_url || item.creator_cover_url"></h-img>
       <div>
@@ -64,7 +64,6 @@ export default {
   },
   mounted() {
     // app刷新批注
-    //console.log(window.DfsxNative,window.DfsxWeb)
     window.DfsxWeb.freshComment = this.getComment;
   },
   methods: {

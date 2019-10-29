@@ -2,8 +2,14 @@
   <div class="doc--list-columns">
     <div v-for="(item,index) in tree" :key="item.id">
       <p>
-        <span @click="item.children.length ? isShowItem(item,index) : select(item)">{{item.name}}</span>
-        <mark :class="{active: item.isFolder==false}" v-if="item.children.length"></mark>
+        <span
+          @click="(item.children.length && item.type==2) ? isShowItem(item,index) : select(item)"
+        >{{item.name}}</span>
+        <mark
+          @click="isShowItem(item,index)"
+          :class="{active: item.isFolder==false}"
+          v-if="item.children.length"
+        ></mark>
       </p>
       <doc--list-columns
         :class="{folder:item.isFolder == true}"
@@ -24,6 +30,7 @@ export default {
   },
   methods: {
     isShowItem(item, index) {
+      // type:1-普通栏目，2-标题栏目
       this.tree[index].isFolder = !this.tree[index].isFolder;
     },
     select(item) {

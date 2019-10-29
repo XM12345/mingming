@@ -8,7 +8,9 @@
         <p>
           <!-- weixin:creatorNickname || creatorUsername,subject:operatorNickname -->
           {{item.operator_nickname || item.creatorNickname || item.creatorUsername || item.operatorNickname}}
-          <mark v-if="item.status_name">[{{item.status_name}}]</mark>
+          <mark
+            v-if="item.status_name"
+          >[{{item.status_name}}]</mark>
         </p>
         <!-- subject:description -->
         <span>{{item.title || item.description || item.type}}</span>
@@ -21,7 +23,6 @@
 
 <script>
 export default {
-  //extends: require('./list-comments').default,
   props: {
     mediumId: {
       required: true,
@@ -48,6 +49,18 @@ export default {
   },
   created() {
     this.init();
+  },
+  watch: {
+    isComment() {
+      if (this.isComment == false) {
+        this.init();
+      }
+    },
+    isAudit() {
+      if (this.isAudit == false) {
+        this.init();
+      }
+    }
   },
   methods: {
     init() {

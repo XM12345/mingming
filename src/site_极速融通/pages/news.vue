@@ -10,9 +10,13 @@
             <time>{{content.creation_time | ds_time('yyyy-MM-dd hh:mm')}}</time>
             <span>{{content.keywords}}</span>
           </footer>
+          <div class="s-intro-mes-link" v-if="content.refer_url">
+            原文链接:
+            <a :href="content.refer_url">{{content.refer_url}}</a>
+          </div>
         </div>
       </div>
-      <h-parse-body :content="content" type="news"></h-parse-body>
+      <h-parse-body :content="content"></h-parse-body>
     </div>
   </div>
 </template>
@@ -46,6 +50,14 @@ export default {
 .page-news-content {
   .s-main {
     border-bottom: 10px solid #f4f6f9;
+    .s-intro-mes-link {
+      font-size: 12px;
+      color: #999;
+      a {
+        color: #999;
+        word-break: break-all;
+      }
+    }
     article {
       overflow-x: hidden;
     }

@@ -7,7 +7,7 @@
       :key="item.id"
       @click="download(item)"
     >
-      <img :src="item.thumbnail_url || item.cover_url || item.url" alt />
+      <img :src="item.thumbnail_url || item.cover_url || item.mobject_url || item.url" alt />
       <div>
         <p v-if="type=='clue'">{{item.mobject_name}}</p>
         <p>{{item.name}}</p>
@@ -77,7 +77,7 @@ export default {
       let result = {
         type: type,
         media: JSON.stringify({
-          id: item.id || item.mobject_id,
+          id: item.id,
           type: item.type,
           name: item.name || item.mobject_name,
           url: item.url || item.mobject_url,
@@ -91,7 +91,7 @@ export default {
         result.extension = JSON.stringify({
           column_id: columnId,
           content_id: mediumId,
-          medium_id: item.id || item.mobject_id
+          medium_id: item.id
         });
       } else if (type == 'subject' || type == 'doc') {
         result.extension = JSON.stringify({

@@ -12,7 +12,7 @@
                 <time>创建时间: {{content.creation_time | ds_time}}</time>
               </footer>
             </div>
-            <mark v-if="content.status">{{content.status | filter_status}}</mark>
+            <mark>{{content.status | filter_status}}</mark>
           </div>
           <list-sheet :items="content.items" v-if="content.items"></list-sheet>
         </div>
@@ -162,6 +162,7 @@ export default {
       this.$Model.Doc.post_audit(this.series_id, data).then(() => {
         this.isAudit = false;
         this.comment = '';
+        this.init(); // 刷新审核
       });
     },
     revoke() {

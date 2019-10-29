@@ -12,7 +12,7 @@
                 <time>创建时间: {{content.creation_time | ds_time}}</time>
               </footer>
             </div>
-            <mark v-if="content.status">{{content.status | filter_status}}</mark>
+            <mark>{{content.status | filter_status}}</mark>
           </div>
           <h-parse-body :content="content"></h-parse-body>
         </div>

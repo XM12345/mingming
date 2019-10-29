@@ -1,45 +1,66 @@
 let emotion = require('../../libs/emotion.json');
 
-function parseBody(body, bodyComponents, type) {
-  let { pictures = [], videos = [], audios = [] } = bodyComponents;
+function parseBody(body, bodyComponents) {
+  let { pictures = [], videos = [], audios = [], files = [] } = bodyComponents;
   let replacePicture = (result, id, width, height) => {
     let picture;
-    picture = pictures.find(item => item.id == id);
+    let data = '';
+    picture = (pictures || []).find(item => item.id == id);
     if (picture) {
       if (width == 0 && height == 0) {
-        return `<img src="${picture.url}" alt="" />`;
+        data = `<img src="${picture.url}" alt="" />`;
       } else {
-        return `<img src="${picture.url}" width="${width}" alt="" />`;
+        data = `<img src="${picture.url}" width="${width}" alt="" />`;
       }
     } else {
-      return result;
+      data = result;
     }
+    return data;
   };
 
   let replaceVideo = (result, id, width, height) => {
     let video;
-    video = videos.find(item => item.id == id);
-    let { versions } = video;
-    if (versions.length) {
-      return `<video controls="controls" src="${versions[0].url}" poster="${video.cover_url}"></video>`;
-    } else if (type == 'news') {
-      return `<video controls="controls" src="${video.url}"></video>`;
-    } else {
-      return result;
+    let data = '';
+    video = (videos || []).find(item => item.id == id);
+    if (video) {
+      let { versions } = video;
+      if (versions.length) {
+        data = `<video controls="controls" src="${versions[0].url}" poster="${video.cover_url}"></video>`;
+      } else if (type == 'news') {
+        data = `<video controls="controls" src="${video.url}"></video>`;
+      } else {
+        data = result;
+      }
     }
+    return data;
   };
 
   let replaceAudio = (result, id, width, height) => {
     let audio;
-    audio = audios.find(item => item.id == id);
-    let { versions } = audio;
-    if (versions.length) {
-      return `<audio controlsList="nodownload" controls="controls" src="${versions[0].url}"></audio>`;
-    } else if (type == 'news') {
-      return `<audio controlsList="nodownload" controls="controls" src="${audio.url}"></audio>`;
-    } else {
-      return result;
+    let data = '';
+    audio = (audios || []).find(item => item.id == id);
+    if (audio) {
+      let { versions } = audio;
+      if (versions.length) {
+        data = `<audio controlsList="nodownload" controls="controls" src="${versions[0].url}"></audio>`;
+      } else if (type == 'news') {
+        data = `<audio controlsList="nodownload" controls="controls" src="${audio.url}"></audio>`;
+      } else {
+        data = result;
+      }
     }
+    return data;
+  };
+
+  let replaceFile = (result, id, position) => {
+    let file;
+    let data = '';
+    file = (files || []).find(item => item.id == id);
+    if (file) {
+      let { url, title } = file;
+      data = `<a href="${url}" download="${title}" style="color:#9dabc2;">${title}</a>`;
+    }
+    return data;
   };
 
   let replaceEmotion = (result, value) => {
@@ -53,22 +74,23 @@ function parseBody(body, bodyComponents, type) {
   };
   //汉字: [\u4e00-\u9fa5]+
   return body
-    .replace(/<\!--PICTURE#(\d*),(\d*),(\d*)-->/gi, replacePicture)
-    .replace(/<\!--VIDEO#(\d*),(\d*),(\d*)-->/gi, replaceVideo)
-    .replace(/<\!--AUDIO#(\d*),(\d*),(\d*)-->/gi, replaceAudio)
+    .replace(/<\!--PICTURE#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replacePicture)
+    .replace(/<\!--VIDEO#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replaceVideo)
+    .replace(/<\!--AUDIO#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replaceAudio)
+    .replace(/<\!--FILE#([a-zA-Z0-9]*),(ending|.*?)-->/gi, replaceFile)
     .replace(/\[([\u4e00-\u9fa5a-zA-Z]+)\]/gi, replaceEmotion);
 }
 
 export default function dsBodyDirective(el, binding, vnode, oldVnode) {
   let vm = vnode.context;
-  let [body, bodyComponents, type] = binding.value;
+  let [body, bodyComponents] = binding.value;
   let template;
   let bodyNode;
   if (typeof body !== 'string') return;
   if (bodyComponents == undefined) {
     template = body;
   } else {
-    template = parseBody(body, bodyComponents, type);
+    template = parseBody(body, bodyComponents);
   }
   try {
     bodyNode = document.createRange().createContextualFragment(template);

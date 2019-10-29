@@ -180,6 +180,7 @@ export default {
       let { accountId, oper_id } = this;
       this.$Model.Weixin.delete(accountId, oper_id).then(() => {
         this.isDelete = false;
+        this.$toast('删除成功');
         this.loadFirst();
       });
     },

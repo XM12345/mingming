@@ -86,6 +86,7 @@ export default {
           border-collapse: collapse;
           word-break: normal;
           text-align: center;
+          font-size: 14px;
           td {
             width: auto !important;
             border: 1px solid #ccc;
