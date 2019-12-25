@@ -2,10 +2,11 @@ import BaseModel from './baseModel';
 type ID = Number | String;
 
 export default class Weibo extends BaseModel {
-  accounts() {
-    // 获取公众号
-    // http://v1.api.domain.com/private/accounts
-    return super.$get('/internal/accounts');
+  accounts(operation: string) {
+    // 获取可见公众号列表
+    // http://v1.api.domain.com/internal/accounts?operation={string,操作权限}
+    let params = { operation };
+    return super.$get('/internal/accounts', { params });
   }
   authorise(account_id: ID) {
     // 获取公众号授权地址

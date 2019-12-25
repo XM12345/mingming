@@ -9,11 +9,11 @@ import Weibo from './weibo';
 import Subject from './subject';
 import News from './news';
 import Stream from './stream';
+import Monitor from './monitor';
 import RunTime from '@/DS/util';
 
-// 引入server_config
-// const server_config = require('../../../server_config');
-// let apiAddress = server_config.serverSettingsUrl;
+// 传入api地址
+//let apiAddress = 'http://192.168.6.107:8000/api';
 let apiAddress = RunTime.getUrl();
 
 export default {
@@ -27,5 +27,6 @@ export default {
   Weibo: new Weibo(apiAddress + '/microblog'),
   Subject: new Subject(apiAddress + '/subject/internal'),
   News: new News(apiAddress + '/news/public'),
-  Stream: new Stream(apiAddress + '/stream/public')
+  Stream: new Stream(apiAddress + '/stream/public'),
+  Monitor: new Monitor(apiAddress + '/monitor/internal')
 };
