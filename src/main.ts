@@ -1,3 +1,10 @@
+/* es6转es5 */
+import 'babel-polyfill';
+require('es6-promise').polyfill();
+
+import MobileView from 'mobile-view';
+MobileView();
+
 import Vue from 'vue';
 import axios from 'axios';
 /* TODO:语言切换 */
@@ -7,38 +14,26 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+/* 引入公共样式文件 */
+import './style.scss';
+
+/* 使用vue-navigation插件缓存页面 */
+import Navigation from 'vue-navigation';
+Vue.use(Navigation, { router });
+
 /* 引入DS */
 import DS from '@/DS';
 import Model from './DS/Model';
 import RunTime from '@/DS/util';
 
 /* 引入mint-ui */
-import { Loadmore, Toast, Popup } from 'mint-ui';
+import { Loadmore, Toast, Popup, Switch, Picker } from 'mint-ui';
 import 'mint-ui/lib/style.css';
 Vue.component(Loadmore.name, Loadmore);
 Vue.component(Popup.name, Popup);
+Vue.component(Switch.name, Switch);
+Vue.component(Picker.name, Picker);
 Vue.prototype.$toast = Toast;
-
-/* // 后退缓存上一页
-let list: any = [];
-router.beforeEach((to, from, next) => {
-  let length = list.length;
-  if (length == 0 || list[length - 1] != to.name) {
-    // 前进
-    to.meta.isKeepLive = false;
-    from.meta.isKeepLive = false;
-    list.push(from.name);
-    //console.log('前进');
-    next();
-  } else {
-    // 后退
-    to.meta.isKeepLive = true;
-    from.meta.isKeepLive = true;
-    list.splice(length - 1, 1);
-    //console.log(to.name, to, '后退');
-    next();
-  }
-}); */
 
 let ds = DS;
 Vue.prototype.$Model = Model;

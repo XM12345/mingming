@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import cc from './site';
+import base from './DS/Pages';
 
-let pages: any[] = [];
-let routes = pages.concat(cc.pages);
+let group: any[] = base.pages.map(item => item.pages);
+let routes: any[] = [].concat(...group);
+
 Vue.use(Router);
 export default new Router({
   mode: 'hash',
