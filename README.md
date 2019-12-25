@@ -46,4 +46,11 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 串联单详情: #/series/:series_id
 关注消息设置: #/user/message/follow
 任务消息设置: #/user/message/task
+
+运维监控:
+信号监控详情: #/signals/:signal_id
+设备详情: #/devices/:device_id
+机房设备详情: #/machine-roomes/devices/:device_id
+应用详情: #/apps/:app_id
+报警详情: #/alarms/:alarm_id
 ```

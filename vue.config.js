@@ -26,7 +26,7 @@ module.exports = {
   outputDir: `dist`,
   assetsDir: 'static',
   lintOnSave: true,
-  productionSourceMap: true,
+  productionSourceMap: false,
 
   configureWebpack: {
     resolve: configureWebpackResolve,
