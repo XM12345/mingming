@@ -26,7 +26,7 @@ export default {
         { name: '串联单', key: 'series' },
         { name: '选题', key: 'subject' },
         { name: '播出系统', key: 'stream' },
-        { name: '运维监控', key: 'control' }
+        /* { name: '运维监控', key: 'control' } */
       ]
     };
   },

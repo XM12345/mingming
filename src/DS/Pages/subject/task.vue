@@ -26,6 +26,9 @@
         <div ref="comments">
           <base--list-comments :mediumId="task_id" type="task"></base--list-comments>
         </div>
+        <div ref="records">
+          <task--list-records :taskId="task_id"></task--list-records>
+        </div>
       </base--tab>
     </div>
   </div>
@@ -41,7 +44,8 @@ export default {
         { name: '任务内容', key: 'content' },
         { name: '基本信息', key: 'message' },
         { name: '关联选题', key: 'subject' },
-        { name: '批注', key: 'comments' }
+        { name: '批注', key: 'comments' },
+        { name: '任务进度', key: 'records' }
       ],
       tabKey: '',
       task_id: undefined,

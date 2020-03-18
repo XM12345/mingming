@@ -104,4 +104,9 @@ export default class Subjects extends BaseModel {
     // http://v1.api.domain.com/internal/tasks/{task-id}/comments
     return super.$get(`/tasks/${task_id}/comments`);
   }
+  task_logs(task_id: ID) {
+    // 任务操作纪录
+    // http://v1.api.domain.com/internal/tasks/{task-id}/logs
+    return super.$get(`/tasks/${task_id}/logs`)
+  }
 }
