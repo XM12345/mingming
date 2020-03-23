@@ -33,8 +33,8 @@ export default {
     this.init();
   },
   mounted() {
-    // app刷新批注/操作纪录
-    window.DfsxWeb.freshComment = this.init;
+    // 刷新操作纪录
+    window.DfsxWeb.freshLogs = this.init;
   },
   methods: {
     init() {

@@ -74,6 +74,7 @@ export default {
       this.$Model.Subject.task(this.task_id).then(data => {
         this.content.status_name = data.status_name;
         this.isFresh = true;
+        window.DfsxWeb.freshLogs();
       });
     },
     onSwitch(key) {

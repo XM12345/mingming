@@ -57,10 +57,7 @@ export default {
     let { params } = this.$route;
     let { doc_id } = params;
     this.docId = doc_id;
-    this.$Model.Doc.doc(doc_id).then(data => {
-      this.content = data;
-      this.$title(data.title);
-    });
+    this.init();
     this.tabKey = this.navItems[0].key || '';
   },
   filters: {
@@ -68,11 +65,26 @@ export default {
       return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status];
     }
   },
+  mounted() {
+    // app 刷新状态
+    window.DfsxWeb.freshState = this.fresh;
+  },
   methods: {
+    init() {
+      this.$Model.Doc.doc(this.docId).then(data => {
+        this.content = data;
+        this.$title(data.title);
+      });
+    },
     onSwitch(key) {
       this.tabKey = key;
       this.$nextTick(() => {
         this.$refs[key].scrollIntoView();
+      });
+    },
+    fresh() {
+      this.$Model.Doc.doc(this.docId).then(data => {
+        this.content.status = data.status;
       });
     },
     handle(key) {

@@ -30,12 +30,7 @@
           <base--list-message :content="content" type="weibo" v-if="content"></base--list-message>
         </div>
         <div ref="comments">
-          <base--list-comments
-            :mediumId="article_id"
-            :isComment="isComment"
-            :isAudit="isAudit"
-            type="weibo"
-          ></base--list-comments>
+          <base--list-comments :mediumId="article_id" type="weibo"></base--list-comments>
         </div>
       </base--tab>
     </div>
@@ -162,6 +157,8 @@ export default {
       if (this.text != '') {
         this.$Model.Weibo.addPostils(this.article_id, data).then(data => {
           this.isComment = false;
+          // 刷新批注
+          window.DfsxWeb.freshComment();
           this.text = '';
         });
       } else {
@@ -186,6 +183,8 @@ export default {
       this.$Model.Weibo.audit(this.article_id, data).then(() => {
         this.isAudit = false;
         this.comment = '';
+        // 刷新批注
+        window.DfsxWeb.freshComment();
       });
     },
     publish() {

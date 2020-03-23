@@ -10,22 +10,10 @@
           <base--list-message :content="content" type="weixin" v-if="content"></base--list-message>
         </div>
         <div ref="comments">
-          <base--list-comments
-            :mediumId="content_id"
-            :accountId="account_id"
-            :isComment="isComment"
-            :isAudit="isAudit"
-            type="weixin"
-          ></base--list-comments>
+          <base--list-comments :mediumId="content_id" :accountId="account_id" type="weixin"></base--list-comments>
         </div>
         <div ref="records">
-          <base--list-operlog
-            :mediumId="content_id"
-            :accountId="account_id"
-            :isComment="isComment"
-            :isAudit="isAudit"
-            type="weixin"
-          ></base--list-operlog>
+          <base--list-operlog :mediumId="content_id" :accountId="account_id" type="weixin"></base--list-operlog>
         </div>
       </base--tab>
     </div>
@@ -160,6 +148,10 @@ export default {
       this.$Model.Weixin.audit(this.account_id, this.content_id, data).then(() => {
         this.isAudit = false;
         this.comment = '';
+        // 刷新批注
+        window.DfsxWeb.freshComment();
+        // 刷新操作纪录
+        window.DfsxWeb.freshLogs();
         this.init();
       });
     },
@@ -186,6 +178,10 @@ export default {
       if (this.text != '') {
         this.$Model.Weixin.addComments(this.account_id, this.content_id, JSON.stringify(this.text)).then(data => {
           this.isComment = false;
+          // 刷新批注
+          window.DfsxWeb.freshComment();
+          // 刷新操作纪录
+          window.DfsxWeb.freshLogs();
           this.text = '';
         });
       } else {

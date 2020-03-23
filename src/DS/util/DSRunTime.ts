@@ -89,6 +89,7 @@ declare global {
     DfsxWeb?: {
       name: string;
       freshComment?: () => void;
+      freshLogs?: () => void;
       freshState?: () => void;
     };
   }

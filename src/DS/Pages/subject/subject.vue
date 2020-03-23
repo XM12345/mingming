@@ -54,15 +54,19 @@ export default {
     };
   },
   created() {
+    let { params } = this.$route;
+    let { subject_id } = params;
+    this.subjectId = subject_id;
     this.init();
     this.tabKey = this.navItems[0].key || '';
   },
+  mounted() {
+    // app 刷新状态
+    window.DfsxWeb.freshState = this.fresh;
+  },
   methods: {
     init() {
-      let { params } = this.$route;
-      let { subject_id } = params;
-      this.subjectId = subject_id;
-      this.$Model.Subject.subject(subject_id).then(data => {
+      this.$Model.Subject.subject(this.subjectId).then(data => {
         this.content = data;
         this.$title(data.title);
       });
@@ -71,6 +75,11 @@ export default {
       this.tabKey = key;
       this.$nextTick(() => {
         this.$refs[key].scrollIntoView();
+      });
+    },
+    fresh() {
+      this.$Model.Subject.subject(this.subjectId).then(data => {
+        this.content.status_name = data.status_name;
       });
     }
   }

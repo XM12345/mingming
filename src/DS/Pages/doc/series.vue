@@ -20,12 +20,7 @@
           <base--list-message :content="content" type="series" v-if="content"></base--list-message>
         </div>
         <div ref="comments">
-          <base--list-comments
-            :mediumId="series_id"
-            :isComment="isComment"
-            :isAudit="isAudit"
-            type="series"
-          ></base--list-comments>
+          <base--list-comments :mediumId="series_id" type="series"></base--list-comments>
         </div>
       </base--tab>
     </div>
@@ -159,6 +154,8 @@ export default {
       this.$Model.Doc.post_audit(this.series_id, data).then(() => {
         this.isAudit = false;
         this.comment = '';
+        // 刷新批注
+        window.DfsxWeb.freshComment();
         this.init(); // 刷新审核
       });
     },
@@ -202,6 +199,8 @@ export default {
       if (this.text != '') {
         this.$Model.Doc.series_addComments(this.series_id, JSON.stringify(this.text)).then(data => {
           this.isComment = false;
+          // 刷新批注
+          window.DfsxWeb.freshComment();
           this.text = '';
         });
       } else {

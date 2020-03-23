@@ -53,41 +53,55 @@ export default {
         { name: '批注', key: 'comments' }
       ],
       content: '',
-      clueId: undefined
+      clueId: undefined,
+      type: ''
     };
   },
   created() {
+    let { params, query } = this.$route;
+    let { clue_id } = params;
+    let { type } = query;
+    this.clueId = clue_id;
+    this.type = type;
     this.init();
+    this.tabKey = this.navItems[0].key || '';
   },
   filters: {
     filter_state(state) {
       return ['未提交', '已提交', '已发布', '已回收'][state];
     }
   },
+  mounted() {
+    // app 刷新状态
+    window.DfsxWeb.freshState = this.fresh;
+  },
   methods: {
-    init() {
-      let { params, query } = this.$route;
-      let { clue_id } = params;
-      let { type } = query;
-      this.clueId = clue_id;
+    getModel() {
       let Model;
-      if (type == 'common') {
-        Model = this.$Model.Clue.common(clue_id);
-      } else if (type == 'recyclebin') {
-        Model = this.$Model.Clue.recyclebin(clue_id);
+      if (this.type == 'common') {
+        Model = this.$Model.Clue.common(this.clueId);
+      } else if (this.type == 'recyclebin') {
+        Model = this.$Model.Clue.recyclebin(this.clueId);
       } else {
-        Model = this.$Model.Clue.clue(clue_id);
+        Model = this.$Model.Clue.clue(this.clueId);
       }
-      Model.then(data => {
+      return Model;
+    },
+    init() {
+      this.getModel().then(data => {
         this.content = data;
         this.$title(data.title);
       });
-      this.tabKey = this.navItems[0].key || '';
     },
     onSwitch(key) {
       this.tabKey = key;
       this.$nextTick(() => {
         this.$refs[key].scrollIntoView();
+      });
+    },
+    fresh() {
+      this.getModel().then(data => {
+        this.content.state = data.state;
       });
     }
   }

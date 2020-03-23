@@ -7,16 +7,14 @@
       <div>
         <p>
           <!-- weixin: creatorNickname || creatorUsername-->
-          {{item.creator_nickname || item.creator_username || item.creatorNickname || item.creatorUsername}}
-          <mark
-            v-if="item.status_name || item.statusName"
-          >[{{item.status_name || item.statusName}}]</mark>
+          {{ item.creator_nickname || item.creator_username || item.creatorNickname || item.creatorUsername }}
+          <mark v-if="item.status_name || item.statusName">[{{ item.status_name || item.statusName }}]</mark>
         </p>
         <!-- weixin:body,media:detail -->
-        <span>{{item.content || item.body || item.detail}}</span>
+        <span>{{ item.content || item.body || item.detail }}</span>
       </div>
       <!-- weixin:creationTime -->
-      <time>{{item.creation_time || item.creationTime | ds_time}}</time>
+      <time>{{ item.creation_time || item.creationTime | ds_time }}</time>
     </div>
   </div>
 </template>
@@ -34,12 +32,6 @@ export default {
     },
     accountId: {
       default: undefined
-    },
-    isComment: {
-      default: false
-    },
-    isAudit: {
-      default: false
     }
   },
   data() {
@@ -49,18 +41,6 @@ export default {
   },
   created() {
     this.init();
-  },
-  watch: {
-    isComment() {
-      if (this.isComment == false) {
-        this.init();
-      }
-    },
-    isAudit() {
-      if (this.isAudit == false) {
-        this.init();
-      }
-    }
   },
   mounted() {
     // app刷新批注
@@ -158,4 +138,3 @@ export default {
   }
 }
 </style>
-

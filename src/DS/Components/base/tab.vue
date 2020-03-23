@@ -91,13 +91,14 @@ export default {
   height: 100%;
 
   &-nav {
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: 41px;
     z-index: 1000;
     width: 100%;
     white-space: nowrap;
     overflow-x: auto;
     text-align: center;
+    border-top: 10px solid #f4f6f9;
     border-bottom: 1px solid #eaeaea;
     background-color: #fff;
     nav {
@@ -126,6 +127,7 @@ export default {
   }
   &-item {
     height: calc(100% - 42px);
+    padding-top: 52px;
     overflow-x: hidden;
     overflow-y: auto;
     background: #fff;
