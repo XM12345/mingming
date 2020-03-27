@@ -12,8 +12,8 @@
                 <time>截止时间: {{ content.expire_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
               </footer>
             </div>
-            <!-- 1-未接受，2-已接受，3-执行中，4-已完成，5-已终止 -->
-            <mark v-if="content.status_name">{{ content.status_name }}</mark>
+            <!-- 1-待接受，2-已接受（执行中），3-执行中，4-已完成，5-已终止 -->
+            <mark v-if="content.status">{{ content.status | filter_status }}</mark>
           </div>
           <base--parse-body :content="content"></base--parse-body>
         </div>
@@ -63,6 +63,11 @@ export default {
     // app 任务详情点击完成刷新任务状态
     window.DfsxWeb.freshState = this.fresh;
   },
+  filters: {
+    filter_status(status) {
+      return ['待接受', '执行中', '执行中', '已完成', '已终止'][status - 1];
+    }
+  },
   methods: {
     init() {
       this.$Model.Subject.task(this.task_id).then(data => {
@@ -72,7 +77,7 @@ export default {
     },
     fresh() {
       this.$Model.Subject.task(this.task_id).then(data => {
-        this.content.status_name = data.status_name;
+        this.content.status = data.status;
         this.isFresh = true;
         window.DfsxWeb.freshLogs();
       });
