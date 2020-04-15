@@ -16,4 +16,9 @@ export default class General extends BaseModel {
     // http://v1.api.example.com/internal/members/current/notices/{notice-id}/read
     return super.$post(`/members/current/notices/${notice_id}/read`);
   }
+  config() {
+    // 获取参数配置
+    // http://v1.api.domain.com/internal/config
+    return super.$get('/config');
+  }
 }

@@ -10,11 +10,12 @@ import Subject from './subject';
 import News from './news';
 import Stream from './stream';
 import Monitor from './monitor';
+import Cms from './cms';
 import RunTime from '@/DS/util';
 
-// 传入api地址
-//let apiAddress = 'http://192.168.6.107:8000/api';
-let apiAddress = RunTime.getUrl();
+// app传入api地址
+let apiAddress = 'http://192.168.6.107:8000/api';
+//let apiAddress = RunTime.getUrl();
 
 export default {
   Base: new BaseModel(),
@@ -28,5 +29,6 @@ export default {
   Subject: new Subject(apiAddress + '/subject/internal'),
   News: new News(apiAddress + '/news/public'),
   Stream: new Stream(apiAddress + '/stream/public'),
-  Monitor: new Monitor(apiAddress + '/monitor/internal')
+  Monitor: new Monitor(apiAddress + '/monitor/internal'),
+  Cms: (baview_api_url: any) => new Cms(baview_api_url + '/cms/public')
 };

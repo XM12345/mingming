@@ -1,7 +1,7 @@
 let emotion = require('../../../libs/emotion.json');
 
 function parseBody(body, bodyComponents) {
-  let { pictures = [], videos = [], audios = [], files = [] } = bodyComponents;
+  let { pictures = [], videos = [], audios = [], files = [], picturesets = [] } = bodyComponents;
   let replacePicture = (result, id, width, height) => {
     let picture;
     let data = '';
@@ -16,6 +16,24 @@ function parseBody(body, bodyComponents) {
       data = result;
     }
     return data;
+  };
+
+  let replacePictureSet = (result, id) => {
+    let pictureset = (picturesets || []).find(item => item.id == id);
+    if (pictureset) {
+      let { pictures = [] } = pictureset;
+      pictures = pictures.map(({ width, height, url }) => {
+        let style = '';
+        if (width && height) {
+          style = `ds-body-img-sized`;
+          url = url + `?w=${width}&h=${height}&s=2`;
+        }
+        return `<img src="${url}" ${style} ds-body-img alt />`;
+      });
+      return pictures;
+    } else {
+      return result;
+    }
   };
 
   let replaceVideo = (result, id, width, height) => {
@@ -57,8 +75,8 @@ function parseBody(body, bodyComponents) {
     let data = '';
     file = (files || []).find(item => item.id == id);
     if (file) {
-      let { url, title } = file;
-      data = `<a href="${url}" download="${title}" style="color:#9dabc2;">${title}</a>`;
+      let { url, title, name } = file;
+      data = `<a href="${url}" download="${title}" style="color:#9dabc2;">${title || name}</a>`;
     }
     return data;
   };
@@ -75,6 +93,7 @@ function parseBody(body, bodyComponents) {
   //汉字: [\u4e00-\u9fa5]+
   return body
     .replace(/<\!--PICTURE#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replacePicture)
+    .replace(/<\!--PICTURESET#(\d*)-->/gi, replacePictureSet)
     .replace(/<\!--VIDEO#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replaceVideo)
     .replace(/<\!--AUDIO#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replaceAudio)
     .replace(/<\!--FILE#([a-zA-Z0-9]*),(ending|.*?)-->/gi, replaceFile)
