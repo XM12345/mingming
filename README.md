@@ -46,6 +46,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 串联单详情: #/series/:series_id
 关注消息设置: #/user/message/follow
 任务消息设置: #/user/message/task
+新媒体详情: #/cms/content/id(暂不用)
+新媒体统计页面: #/cms/stat?baview_token=
 
 运维监控:
 信号监控详情: #/signals/:signal_id
