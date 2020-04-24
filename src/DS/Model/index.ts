@@ -14,8 +14,8 @@ import Cms from './cms';
 import RunTime from '@/DS/util';
 
 // app传入api地址
-let apiAddress = 'http://192.168.6.107:8000/api';
-//let apiAddress = RunTime.getUrl();
+//let apiAddress = 'http://192.168.6.107:8000/api';
+let apiAddress = RunTime.getUrl();
 
 export default {
   Base: new BaseModel(),
@@ -30,5 +30,5 @@ export default {
   News: new News(apiAddress + '/news/public'),
   Stream: new Stream(apiAddress + '/stream/public'),
   Monitor: new Monitor(apiAddress + '/monitor/internal'),
-  Cms: (baview_api_url: any) => new Cms(baview_api_url + '/cms/public')
+  Cms: (baview_api_url: any) => new Cms(baview_api_url + '/cms')
 };

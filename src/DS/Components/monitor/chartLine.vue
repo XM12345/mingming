@@ -19,6 +19,7 @@ export default {
       indexData: {},
       index_key: '',
       index_unit: '',
+      mycharts: undefined,
       VALUE_TYPE: {
         NUM: 0,
         ENUMS: 1
@@ -34,6 +35,10 @@ export default {
         this.initData();
       });
     }
+  },
+  mounted() {
+    // 自适应屏幕
+    window.addEventListener('resize', this.resizeEcharts);
   },
   computed: {
     indexes() {
@@ -63,9 +68,14 @@ export default {
       this.index_unit = target.unit_name;
       this.initData();
     },
+    resizeEcharts() {
+      this.$nextTick(() => {
+        this.mycharts.resize();
+      });
+    },
     initChartLine(indexData) {
       let dom = this.$refs.chartLine;
-      let mycharts = echarts.init(dom);
+      this.mycharts = echarts.init(dom);
       let { index_unit } = this;
       let formatter = `{value}${index_unit}`;
       // TODO：let max = 11;接口暂未提供报警阈值
@@ -162,7 +172,7 @@ export default {
           }
         ]
       };
-      mycharts.setOption(option);
+      this.mycharts.setOption(option);
     }
   }
 };

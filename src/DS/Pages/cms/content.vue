@@ -43,16 +43,20 @@ export default {
   async created() {
     let { params } = this.$route;
     this.content_id = params.content_id;
-    let config = await this.$Model.General.config();
-    let { baview_api_url } = config;
-    this.baview_api_url = baview_api_url;
-    this.$Model
-      .Cms(baview_api_url)
-      .content(this.content_id)
-      .then(data => {
-        console.log(data.bodyComponents);
+    this.getBaview();
+  },
+  methods: {
+    async getBaview() {
+      let config = await this.$Model.General.config();
+      let { baview_api_url } = config;
+      this.baview_api_url = baview_api_url;
+      this.getContent().then(data => {
         this.content = data;
       });
+    },
+    getContent() {
+      return this.$Model.Cms(this.baview_api_url).content(this.content_id);
+    }
   }
 };
 </script>

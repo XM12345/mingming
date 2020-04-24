@@ -9,6 +9,7 @@ export default {
     require('./clue').default,
     require('./news').default,
     require('./user').default,
-    require('./general').default
+    require('./general').default,
+    require('./cms').default
   ]
 };
