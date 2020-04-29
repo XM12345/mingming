@@ -45,10 +45,12 @@ export default {
   },
   created() {
     this.selectKey = this.tabKey;
-    this.$nextTick(() => {
-      this.tab = this.$refs.tab;
-      window.addEventListener('scroll', this.scroll, true);
-    });
+    if (this.listenScroll) {
+      this.$nextTick(() => {
+        this.tab = this.$refs.tab;
+        window.addEventListener('scroll', this.scroll, true);
+      });
+    }
   },
   methods: {
     switchTo(key) {

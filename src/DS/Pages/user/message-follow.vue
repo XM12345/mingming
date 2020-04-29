@@ -4,10 +4,8 @@
     <div class="s-main">
       <user--list-control v-if="type == 'control'"></user--list-control>
       <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch" listenScroll="false" v-else>
-        <div class="items" v-for="item in navItems" :key="item.key" v-show="item.key == tabKey">
-          <user--list-control v-if="item.key == 'control'"></user--list-control>
-          <user--list-tree :activeKey="tabKey" v-else></user--list-tree>
-        </div>
+        <user--list-control v-if="tabKey == 'control'"></user--list-control>
+        <user--list-tree :activeKey="tabKey" v-else></user--list-tree>
       </base--tab>
     </div>
   </div>
@@ -20,12 +18,12 @@ export default {
       tabKey: '',
       type: '',
       navItems: [
-        { name: '素材库', key: 'media' },
         { name: '通稿库', key: 'clue' },
-        { name: '电视文稿', key: 'doc' },
-        { name: '串联单', key: 'series' },
         { name: '选题', key: 'subject' },
-        { name: '播出系统', key: 'stream' },
+        { name: '素材库', key: 'media' },
+        { name: '电视文稿', key: 'doc' },
+        { name: '播出', key: 'stream' },
+        { name: '串联单', key: 'series' },
         /* { name: '运维监控', key: 'control' } */
       ]
     };

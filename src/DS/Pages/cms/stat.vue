@@ -92,7 +92,7 @@ export default {
       return types;
     },
     today() {
-      return this.constructor.filter('ds_time')(new Date() / 1000, 'yyyy-MM-dd');
+      return this.constructor.filter('ds_time')(new Date() / 1000, 'yyyy/MM/dd');
     }
   },
   methods: {
@@ -119,13 +119,15 @@ export default {
     },
     getTypes() {
       let types = 'default,video'; // 图文、视频
-      let stop = new Date(this.today + ' ') / 1000;
+      let stop = new Date(this.today) / 1000;
       let start = stop - 60 * 60 * 24 * 14;
       this.getstatApi()
         .types(types, { start, stop })
         .then(data => {
           this.days = data;
           this.initTypes();
+        },err=>{
+          this.$toast(err)
         });
     },
     getViewRank() {

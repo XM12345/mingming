@@ -26,32 +26,37 @@ export default {
   },
   methods: {
     init() {
-      let Model;
       let { activeKey } = this;
-      if (activeKey == 'doc' || activeKey == 'series') {
-        let pk = 'doc.view';
-        if (activeKey == 'series') {
-          pk = 'series.view';
-        }
-        this.$Model.Doc.getColumns(activeKey, pk).then(data => {
-          this.contents = data.filter(item => !item.parent_id);
-        });
-      } else if (activeKey == 'subject') {
-        this.$Model.Subject.getColumns().then(data => {
-          this.contents = data.filter(item => !item.parent_id);
-        });
-      } else if (activeKey == 'clue') {
-        this.$Model.Clue.tree().then(data => {
-          this.contents = data;
-        });
-      } else if (activeKey == 'media') {
-        this.$Model.Media.getColumns().then(data => {
-          this.contents = data.filter(item => !item.parent_id);
-        });
-      } else if (activeKey == 'stream') {
-        this.$Model.Stream.getColumns().then(data => {
-          this.contents = data.filter(item => !item.parent_id);
-        });
+      switch (activeKey) {
+        case 'doc':
+        case 'series':
+          let pk = activeKey == 'series' ? 'series.view' : 'doc.view';
+          this.$Model.Doc.getColumns(activeKey, pk).then(data => {
+            this.contents = data.filter(item => !item.parent_id);
+          });
+          break;
+        case 'subject':
+          this.$Model.Subject.getColumns().then(data => {
+            this.contents = data.filter(item => !item.parent_id);
+          });
+          break;
+        case 'clue':
+          this.$Model.Clue.tree().then(data => {
+            this.contents = data;
+          });
+          break;
+        case 'media':
+          this.$Model.Media.getColumns().then(data => {
+            this.contents = data.filter(item => !item.parent_id);
+          });
+          break;
+        case 'stream':
+          this.$Model.Stream.getColumns().then(data => {
+            this.contents = data.filter(item => !item.parent_id);
+          });
+          break;
+        default:
+          break;
       }
     }
   }

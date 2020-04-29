@@ -1,21 +1,21 @@
 <template>
   <div class="message-item">
-    <div v-for="(item,index) in tree" :key="item.id">
+    <div v-for="(item, index) in tree" :key="item.id">
       <p>
-        <span @click="isShowItem(item,index)">{{item.name}}</span>
-        <mark :class="{active: item.isFolder==false}" v-if="item.children.length"></mark>
+        <span @click="isShowItem(item, index)">{{ item.name }}</span>
+        <mark :class="{ active: item.isFolder == false }" v-if="item.children.length"></mark>
         <!-- type:1-普通栏目，2-标题栏目 -->
         <label
           class="select"
           role="checkbox"
-          :class="{isChecked:item.is_follow == true}"
-          @click="select(item,index)"
+          :class="{ isChecked: item.is_follow == true }"
+          @click="select(item, index)"
           :id="item.id"
-          v-if="item.type!=2 && item.column_type!=2"
+          v-if="item.type != 2 && item.column_type != 2"
         ></label>
       </p>
       <user--tree
-        :class="{folder:item.isFolder == true}"
+        :class="{ folder: item.isFolder == true }"
         :tree="item.children"
         :ackey="ackey"
         v-if="item.children.length"
@@ -48,43 +48,45 @@ export default {
     },
     select(item, index) {
       let { ackey } = this;
+      // doc,series,subject
       this.tree[index].is_follow = !this.tree[index].is_follow;
-      if (ackey == 'doc' || ackey == 'series') {
-        let data = {
-          type: 1,
-          is_follow: this.tree[index].is_follow
-        };
-        this.$Model.Doc.postFollow(item.id, ackey, data).then(() => {});
-      } else if (ackey == 'subject') {
-        let data = {
-          type: 1,
-          is_follow: this.tree[index].is_follow
-        };
-        this.$Model.Subject.postFollow(item.id, data).then(() => {});
-      } else if (ackey == 'clue' || ackey == 'media' || ackey == 'stream') {
-        let checked = document.querySelectorAll('.isChecked');
-        let checked_ids = [];
-        checked.forEach(item => {
-          checked_ids.push(parseInt(item.id));
-        });
-        if (this.tree[index].is_follow == true) {
-          checked_ids.push(item.id);
-        } else {
-          let cancel_index = checked_ids.findIndex(i => i == item.id);
-          checked_ids.splice(cancel_index, 1);
-        }
-        if (ackey == 'clue') {
+      let data = {
+        type: 1,
+        is_follow: this.tree[index].is_follow
+      };
+      // 'clue', 'media', 'stream'
+      let checked = document.querySelectorAll('.isChecked');
+      let checked_ids = [];
+      checked.forEach(item => {
+        checked_ids.push(parseInt(item.id));
+      });
+      if (this.tree[index].is_follow == true) {
+        checked_ids.push(item.id);
+      } else {
+        let cancel_index = checked_ids.findIndex(i => i == item.id);
+        checked_ids.splice(cancel_index, 1);
+      }
+      switch (ackey) {
+        case 'doc':
+        case 'series':
+          this.$Model.Doc.postFollow(item.id, ackey, data).then(() => {});
+          break;
+        case 'subject':
+          this.$Model.Subject.postFollow(item.id, data).then(() => {});
+          break;
+        case 'clue':
           this.$Model.Clue.postFollow(checked_ids).then(() => {});
-        } else {
-          if (!checked_ids.length) {
-            checked_ids = 0; // 全部取消传0
-          }
-          if (ackey == 'media') {
-            this.$Model.Media.attention(checked_ids.toString()).then(() => {});
-          } else if (ackey == 'stream') {
-            this.$Model.Stream.putColumns(checked_ids.toString()).then(() => {});
-          }
-        }
+          break;
+        case 'media':
+          checked_ids = checked_ids.length ? checked_ids : 0;
+          this.$Model.Media.attention(checked_ids.toString()).then(() => {});
+          break;
+        case 'stream':
+          checked_ids = checked_ids.length ? checked_ids : 0;
+          this.$Model.Stream.putColumns(checked_ids.toString()).then(() => {});
+          break;
+        default:
+          break;
       }
     }
   }

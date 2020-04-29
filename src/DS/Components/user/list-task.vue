@@ -5,22 +5,22 @@
         我的素材库
         <label class="colspan"></label>
       </h3>
-      <div v-for="(item,index) in contents" :key="item.id">
+      <div v-for="(item, index) in contents" :key="item.id">
         <p>
-          <span>{{item.name}}</span>
-          <label class="select" :class="{isChecked:item.state == 1}" @click="select(item,index)"></label>
+          <span>{{ item.name }}</span>
+          <label class="select" :class="{ isChecked: item.state == 1 }" @click="select(item, index)"></label>
         </p>
       </div>
     </div>
     <div class="s-item" v-else>
       <div v-for="item in contents" :key="item.id">
         <h3>
-          {{item.name}}
+          {{ item.name }}
           <label class="colspan"></label>
         </h3>
         <p v-for="i in item.types">
-          <span>{{i.name}}</span>
-          <label class="select" :class="{isChecked:i.is_check == true}" @click="select(i)"></label>
+          <span>{{ i.name }}</span>
+          <label class="select" :class="{ isChecked: i.is_check == true }" @click="select(i)"></label>
         </p>
       </div>
     </div>
@@ -51,33 +51,31 @@ export default {
     init() {
       let Model;
       let { activeKey } = this;
-      if (activeKey == 'doc' || activeKey == 'series') {
-        this.$Model.Doc.message(activeKey).then(data => {
-          this.contents = data;
-        });
-      } else if (activeKey == 'subject' || activeKey == 'task') {
-        this.$Model.Subject.message(activeKey).then(data => {
-          this.contents = data;
-        });
-      } else if (activeKey == 'media') {
-        this.$Model.Media.configs().then(data => {
-          this.contents = data;
-        });
+      switch (activeKey) {
+        case 'doc':
+        case 'series':
+          this.$Model.Doc.message(activeKey).then(data => {
+            this.contents = data;
+          });
+          break;
+        case 'subject':
+        case 'task':
+          this.$Model.Subject.message(activeKey).then(data => {
+            this.contents = data;
+          });
+          break;
+        case 'media':
+          this.$Model.Media.configs().then(data => {
+            this.contents = data;
+          });
+          break;
+        default:
+          break;
       }
     },
     select(i, index) {
       let { activeKey } = this;
-      if (activeKey == 'doc' || activeKey == 'series') {
-        i.is_check = !i.is_check;
-        let data = this.contents.map(item => item.types).flat() || [];
-        let data_ids = data.filter(item => item.is_check == true).map(v => v.id);
-        this.$Model.Doc.postMessage(activeKey, data_ids).then(() => {});
-      } else if (activeKey == 'subject' || activeKey == 'task') {
-        let data = [i.id];
-        this.$Model.Subject.postMessage(activeKey, data).then(() => {
-          i.is_check = !i.is_check;
-        });
-      } else if (activeKey == 'media') {
+      if (activeKey == 'media') {
         if (i.state == 0) {
           i.state = 1;
         } else {
@@ -86,6 +84,15 @@ export default {
         this.$Model.Media.putConfigs(this.contents).then(() => {
           this.init();
         });
+      } else {
+        i.is_check = !i.is_check;
+        let data = this.contents.map(item => item.types).flat() || [];
+        let data_ids = data.filter(item => item.is_check == true).map(v => v.id);
+        if (['doc', 'series'].includes(activeKey)) {
+          this.$Model.Doc.postMessage(activeKey, data_ids).then(() => {});
+        } else if (['subject', 'task'].includes(activeKey)) {
+          this.$Model.Subject.postMessage(activeKey, data_ids).then(() => {});
+        }
       }
     }
   }
