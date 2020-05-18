@@ -9,7 +9,7 @@
               <p>{{ content.title }}</p>
               <footer>
                 <span>创建者: {{ content.creator_nickname || content.creator_username }}</span>
-                <time>创建时间: {{ content.creation_time | ds_time }}</time>
+                <time>创建时间: {{ content.creation_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
               </footer>
             </div>
             <!-- 1、审核中，2、审核完成（已通过或无审核流程），3、已发布，4、已回收 -->

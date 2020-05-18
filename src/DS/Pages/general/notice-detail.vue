@@ -6,7 +6,7 @@
         <h3>{{content.title}}</h3>
         <p>
           <span>{{content.author_nickname || content.author_name}}</span>
-          <time>{{parseInt(content.creation_time) | ds_time}}</time>
+          <time>{{parseInt(content.creation_time) | ds_time('yyyy-MM-dd hh:mm')}}</time>
         </p>
       </header>
       <base--parse-body :content="content"></base--parse-body>

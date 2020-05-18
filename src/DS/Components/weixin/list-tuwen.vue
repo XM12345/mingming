@@ -10,7 +10,7 @@
       <div class="s-list">
         <section v-for="item in contents" :key="item.id">
           <header>
-            <time>{{ item.lastEditTime | ds_time('yyyy-MM-dd hh:mm') }}</time>
+            <time>{{ item.lastEditTime || item.creationTime | ds_time('', '更新') }}</time>
             <!-- 0-草稿，1-一审，2-二审，3-三审，9-待审，10-通过，11-入库，12-已发布，13-发布失败 -->
             <mark>{{ item.status | filter_status }}</mark>
             <span @click="operate(item)"></span>

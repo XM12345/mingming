@@ -14,7 +14,9 @@
             <p>{{ item.title }}</p>
             <span>{{ item.col_name }}</span>
             <span v-if="activeKey != 'mine'">{{ item.creator_nickname || item.creator_username }}</span>
-            <span>{{ item.creation_time | ds_time }}</span>
+            <!-- 回收站按照删除时间排序，其他按照最新编辑时间排序 -->
+            <span v-if="item.delete_time">{{ item.delete_time | ds_time('', '删除') }}</span>
+            <span v-else>{{ item.edit_time || item.creation_time | ds_time('', '更新') }}</span>
           </div>
           <!-- <mark></mark> -->
         </section>

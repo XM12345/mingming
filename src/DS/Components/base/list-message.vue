@@ -65,7 +65,7 @@ export default {
     init() {
       let { content, type } = this;
       let { fields, creation_time } = content;
-      let creationTime = this.constructor.filter('ds_time')(creation_time, 'yyyy-MM-dd hh:mm');
+      let creationTime = this.constructor.filter('ds_time')(creation_time || content.creationTime, 'yyyy-MM-dd hh:mm');
       if (fields && (type == 'series' || type == 'doc' || type == 'subject')) {
         fields.map(item => {
           if (item.type == 0) {

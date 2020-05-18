@@ -44,7 +44,7 @@ function parseBody(body, bodyComponents) {
       let { versions } = video;
       if (versions.length) {
         data = `<video controls="controls" src="${versions[0].url}" poster="${video.cover_url}"></video>`;
-      } else if (type == 'news') {
+      } else if (video.url) {
         data = `<video controls="controls" src="${video.url}"></video>`;
       } else {
         data = result;
@@ -61,7 +61,7 @@ function parseBody(body, bodyComponents) {
       let { versions } = audio;
       if (versions.length) {
         data = `<audio controlsList="nodownload" controls="controls" src="${versions[0].url}"></audio>`;
-      } else if (type == 'news') {
+      } else if (audio.url) {
         data = `<audio controlsList="nodownload" controls="controls" src="${audio.url}"></audio>`;
       } else {
         data = result;

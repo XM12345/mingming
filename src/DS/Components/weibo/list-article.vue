@@ -12,7 +12,7 @@
           <section>
             <div>
               <p>{{ item.title }}</p>
-              <span>{{ item.creation_time | ds_time('yyyy-MM-dd hh:mm') }}</span>
+              <span>{{ item.edit_time || item.creation_time | ds_time('','更新') }}</span>
             </div>
             <!-- <mark></mark> -->
           </section>

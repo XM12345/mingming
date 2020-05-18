@@ -4,13 +4,16 @@
       :to="`/notices/${item.id}`"
       v-for="item in contents"
       :key="item.id"
-      :class="{'readed':item.has_read}"
+      :class="{ readed: item.has_read }"
       @click.native="item.has_read = true"
     >
       <div>
         <label v-if="!item.has_read"></label>
-        <p>{{item.title}}</p>
-        <span>{{item.author_nickname || item.author_name}} | {{parseInt(item.creation_time) | ds_time}}</span>
+        <p>{{ item.title }}</p>
+        <span
+          >{{ item.author_nickname || item.author_name }} |
+          {{ parseInt(item.publish_time) || parseInt(item.creation_time) | ds_time('', '发布') }}</span
+        >
       </div>
       <mark></mark>
     </router-link>
