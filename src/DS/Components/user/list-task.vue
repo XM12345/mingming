@@ -5,7 +5,7 @@
         我的素材库
         <label class="colspan"></label>
       </h3>
-      <div v-for="(item, index) in contents" :key="item.id">
+      <div v-for="(item, index) in contents.messages" :key="item.id">
         <p>
           <span>{{ item.name }}</span>
           <label class="select" :class="{ isChecked: item.state == 1 }" @click="select(item, index)"></label>

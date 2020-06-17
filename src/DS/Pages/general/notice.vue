@@ -7,7 +7,7 @@
 
 <style lang="scss">
 .page-notice {
-  height: 100%;
+  min-height: 100%;
   background-color: #fff;
 }
 </style>

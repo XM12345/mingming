@@ -106,7 +106,7 @@ export default {
 <style lang="scss">
 .page-signal-content {
   position: relative;
-  height: 100%;
+  min-height: 100%;
 
   .s-video {
     video {

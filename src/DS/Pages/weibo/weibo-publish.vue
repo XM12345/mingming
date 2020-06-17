@@ -94,7 +94,7 @@ export default {
 </script>
 <style lang="scss">
 .weibo-publish {
-  height: 100%;
+  min-height: 100%;
   background-color: #f4f6f9;
   &-main {
     ul {

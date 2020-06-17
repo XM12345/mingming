@@ -63,7 +63,7 @@ export default {
 <style lang="scss">
 .page-device-content {
   position: relative;
-  height: 100%;
+  min-height: 100%;
   .s-control {
     padding: 10px 15px;
     border-bottom: 10px solid #f4f6f9;

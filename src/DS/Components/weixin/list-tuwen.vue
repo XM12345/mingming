@@ -18,7 +18,7 @@
           <footer>
             <router-link :to="`/weixin/${accountId}/content/${item.id}/${i.id}`" v-for="i in item.articles" :key="i.id">
               <p>{{ i.title }}</p>
-              <img :src="i.thumbUrl" />
+              <img :src="i.thumbUrl" alt />
             </router-link>
           </footer>
         </section>
@@ -262,6 +262,7 @@ export default {
             height: 52px;
             margin-left: 10px;
             min-width: 52px;
+            background-color: #eee;
           }
           &:first-child {
             position: relative;

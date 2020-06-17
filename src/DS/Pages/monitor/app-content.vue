@@ -62,7 +62,7 @@ export default {
 <style lang="scss">
 .page-app-content {
   position: relative;
-  height: 100%;
+  min-height: 100%;
 
   .s-main {
     .s-control {

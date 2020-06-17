@@ -23,7 +23,7 @@ export default {
         { name: '素材库', key: 'media' },
         { name: '电视文稿', key: 'doc' },
         { name: '播出', key: 'stream' },
-        { name: '串联单', key: 'series' },
+        { name: '串联单', key: 'series' }
         /* { name: '运维监控', key: 'control' } */
       ]
     };
@@ -45,11 +45,9 @@ export default {
 <style lang="scss">
 .page-message-follow {
   position: relative;
-  height: 100%;
+  min-height: 100%;
   background: #f7f7f7;
   .s-main {
-    height: calc(100% - 41px);
-
     .items {
       height: 100%;
     }

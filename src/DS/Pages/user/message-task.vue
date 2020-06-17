@@ -37,7 +37,7 @@ export default {
 <style lang="scss">
 .page-message-task {
   position: relative;
-  height: 100%;
+  min-height: 100%;
   background: #f7f7f7;
 }
 </style>

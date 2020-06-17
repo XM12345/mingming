@@ -68,7 +68,7 @@ export default {
 <style lang="scss">
 .page-search {
   position: relative;
-  height: 100%;
+  min-height: 100%;
   background-color: #f4f6f9;
   .h-topbar {
     div {

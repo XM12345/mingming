@@ -3,18 +3,18 @@
     <base--topbar title="发布到"></base--topbar>
     <div class="weixin-publish-main">
       <ul>
-        <li v-for="(item,index) in contents" :key="item.id" @click="check(item, index)">
+        <li v-for="(item, index) in contents" :key="item.id" @click="check(item, index)">
           <p>
-            <img :src="item.avatarUrl || defaultUrl" />
-            <span>{{item.name}}</span>
+            <img :src="item.avatarUrl || defaultUrl" alt />
+            <span>{{ item.name }}</span>
           </p>
-          <label role="checkbox" :class="{isChecked:item.isChecked==true}"></label>
+          <label role="checkbox" :class="{ isChecked: item.isChecked == true }"></label>
         </li>
       </ul>
     </div>
     <mt-popup class="mint-popup-operate" v-model="isOperate" position="bottom">
       <div class="mint-accounts">
-        <img :src="item.avatarUrl || defaultUrl" v-for="item in CheckedData" :key="item.id" />
+        <img :src="item.avatarUrl || defaultUrl" v-for="item in CheckedData" :key="item.id" alt />
       </div>
       <button class="mint-operate-button" @click="publish">确定</button>
     </mt-popup>
@@ -71,7 +71,7 @@ export default {
 
 <style lang="scss">
 .weixin-publish {
-  height: 100%;
+  min-height: 100%;
   background-color: #f4f6f9;
   &-main {
     ul {
@@ -87,9 +87,11 @@ export default {
           text-overflow: ellipsis;
           white-space: nowrap;
           img {
+            display: inline-block;
             width: 36px;
             height: 36px;
             vertical-align: middle;
+            background-color: #eee;
           }
           span {
             font-size: 15px;
@@ -133,7 +135,9 @@ export default {
         display: block;
         width: 36px;
         height: 36px;
-        padding: 7px;
+        margin: 5px;
+        padding: 1px;
+        background-color: #eee;
       }
     }
     .mint-operate-button {
