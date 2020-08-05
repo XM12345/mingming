@@ -3,10 +3,10 @@
     <base--topbar title="公告"></base--topbar>
     <div class="page-notice-detail-main">
       <header class="main-header">
-        <h3>{{content.title}}</h3>
+        <h3>{{ content.title }}</h3>
         <p>
-          <span>{{content.author_nickname || content.author_name}}</span>
-          <time>{{parseInt(content.creation_time) | ds_time('yyyy-MM-dd hh:mm')}}</time>
+          <span>{{ content.author_nickname || content.author_name }}</span>
+          <time>{{ parseInt(content.creation_time) | ds_time('yyyy-MM-dd hh:mm') }}</time>
         </p>
       </header>
       <base--parse-body :content="content"></base--parse-body>
@@ -18,8 +18,8 @@
           v-for="item in content.attachments"
           :key="item.id"
         >
-          <p>{{item.title}}</p>
-          <span>{{item.size | ds_size}}</span>
+          <p>{{ item.title }}</p>
+          <span>{{ item.size | ds_size }}</span>
         </a>
       </div>
     </div>
@@ -44,7 +44,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss">
 .page-notice-detail {
@@ -78,21 +77,7 @@ export default {
       article {
         color: #333;
         font-size: 15px;
-
-        table {
-          width: auto !important;
-          height: auto !important;
-          border: 1px solid #ccc;
-          border-collapse: collapse;
-          word-break: normal;
-          text-align: center;
-          font-size: 14px;
-          td {
-            width: auto !important;
-            border: 1px solid #ccc;
-            padding: 12px 10px;
-          }
-        }
+        padding-bottom: 30px;
       }
     }
     .s-attachments {

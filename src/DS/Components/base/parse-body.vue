@@ -1,7 +1,10 @@
 <template>
   <div class="h-parse-body">
     <article
-      v-ds-body="[content.content || content.body, content.body_components || content.bodyComponents || content.attachments]"
+      v-ds-body="[
+        content.content || content.body,
+        content.body_components || content.bodyComponents || content.attachments
+      ]"
       ref="bodyContent"
     ></article>
   </div>
@@ -47,6 +50,38 @@ export default {
     h4,
     h5 {
       max-width: 100% !important;
+    }
+    table {
+      width: auto !important;
+      height: auto !important;
+      max-width: 100% !important;
+      //border: 1px solid #ccc;
+      border-collapse: collapse;
+      word-break: normal;
+      text-align: center;
+      font-size: 14px;
+      td {
+        width: auto !important;
+        //border: 1px solid #ccc;
+        padding: 12px 10px;
+      }
+      tbody,
+      thead,
+      tr,
+      td,
+      section,
+      div,
+      p,
+      article,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        width: auto !important;
+        max-width: 100% !important;
+      }
     }
   }
 }
