@@ -6,9 +6,10 @@
         <div class="s-intro-mes">
           <p>{{content.title}}</p>
           <footer>
-            <span>{{content.author}}</span>
             <time>{{content.creation_time | ds_time('yyyy-MM-dd hh:mm')}}</time>
-            <span>{{content.keywords}}</span>
+            <span>来源：{{content.source_name}}</span>
+            <span>作者：{{content.author}}</span>
+            <!-- <span>{{content.keywords}}</span> -->
           </footer>
           <div class="s-intro-mes-link" v-if="content.refer_url">
             原文链接:
@@ -50,6 +51,11 @@ export default {
 .page-news-content {
   .s-main {
     border-bottom: 10px solid #f4f6f9;
+    .s-intro-mes footer {
+      & > * {
+        padding: 0 10px 0 0;
+      }
+    }
     .s-intro-mes-link {
       font-size: 12px;
       color: #999;
