@@ -23,8 +23,8 @@ export default {
         { name: '素材库', key: 'media' },
         { name: '电视文稿', key: 'doc' },
         { name: '播出', key: 'stream' },
-        { name: '串联单', key: 'series' }
-        /* { name: '运维监控', key: 'control' } */
+        { name: '串联单', key: 'series' },
+        { name: '运维监控', key: 'control' }
       ]
     };
   },
