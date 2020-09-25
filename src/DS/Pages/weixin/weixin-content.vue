@@ -92,6 +92,7 @@ export default {
         this.content = data;
         this.content.accountName = this.account_name;
         let { operateAble } = data;
+        operateAble = Array.from(new Set(operateAble)); // 剔除重复
         this.operate_able = [];
         // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发, 9-提交
         operateAble.forEach((item, index) => {

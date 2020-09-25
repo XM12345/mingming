@@ -134,6 +134,7 @@ export default {
       this.isOperate = !this.isOperate;
       this.oper_id = item.id;
       let { operateAble } = item;
+      operateAble = Array.from(new Set(operateAble)); // 剔除重复
       // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发, 9-提交
       this.operate_able = [{ name: '详情', key: 'content' }];
       operateAble.forEach((item, index) => {
