@@ -10,7 +10,7 @@ function parseBody(body, bodyComponents) {
       if (width == 0 && height == 0) {
         data = `<img src="${picture.url}" alt="" />`;
       } else {
-        data = `<img src="${picture.url}" width="${width}" alt="" />`;
+        data = `<img src="${picture.url}?w=${width}&h=${height}&s=2" width="${width}" alt="" />`;
       }
     } else {
       data = result;
