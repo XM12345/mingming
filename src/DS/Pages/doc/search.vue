@@ -77,7 +77,9 @@ export default {
       input {
         height: 38px;
         width: 100%;
+        padding: 0;
         font-size: 15px;
+        background: transparent;
 
         border: none;
         outline: none;
