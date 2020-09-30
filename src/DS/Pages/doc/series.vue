@@ -42,16 +42,6 @@
         <button class="s-success" @click="comments">发表</button>
       </footer>
     </mt-popup>
-    <mt-popup class="mint-popup-delete" v-model="isDelete" position="center">
-      <div class="s-de">
-        <p>提示</p>
-        <p class="s-de-info">是否确定删除此串联单？</p>
-        <div>
-          <button class="s-de-cancel" @click="cancel">取消</button>
-          <button class="s-de-confirm" @click="del">删除</button>
-        </div>
-      </div>
-    </mt-popup>
   </div>
 </template>
 
@@ -68,7 +58,6 @@ export default {
       content: '',
       isAudit: false,
       isComment: false,
-      isDelete: false,
       operate_able: [],
       comment: '',
       series_id: undefined,
@@ -131,7 +120,7 @@ export default {
       if (key == 'audit_') {
         this.isAudit = true;
       } else if (key == 'delete') {
-        this.isDelete = true;
+        this.del();
       } else if (key == 'revoke') {
         this.revoke();
       } else if (key == 'comment') {
@@ -164,35 +153,40 @@ export default {
       let data = {
         status: this.operate_status
       };
-      this.$Model.Doc.revoke(this.series_id, data).then(() => {
-        this.init();
-        this.$toast('撤销成功');
+      this.$messagebox.confirm('确定要撤销吗？').then(action => {
+        this.$Model.Doc.revoke(this.series_id, data).then(() => {
+          this.init();
+          this.$toast('撤销成功');
+        });
       });
     },
     restore() {
       // 还原
       let ids = [this.series_id];
-      this.$Model.Doc.restore(ids).then(() => {
-        this.$navigation.cleanRoutes();
-        this.$router.back();
+      this.$messagebox.confirm('确定要恢复吗？').then(action => {
+        this.$Model.Doc.restore(ids).then(() => {
+          this.$navigation.cleanRoutes();
+          this.$router.back();
+        });
       });
     },
     del() {
       // 删除
-      this.$Model.Doc.delete_series(this.series_id).then(() => {
-        this.$navigation.cleanRoutes();
-        this.$router.back();
+      this.$messagebox.confirm('确定要删除吗？').then(action => {
+        this.$Model.Doc.delete_series(this.series_id).then(() => {
+          this.$navigation.cleanRoutes();
+          this.$router.back();
+        });
       });
     },
     delFinal() {
       // 彻底删除
-      this.$Model.Doc.delFinal(this.series_id).then(() => {
-        this.$navigation.cleanRoutes();
-        this.$router.back();
+      this.$messagebox.confirm('确定要彻底删除吗？').then(action => {
+        this.$Model.Doc.delFinal(this.series_id).then(() => {
+          this.$navigation.cleanRoutes();
+          this.$router.back();
+        });
       });
-    },
-    cancel() {
-      this.isDelete = false;
     },
     comments() {
       // 批注post
@@ -209,9 +203,11 @@ export default {
     },
     commit() {
       // 提交
-      this.$Model.Doc.commit(this.series_id).then(() => {
-        this.init();
-        this.$toast('提交成功');
+      this.$messagebox.confirm('确定要提交吗？').then(action => {
+        this.$Model.Doc.commit(this.series_id).then(() => {
+          this.init();
+          this.$toast('提交成功');
+        });
       });
     }
   }
