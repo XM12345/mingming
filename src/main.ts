@@ -27,13 +27,14 @@ import Model from './DS/Model';
 import RunTime from '@/DS/util';
 
 /* 引入mint-ui */
-import { Loadmore, Toast, Popup, Switch, Picker } from 'mint-ui';
+import { Loadmore, Toast, MessageBox, Popup, Switch, Picker } from 'mint-ui';
 import 'mint-ui/lib/style.css';
 Vue.component(Loadmore.name, Loadmore);
 Vue.component(Popup.name, Popup);
 Vue.component(Switch.name, Switch);
 Vue.component(Picker.name, Picker);
 Vue.prototype.$toast = Toast;
+Vue.prototype.$messagebox = MessageBox;
 
 let ds = DS;
 Vue.prototype.$Model = Model;
@@ -78,9 +79,9 @@ axios.interceptors.response.use(
   err => {
     let { response } = err;
     let { data } = response;
-    let { error } = data;
+    let { error, code } = data;
     let msg = data.message || err.message || '';
-    if (error == 401) {
+    if (error == 401 || code == 401) {
       Vue.prototype.$login('操作前请先登录');
     } else if (error == 30002) {
       Vue.prototype.$toast('正在跳转授权公众号中...');
@@ -107,6 +108,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $Model: typeof Model;
     $toast: typeof Toast;
+    $message: typeof MessageBox;
     $login: any;
     $back: any;
     $toMedia: any;
