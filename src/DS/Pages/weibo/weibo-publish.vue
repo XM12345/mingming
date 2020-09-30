@@ -3,17 +3,17 @@
     <base--topbar title="发布到"></base--topbar>
     <div class="weibo-publish-main">
       <ul>
-        <li v-for="(item,index) in contents" :key="item.id" @click="check(item, index)">
+        <li v-for="(item, index) in contents" :key="item.id" @click="check(item, index)">
           <p>
-            <span>{{item.name}}</span>
+            <span>{{ item.name }}</span>
           </p>
-          <label role="checkbox" :class="{isChecked:item.isChecked==true}"></label>
+          <label role="checkbox" :class="{ isChecked: item.isChecked == true }"></label>
         </li>
       </ul>
     </div>
     <mt-popup class="mint-popup-operate" v-model="isOperate" position="bottom">
       <div class="mint-accounts">
-        <span v-for="item in CheckedData" :key="item.id">{{item.name}}</span>
+        <span v-for="item in CheckedData" :key="item.id">{{ item.name }}</span>
       </div>
       <button class="mint-operate-button" @click="push">确定</button>
     </mt-popup>

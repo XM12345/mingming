@@ -56,17 +56,6 @@
         <button class="s-success" @click="comments">发表</button>
       </footer>
     </mt-popup>
-    <!-- 删除 -->
-    <mt-popup class="mint-popup-delete" v-model="isDelete" position="center">
-      <div class="s-de">
-        <p>提示</p>
-        <p class="s-de-info">是否确定删除此文章？</p>
-        <div>
-          <button class="s-de-cancel" @click="cancel">取消</button>
-          <button class="s-de-confirm" @click="del">删除</button>
-        </div>
-      </div>
-    </mt-popup>
   </div>
 </template>
 
@@ -81,7 +70,6 @@ export default {
       comment: '',
       isComment: false,
       isAudit: false,
-      isDelete: false,
       operate_able: [
         { key: 'audit_', name: '审核' },
         { key: 'delete', name: '删除' },
@@ -142,7 +130,7 @@ export default {
       if (key == 'comment') {
         this.isComment = true;
       } else if (key == 'delete') {
-        this.isDelete = true;
+        this.del();
       } else if (key == 'audit_') {
         this.isAudit = true;
       } else if (key == 'publish') {
@@ -167,13 +155,12 @@ export default {
     },
     del() {
       // 删除
-      this.$Model.Weibo.delete(this.article_id).then(() => {
-        this.$navigation.cleanRoutes();
-        this.$router.back();
+      this.$messagebox.confirm('确定要删除吗？').then(action => {
+        this.$Model.Weibo.delete(this.article_id).then(() => {
+          this.$navigation.cleanRoutes();
+          this.$router.back();
+        });
       });
-    },
-    cancel() {
-      this.isDelete = false;
     },
     pass(isPass) {
       let data = {
