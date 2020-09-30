@@ -84,18 +84,13 @@ export default {
         this.operate_able = [];
         // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发, 9-提交
         operateAble.forEach((item, index) => {
-          if (operateAble[index] == 2) {
-            this.operate_able.push({ name: '审核', key: 'audit_' });
-          } else if (operateAble[index] == 3) {
-            this.operate_able.push({ name: '删除', key: 'delete' });
-          } else if (operateAble[index] == 5) {
-            this.operate_able.push({ name: '撤销', key: 'revoke' });
-          } else if (operateAble[index] == 6) {
-            this.operate_able.push({ name: '批注', key: 'comment' });
-          } else if (operateAble[index] == 8) {
-            this.operate_able.push({ name: '发布', key: 'publish' });
-          } else if (operateAble[index] == 9) {
-            this.operate_able.push({ name: '提交', key: 'accept' });
+          let eachIndex = operateAble[index];
+          if ([2, 3, 5, 6, 8, 9].includes(eachIndex)) {
+            let name = ['编辑', '审核', '删除', '恢复', '撤销', '批注', '预览', '发布', '提交'][eachIndex - 1];
+            let key = ['edit', 'audit_', 'delete', 'recover', 'revoke', 'comment', 'preview', 'publish', 'accept'][
+              eachIndex - 1
+            ];
+            this.operate_able.push({ name, key });
           }
         });
         // 获取可撤销/退回状态
@@ -113,18 +108,27 @@ export default {
       });
     },
     handle(key) {
-      if (key == 'audit_') {
-        this.isAudit = true;
-      } else if (key == 'delete') {
-        this.del();
-      } else if (key == 'revoke') {
-        this.revoke();
-      } else if (key == 'comment') {
-        this.isComment = true;
-      } else if (key == 'publish') {
-        this.publish();
-      } else if (key == 'accept') {
-        this.commit();
+      switch (key) {
+        case 'audit_':
+          this.isAudit = true;
+          break;
+        case 'delete':
+          this.del();
+          break;
+        case 'revoke':
+          this.revoke();
+          break;
+        case 'comment':
+          this.isComment = true;
+          break;
+        case 'publish':
+          this.publish();
+          break;
+        case 'accept':
+          this.commit();
+          break;
+        default:
+          break;
       }
     },
     pass(is_approved) {

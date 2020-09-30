@@ -127,16 +127,13 @@ export default {
       // 1-修改，2-审核，3-删除，4-恢复，5-撤销，6-批注，7-预览，8-群发, 9-提交
       this.operate_able = [{ name: '详情', key: 'content' }];
       operateAble.forEach((item, index) => {
-        if (operateAble[index] == 2) {
-          this.operate_able.push({ name: '审核', key: 'audit_' });
-        } else if (operateAble[index] == 3) {
-          this.operate_able.push({ name: '删除', key: 'delete' });
-        } else if (operateAble[index] == 8) {
-          this.operate_able.push({ name: '发布', key: 'publish' });
-        } else if (operateAble[index] == 6) {
-          this.operate_able.push({ name: '批注', key: 'comment' });
-        } else if (operateAble[index] == 9) {
-          this.operate_able.push({ name: '提交', key: 'accept' });
+        let eachIndex = operateAble[index];
+        if ([2, 3, 6, 8, 9].includes(eachIndex)) {
+          let name = ['编辑', '审核', '删除', '恢复', '撤销', '批注', '预览', '发布', '提交'][eachIndex - 1];
+          let key = ['edit', 'audit_', 'delete', 'recover', 'revoke', 'comment', 'preview', 'publish', 'accept'][
+            eachIndex - 1
+          ];
+          this.operate_able.push({ name, key });
         }
       });
     },

@@ -84,22 +84,15 @@ export default {
         this.$title(data.title);
         let { operate_able } = data;
         this.operate_able = [];
-        // 2-审核，3-删除，4-恢复，5-撤销，6-批注, 9- 提交, 10-彻底删除
+        // 1-修改,2-审核，3-删除，4-恢复，5-撤销，6-批注, 9- 提交, 10-彻底删除
         operate_able.forEach((item, index) => {
-          if (operate_able[index] == 2) {
-            this.operate_able.push({ name: '审核', key: 'audit_' });
-          } else if (operate_able[index] == 3) {
-            this.operate_able.push({ name: '删除', key: 'delete' });
-          } else if (operate_able[index] == 4) {
-            this.operate_able.push({ name: '恢复', key: 'recover' });
-          } else if (operate_able[index] == 5) {
-            this.operate_able.push({ name: '撤销', key: 'revoke' });
-          } else if (operate_able[index] == 6) {
-            this.operate_able.push({ name: '批注', key: 'comment' });
-          } else if (operate_able[index] == 9) {
-            this.operate_able.push({ name: '提交', key: 'publish' });
-          } else if (operate_able[index] == 10) {
-            this.operate_able.push({ name: '彻底删除', key: 'delFinal' });
+          let eachIndex = operate_able[index];
+          if ([1, 2, 3, 4, 5, 6, 9, 10].includes(eachIndex)) {
+            let name = ['编辑', '审核', '删除', '恢复', '撤销', '批注', '', '', '提交', '彻底删除'][eachIndex - 1];
+            let key = ['edit', 'audit_', 'delete', 'recover', 'revoke', 'comment', '', '', 'publish', 'delFinal'][
+              eachIndex - 1
+            ];
+            this.operate_able.push({ name, key });
           }
         });
         // 获取可撤销/退回状态
@@ -117,20 +110,33 @@ export default {
       });
     },
     handle(key) {
-      if (key == 'audit_') {
-        this.isAudit = true;
-      } else if (key == 'delete') {
-        this.del();
-      } else if (key == 'revoke') {
-        this.revoke();
-      } else if (key == 'comment') {
-        this.isComment = true;
-      } else if (key == 'publish') {
-        this.commit();
-      } else if (key == 'delFinal') {
-        this.delFinal();
-      } else if (key == 'recover') {
-        this.restore();
+      switch (key) {
+        case 'edit':
+          this.$router.push(`/series/edit/${this.series_id}`);
+          break;
+        case 'audit_':
+          this.isAudit = true;
+          break;
+        case 'delete':
+          this.del();
+          break;
+        case 'recover':
+          this.restore();
+          break;
+        case 'revoke':
+          this.revoke();
+          break;
+        case 'comment':
+          this.isComment = true;
+          break;
+        case 'publish':
+          this.commit();
+          break;
+        case 'delFinal':
+          this.delFinal();
+          break;
+        default:
+          break;
       }
     },
     pass(is_approved) {
@@ -217,7 +223,7 @@ export default {
 <style lang="scss">
 .page-sheet-detail {
   .s-footer {
-    @each $img in audit_, revoke, delete, comment, publish, delFinal, recover {
+    @each $img in edit, audit_, revoke, delete, comment, publish, delFinal, recover {
       span.s-#{$img} {
         background-image: url('./_images/#{$img}@2x.png');
       }
