@@ -1,11 +1,16 @@
 <template>
   <div class="page-weibo">
     <base--topbar title="微博文稿">
-      <router-link to="/search/weibo"></router-link>
+      <router-link class="h-topbar-search" to="/search/weibo"></router-link>
     </base--topbar>
 
     <div class="s-select">
-      <base--selectbar :columns="columns" :allStatus="allStatus" @select="select" v-if="columns.length"></base--selectbar>
+      <base--selectbar
+        :columns="columns"
+        :allStatus="allStatus"
+        @select="select"
+        v-if="columns.length"
+      ></base--selectbar>
     </div>
 
     <p class="s-main-nodata" v-if="!total"></p>

@@ -1,11 +1,16 @@
 <template>
   <div class="page-weixin">
     <base--topbar title="微信文稿">
-      <router-link :to="`/search/${col}/${columnName}`" v-if="col && columnName"></router-link>
+      <router-link class="h-topbar-search" :to="`/search/${col}/${columnName}`" v-if="col && columnName"></router-link>
     </base--topbar>
 
     <div class="s-select">
-      <base--selectbar :columns="columns" :allStatus="allStatus" @select="select" v-if="columns.length"></base--selectbar>
+      <base--selectbar
+        :columns="columns"
+        :allStatus="allStatus"
+        @select="select"
+        v-if="columns.length"
+      ></base--selectbar>
     </div>
 
     <p class="s-main-nodata" v-if="!total"></p>

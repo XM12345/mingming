@@ -18,6 +18,11 @@ function parseBody(body, bodyComponents) {
     return data;
   };
 
+  let replaceImage = (result, id) => {
+    let picture = (pictures || []).find(item => item.id == id) || {};
+    return picture.url;
+  }
+
   let replacePictureSet = (result, id) => {
     let pictureset = (picturesets || []).find(item => item.id == id);
     if (pictureset) {
@@ -93,6 +98,7 @@ function parseBody(body, bodyComponents) {
   //汉字: [\u4e00-\u9fa5]+
   return body
     .replace(/<\!--PICTURE#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replacePicture)
+    .replace(/<\!--BG_IMAGE#([a-zA-Z0-9]*)-->/gi, replaceImage)
     .replace(/<\!--PICTURESET#(\d*)-->/gi, replacePictureSet)
     .replace(/<\!--VIDEO#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replaceVideo)
     .replace(/<\!--AUDIO#([a-zA-Z0-9]*),(\d*),(\d*)-->/gi, replaceAudio)

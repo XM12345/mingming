@@ -30,16 +30,6 @@
           }}</span>
         </footer>
       </mt-popup>
-      <mt-popup class="mint-popup-delete" v-model="isDelete" position="center">
-        <div class="s-de">
-          <p>提示</p>
-          <p class="s-de-info">是否确定删除此图文？</p>
-          <div>
-            <button class="s-de-cancel" @click="cancel">取消</button>
-            <button class="s-de-confirm" @click="del">删除</button>
-          </div>
-        </div>
-      </mt-popup>
     </mt-loadmore>
   </div>
 </template>
@@ -66,7 +56,6 @@ export default {
       allLoaded: false,
       page: 1,
       contents: [],
-      isDelete: false,
       isOperate: false,
       operate_able: [],
       oper_id: undefined
@@ -152,13 +141,15 @@ export default {
       });
     },
     handle(key) {
-      if (key == 'content' || key == 'comment' || key == 'audit_') {
+      if (['content', 'comment', 'audit_'].includes(key)) {
         this.content();
       } else if (key == 'delete') {
-        this.isDelete = true;
+        this.isOperate = false;
+        this.del();
       } else if (key == 'publish') {
         this.publish();
       } else if (key == 'accept') {
+        this.isOperate = false;
         this.commit();
       }
     },
@@ -168,14 +159,12 @@ export default {
     },
     del() {
       let { accountId, oper_id } = this;
-      this.$Model.Weixin.delete(accountId, oper_id).then(() => {
-        this.isDelete = false;
-        this.$toast('删除成功');
-        this.loadFirst();
+      this.$messagebox.confirm('确定要删除吗？').then(action => {
+        this.$Model.Weixin.delete(accountId, oper_id).then(() => {
+          this.$toast('删除成功');
+          this.loadFirst();
+        });
       });
-    },
-    cancel() {
-      this.isDelete = false;
     },
     publish() {
       let { accountId, oper_id } = this;
@@ -184,10 +173,12 @@ export default {
     commit() {
       // 提交群发图文
       let { accountId, oper_id } = this;
-      this.$Model.Weixin.commit(accountId, oper_id).then(() => {
-        this.$toast('提交成功');
-        this.isOperate = false;
-        this.loadFirst();
+      this.$messagebox.confirm('确定要提交吗？').then(action => {
+        this.$Model.Weixin.commit(accountId, oper_id).then(() => {
+          this.$toast('提交成功');
+          this.isOperate = false;
+          this.loadFirst();
+        });
       });
     }
   }

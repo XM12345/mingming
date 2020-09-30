@@ -37,17 +37,6 @@
         <button class="s-success" @click="comments">发表</button>
       </footer>
     </mt-popup>
-    <!-- 删除 -->
-    <mt-popup class="mint-popup-delete" v-model="isDelete" position="center">
-      <div class="s-de">
-        <p>提示</p>
-        <p class="s-de-info">是否确定删除此图文？</p>
-        <div>
-          <button class="s-de-cancel" @click="cancel">取消</button>
-          <button class="s-de-confirm" @click="del">删除</button>
-        </div>
-      </div>
-    </mt-popup>
   </div>
 </template>
 
@@ -68,7 +57,6 @@ export default {
       operate_able: [],
       isAudit: false,
       isComment: false,
-      isDelete: false,
       text: '',
       comment: '',
       operate_status: -1
@@ -128,7 +116,7 @@ export default {
       if (key == 'audit_') {
         this.isAudit = true;
       } else if (key == 'delete') {
-        this.isDelete = true;
+        this.del();
       } else if (key == 'revoke') {
         this.revoke();
       } else if (key == 'comment') {
@@ -158,21 +146,22 @@ export default {
     },
     revoke() {
       // 撤销
-      this.$Model.Weixin.revoke(this.account_id, this.content_id, this.operate_status).then(() => {
-        this.init();
-        this.$toast('撤销成功');
+      this.$messagebox.confirm('确定要撤销吗？').then(action => {
+        this.$Model.Weixin.revoke(this.account_id, this.content_id, this.operate_status).then(() => {
+          this.init();
+          this.$toast('撤销成功');
+        });
       });
     },
     del() {
       // 删除
-      this.$Model.Weixin.delete(this.account_id, this.content_id).then(() => {
-        this.$toast('删除成功');
-        this.$navigation.cleanRoutes();
-        this.$router.back();
+      this.$messagebox.confirm('确定要删除吗？').then(action => {
+        this.$Model.Weixin.delete(this.account_id, this.content_id).then(() => {
+          this.$toast('删除成功');
+          this.$navigation.cleanRoutes();
+          this.$router.back();
+        });
       });
-    },
-    cancel() {
-      this.isDelete = false;
     },
     comments() {
       // 批注
@@ -196,9 +185,11 @@ export default {
     commit() {
       // 提交群发图文
       let { account_id, content_id } = this;
-      this.$Model.Weixin.commit(account_id, content_id).then(() => {
-        this.$toast('提交成功');
-        this.init();
+      this.$messagebox.confirm('确定要提交吗？').then(action => {
+        this.$Model.Weixin.commit(account_id, content_id).then(() => {
+          this.$toast('提交成功');
+          this.init();
+        });
       });
     }
   }

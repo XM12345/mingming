@@ -10,6 +10,7 @@
       <p class="s-column-line" v-for="item in content.fields" :key="item.id">
         <!--clue input_type:1、文本框输入（字符串）；2、选择框（单选为下拉框）；3、时间类型 -->
         <!-- doc,subject,series: type:0-普通文本，1-用户，2-日期 -->
+        <!-- doc:"type":<int|扩展字段类型：0-普通文本，1-用户列表，2-日期，3时间，4-选项列表>, -->
         <label class="s-column-line-key">{{ item.name }}:</label>
         <span class="s-column-line-value">{{ item.value }}</span>
       </p>
@@ -68,12 +69,14 @@ export default {
       let creationTime = this.constructor.filter('ds_time')(creation_time || content.creationTime, 'yyyy-MM-dd hh:mm');
       if (fields && (type == 'series' || type == 'doc' || type == 'subject')) {
         fields.map(item => {
-          if (item.type == 0) {
-            item.value = item.content;
-          } else if (item.type == 1) {
+          if (item.type == 1) {
             item.value = item.items.map(item => item.name).toString();
           } else if (item.type == 2) {
             item.value = this.constructor.filter('ds_time')(parseInt(item.content), 'yyyy-MM-dd hh:mm');
+          } else if (item.type == 3) {
+            item.value = this.constructor.filter('ds_time')(parseInt(item.content), 'hh:mm:ss');
+          } else {
+            item.value = item.content;
           }
           return item;
         });

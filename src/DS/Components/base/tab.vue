@@ -45,7 +45,7 @@ export default {
   },
   created() {
     this.selectKey = this.tabKey;
-    if (this.listenScroll) {
+    if (this.listenScroll == true) {
       this.$nextTick(() => {
         this.tab = this.$refs.tab;
         window.addEventListener('scroll', this.scroll, true);

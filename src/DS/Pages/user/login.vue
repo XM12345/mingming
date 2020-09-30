@@ -25,6 +25,7 @@ export default {
     submit() {
       let { username, password } = this;
       this.$Model.User.login(username, password).then(data => {
+        this.$toast('登陆成功')
         this.$router.back();
       });
     }

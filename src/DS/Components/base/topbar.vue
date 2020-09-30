@@ -2,7 +2,7 @@
   <div class="h-topbar">
     <header>
       <label @click="back"></label>
-      <span v-if="title">{{title}}</span>
+      <span v-if="title">{{ title }}</span>
       <slot></slot>
     </header>
   </div>
@@ -44,24 +44,6 @@ export default {
       background-repeat: no-repeat;
       background-size: 18px;
       background-position: center center;
-      /* &::before,
-      &::after {
-        position: absolute;
-        top: 19px;
-        left: 13px;
-        content: '';
-        width: 13px;
-        height: 2px;
-        color: #333;
-        background-color: #333;
-        transform-origin: left center;
-      }
-      &::before {
-        transform: rotate(40deg);
-      }
-      &::after {
-        transform: rotate(-40deg);
-      } */
     }
     span {
       height: 40px;
@@ -73,41 +55,19 @@ export default {
       white-space: nowrap;
       text-overflow: ellipsis;
     }
-
-    a {
-      position: absolute;
-      right: 0;
-      top: 0;
-      width: 40px;
-      height: 40px;
-      background-image: url('./_images/search@2x.png');
-      background-repeat: no-repeat;
-      background-size: 18px;
-      background-position: center center;
-
-      /* &::before {
-        content: '';
-        width: 16px;
-        height: 16px;
-        position: absolute;
-        top: 11px;
-        left: 11px;
-        border: 2px solid #555;
-        border-radius: 50%;
-        box-sizing: border-box;
-      }
-      &::after {
-        content: '';
-        width: 6px;
-        height: 3px;
-        position: absolute;
-        top: 24px;
-        left: 24px;
-        background-color: #555;
-        transform: rotate(45deg);
-      } */
-    }
+  }
+  &-search {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    background-image: url('./_images/search@2x.png');
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: center center;
+    border: none;
   }
 }
 </style>
-
