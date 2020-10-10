@@ -50,6 +50,12 @@ export default {
         ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status] ||
         '未知'
       );
+    },
+    filter_time(time) {
+      let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');
+      let m = (((time / 60) % 60 | 0) + '').padStart(2, '0');
+      let s = ((time % 60) + '').padStart(2, '0');
+      return h + ':' + m + ':' + s;
     }
   },
   watch: {
@@ -74,7 +80,7 @@ export default {
           } else if (item.type == 2) {
             item.value = this.constructor.filter('ds_time')(parseInt(item.content), 'yyyy-MM-dd hh:mm');
           } else if (item.type == 3) {
-            item.value = this.constructor.filter('ds_time')(parseInt(item.content), 'hh:mm:ss');
+            item.value = this.constructor.filter('filter_time')(parseInt(item.content), 'hh:mm:ss');
           } else {
             item.value = item.content;
           }
@@ -91,11 +97,19 @@ export default {
           break;
 
         case 'doc':
-          this.contents = [{ key: '栏目', name: content.col_name }];
+          // <int|密级：1-公开，2-内部，3-秘密，4-机密>
+          this.contents = [
+            { key: '栏目', name: content.col_name },
+            { key: '密级', name: ['1-公开', '2-内部', '3-秘密', '4-机密'][content.privacy - 1] }
+          ];
           break;
 
         case 'clue':
-          this.contents = [{ key: '栏目', name: content.column_name }];
+          this.contents = [
+            { key: '栏目', name: content.column_name },
+            { key: '关键词', name: content.key_words },
+            { key: '密级', name: ['1-公开', '2-内部', '3-秘密', '4-机密'][content.privacy - 1] }
+          ];
           fields.map(item => {
             if (item.input_type == 2 && item.multiple == false) {
               item.value = item.value.nick;
