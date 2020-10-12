@@ -1,19 +1,21 @@
 <template>
   <div class="page-series">
     <base--topbar title="串联单">
-      <router-link to="/search/series"></router-link>
+      <router-link class="h-topbar-search" to="/search/series"></router-link>
     </base--topbar>
 
     <div class="s-select">
       <section class="h-selectbar">
         <header class="s-header">
-          <div class="s-columns" @click="selectColumn" v-if="activeKey != 'recycle' && activeKey != 'mine'">
-            <span :class="{ active: isColSpread }">{{ columnName }}</span>
-            <mark :class="{ active: isColSpread }"></mark>
-          </div>
-          <div class="s-status" @click="selectStatus">
-            <span :class="{ active: isStatusSpread }">{{ statusName }}</span>
-            <mark :class="{ active: isStatusSpread }"></mark>
+          <div class="s-header-bars">
+            <div @click="selectColumn" v-if="activeKey != 'recycle' && activeKey != 'mine'">
+              <span :class="{ active: isColSpread }">{{ columnName }}</span>
+              <mark :class="{ active: isColSpread }"></mark>
+            </div>
+            <div @click="selectStatus">
+              <span :class="{ active: isStatusSpread }">{{ statusName }}</span>
+              <mark :class="{ active: isStatusSpread }"></mark>
+            </div>
           </div>
           <ul class="header-dropdown" v-if="isColSpread || isStatusSpread">
             <li
@@ -44,8 +46,9 @@
         :status="status"
         :activeKey="activeKey"
         @total="getTotal"
-        v-if="activeKey == 'list' || activeKey == 'audit' ? col : 'true'"
+        v-if="['list', 'audit'].includes(activeKey) ? col : 'true'"
       ></doc--list-series>
+      <router-link class="s-series-add" to="/series/add"></router-link>
     </div>
 
     <base--footer :footerNavs="footerNavs" @switchTo="switchTo"></base--footer>
@@ -187,6 +190,16 @@ $default-color: #1890ff;
 
   &-main {
     padding-bottom: 55px;
+    .s-series-add {
+      width: 50px;
+      height: 50px;
+      position: fixed;
+      bottom: 100px;
+      right: 40px;
+      background-size: contain;
+      background-image: url('./_images/add@2x.png');
+      background-repeat: no-repeat;
+    }
   }
 }
 .s-footer {

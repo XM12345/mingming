@@ -5,12 +5,7 @@
     </base--topbar>
 
     <div class="s-select">
-      <base--selectbar
-        :columns="columns"
-        :allStatus="allStatus"
-        @select="select"
-        v-if="columns.length"
-      ></base--selectbar>
+      <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>
     </div>
 
     <p class="s-main-nodata" v-if="!total"></p>
@@ -36,7 +31,8 @@ export default {
         { name: '已发布', value: 12 },
         { name: '发布失败', value: 13 }
       ],
-      total: 0
+      total: 0,
+      selectBar: []
     };
   },
   created() {
@@ -45,17 +41,26 @@ export default {
       if (data.length) {
         this.col = data[0].id;
         this.columnName = data[0].name;
+        this.selectBar = [
+          { type: 'noraml', returnWord: 'col', value: this.col, valueName: this.columnName, list: this.columns },
+          { type: 'normal', returnWord: 'status', value: -1, valueName: '所有状态', list: this.allStatus }
+        ];
       }
     });
   },
   methods: {
     select(item) {
-      if (item.id != undefined) {
-        this.col = item.id;
-        this.columnName = item.name;
-      } else {
-        this.status = item.value;
-        this.statusName = item.name;
+      switch (item.type) {
+        case 'col':
+          this.col = item.id;
+          this.columnName = item.name;
+          break;
+        case 'status':
+          this.status = item.value;
+          this.statusName = item.name;
+          break;
+        default:
+          break;
       }
     },
     getTotal(total) {

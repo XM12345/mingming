@@ -5,12 +5,7 @@
     </base--topbar>
 
     <div class="s-select">
-      <base--selectbar
-        :columns="columns"
-        :allStatus="allStatus"
-        @select="select"
-        v-if="columns.length"
-      ></base--selectbar>
+      <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>
     </div>
 
     <p class="s-main-nodata" v-if="!total"></p>
@@ -32,7 +27,8 @@ export default {
       ],
       statusName: '',
       status: '',
-      total: 0
+      total: 0,
+      selectBar: []
     };
   },
   created() {
@@ -40,16 +36,25 @@ export default {
     this.$Model.Weibo.accounts(operation).then(data => {
       this.columns = data;
       this.columns.unshift({ id: '', name: '所有公众号' });
+      this.selectBar = [
+        { type: 'noraml', returnWord: 'col', value: '', valueName: '所有公众号', list: this.columns },
+        { type: 'normal', returnWord: 'status', value: -1, valueName: '所有状态', list: this.allStatus }
+      ];
     });
   },
   methods: {
     select(item) {
-      if (item.id != undefined) {
-        this.col = item.id;
-        this.columnName = item.name;
-      } else {
-        this.status = item.value;
-        this.statusName = item.name;
+      switch (item.type) {
+        case 'col':
+          this.col = item.id;
+          this.columnName = item.name;
+          break;
+        case 'status':
+          this.status = item.value;
+          this.statusName = item.name;
+          break;
+        default:
+          break;
       }
     },
     getTotal(total) {

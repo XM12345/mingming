@@ -1,91 +1,89 @@
 <template>
   <div class="h-selectbar">
     <header class="s-header">
-      <div class="s-columns" @click="openColumns">
-        <span :class="{active: isColSpread}">{{columnName}}</span>
-        <mark :class="{active: isColSpread}"></mark>
-      </div>
-      <div class="s-status" @click="openStatus">
-        <span :class="{active: isStatusSpread}">{{statusName}}</span>
-        <mark :class="{active: isStatusSpread}"></mark>
-      </div>
-      <ul class="header-dropdown" v-if="isColSpread || isStatusSpread">
-        <li
-          :class="[(isColSpread && item.id == col) || (isStatusSpread && item.value == status) ? 'active' : '']"
-          v-for="item in spreadData"
-          :key="item.value"
-          @click="select(item)"
+      <div class="s-header-bars">
+        <div
+          :class="['s-header-bar', { active: isSpread(bar) }]"
+          v-for="(bar, index) in selectBar"
+          :key="index"
+          @click="select(bar, index)"
         >
-          {{item.name}}
-          <span
-            v-if="(isColSpread && item.id == col) || (isStatusSpread && item.value == status)"
-          >√</span>
-        </li>
+          <span>{{ bar.valueName }}</span>
+          <mark></mark>
+        </div>
+      </div>
+      <ul class="header-dropdown" v-if="isSelect">
+        <doc--list-columns
+          :tree="list"
+          @select="choose"
+          v-if="selectBar[selectIndex] && selectBar[selectIndex].type == 'column'"
+        ></doc--list-columns>
+        <template v-else>
+          <li
+            :class="{
+              active: isActive(item)
+            }"
+            v-for="item in list"
+            :key="item.value"
+            @click="choose(item)"
+          >
+            {{ item.name }}
+            <span v-if="isActive(item)">√</span>
+          </li>
+        </template>
         <slot></slot>
       </ul>
     </header>
-    <div class="header-modal" v-if="isColSpread || isStatusSpread" @click="close"></div>
+    <div class="header-modal" v-if="isSelect" @click="close"></div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    columns: {
-      required: true,
-      default: () => []
-    },
-    allStatus: {
-      required: true,
+    selectBar: {
       default: () => []
     }
   },
   data() {
     return {
-      col: '',
-      columnName: '',
-      status: -1,
-      statusName: '',
-      isColSpread: false,
-      isStatusSpread: false,
-      spreadData: []
+      isSelect: false,
+      selectIndex: 0,
+      list: []
     };
   },
-  created() {
-    let { columns, allStatus } = this;
-    if (columns.length) {
-      this.col = columns[0].id;
-      this.columnName = columns[0].name;
-    }
-    this.status = this.allStatus[0].value;
-    this.statusName = this.allStatus[0].name;
-  },
   methods: {
-    openColumns() {
-      this.isColSpread = !this.isColSpread;
-      this.isStatusSpread = false;
-      this.spreadData = this.columns;
-    },
-    openStatus() {
-      this.isStatusSpread = !this.isStatusSpread;
-      this.isColSpread = false;
-      this.spreadData = this.allStatus;
-    },
-    select(item) {
-      if (this.isColSpread) {
-        this.col = item.id;
-        this.columnName = item.name;
-        this.isColSpread = !this.isColSpread;
-      } else if (this.isStatusSpread) {
-        this.status = item.value;
-        this.statusName = item.name;
-        this.isStatusSpread = !this.isStatusSpread;
+    select(item, index) {
+      let { returnWord, list } = item;
+      let curentItem = this.selectBar[this.selectIndex] || {};
+      if (curentItem.returnWord && curentItem.returnWord != returnWord) {
+        this.isSelect = true;
+      } else {
+        this.isSelect = !this.isSelect;
       }
-      this.$emit('select', item);
+      this.selectIndex = index;
+      this.list = list;
     },
     close() {
-      this.isColSpread = false;
-      this.isStatusSpread = false;
+      this.isSelect = false;
+    },
+    isSpread(bar) {
+      let currentItem = this.selectBar[this.selectIndex] || {};
+      return bar.returnWord == currentItem.returnWord && this.isSelect;
+    },
+    isActive(item) {
+      let currentItem = this.selectBar[this.selectIndex] || {};
+      return (
+        (item.id != undefined && item.id == currentItem.value) ||
+        (item.value != undefined && item.value == currentItem.value)
+      );
+    },
+    choose(item) {
+      item.type = this.selectBar[this.selectIndex].returnWord;
+      this.selectBar[this.selectIndex].value = item.id || item.value;
+      this.selectBar[this.selectIndex].valueName = item.name;
+      this.isSelect = !this.isSelect;
+      this.$emit('select', item);
     }
   }
 };
@@ -95,19 +93,18 @@ export default {
 .h-selectbar {
   .s-header {
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-    div {
-      &.s-columns,
-      &.s-status {
+    &-bars {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      padding: 15px;
+      overflow-x: auto;
+      & > div {
         display: inline-block;
+        white-space: nowrap;
         span {
           color: #666;
           font-size: 15px;
-          &.active {
-            color: #1890ff;
-          }
         }
         mark {
           display: inline-block;
@@ -116,7 +113,12 @@ export default {
           background: none;
           border-color: #666 transparent transparent;
           transition: all 0.5s;
-          &.active {
+        }
+        &.active {
+          span {
+            color: #1890ff;
+          }
+          mark {
             transform: rotate(180deg) translate(0px, 3px);
             border-color: #1890ff transparent transparent;
           }
