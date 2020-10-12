@@ -2,6 +2,11 @@ import BaseModel from './baseModel';
 type ID = number | string;
 
 export default class Doc extends BaseModel {
+  current() {
+    // 获取登录用户信息
+    // http://v1.api.domain.com/internal/users/current
+    return super.$get('/users/current');
+  }
   async columns(pk: any) {
     // 获取所有栏目
     // http://v1.api.domain.com/internal/columns?pk={permission-key1},{permission-key2}...
@@ -61,6 +66,17 @@ export default class Doc extends BaseModel {
       return contents;
     });
   }
+  depts() {
+    // 获取部门列表
+    // http://v1.api.domain.com/internal/depts
+    return super.$get('/depts');
+  }
+  users(page = 1, { dept = '', name = '', size = 1000 } = {}) {
+    // 获取用户列表 size暂时写死1000
+    // http://v1.api.domain.com/internal/users?page={page}&size={size}&dept={dept}&name={name}
+    let params = { page, dept, name, size };
+    return super.$get('/users', { params });
+  }
   postFollow(column_id: ID, app: string, data: Object) {
     // 设置用户关注单栏目
     // http://v1.api.domain.com/internal/users/current/follow/columns/{column-id}/{app}
@@ -88,6 +104,12 @@ export default class Doc extends BaseModel {
     return super.$post(`/users/current/message/${app}/types`, data);
   }
 
+  seriesCustom() {
+    // 获取扩展字段
+    // http://v1.api.domain.com/internal/series/fields/custom
+    return super.$get('/series/fields/custom');
+  }
+
   seriesList(page = 1, { col = '', status = -1, name = '', size = 30 }: any = {}) {
     // 串联单列表
     // http://v1.api.domain.com/internal/series?page={page}&size={size}&col={col}&name={name}&status={status}&creator={creator}&user={user}&start={start}&stop={stop}&planstart={planstart}&planstop={planstop}&playstart={playstart}&playstop={playstop}
@@ -111,10 +133,39 @@ export default class Doc extends BaseModel {
     let params = { page, col, status, name, size };
     return super.$get('/series/audit', { params });
   }
+  seriesDocs(page = 1, { col = '', status = -1, quote = 0, keyword = '', size = 30 }: any = {}) {
+    // 获取待选文稿列表
+    // http://v1.api.domain.com/internal/series/docs?page={page}&size={size}&col={col}&name={name}&status={status}&creator={creator}&keyword={keyword}&start={start}&stop={stop}&quote={quote}&order={order}
+    let params = { page, size, col, status, quote, keyword };
+    return super.$get('/series/docs', { params });
+  }
   revoke_status(series_id: ID) {
     // 获取可撤销、可退回状态
     // http://v1.api.domain.com/internal/series/{series-id}/revoke/status
     return super.$get(`/series/${series_id}/revoke/status`);
+  }
+  exist(data: Object) {
+    // 校验同期串联单
+    // http://v1.api.domain.com/internal/series/exist
+    return super.$post('/series/exist', data);
+  }
+  ptype() {
+    // 获取播出类型
+    // 登录用户 + series.add | series.edit
+    // http://v1.api.domain.com/internal/series/items/ptype
+    return super.$get('/series/items/ptype');
+  }
+  seriesAdd(data: Object) {
+    // 新建串联单
+    // 权限：series.add
+    // http://v1.api.domain.com/internal/series
+    return super.$post('/series', data);
+  }
+  seriesModify(series_id: ID, data: Object) {
+    // 修改串联单
+    // 权限：登录用户 + series.add | series.edit
+    // http://v1.api.domain.com/internal/series/{series-id}
+    return super.$put(`/series/${series_id}`, data);
   }
   post_audit(series_id: ID, data: Object) {
     // 串联单审核
@@ -245,5 +296,11 @@ export default class Doc extends BaseModel {
     // 文稿添加批注
     // http://v1.api.domain.com/internal/docs/{doc-id}/comments
     return super.$post(`/docs/${doc_id}/comments`, data);
+  }
+
+  docs_privacy() {
+    // 获取文稿可操作密级
+    // http://v1.api.domain.com/internal/columns/privacy
+    return super.$get('/columns/privacy');
   }
 }

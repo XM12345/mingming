@@ -80,7 +80,7 @@ export default {
           } else if (item.type == 2) {
             item.value = this.constructor.filter('ds_time')(parseInt(item.content), 'yyyy-MM-dd hh:mm');
           } else if (item.type == 3) {
-            item.value = this.constructor.filter('filter_time')(parseInt(item.content), 'hh:mm:ss');
+            item.value = this.constructor.filter('filter_time')(parseInt(item.content || 0), 'hh:mm:ss');
           } else {
             item.value = item.content;
           }
