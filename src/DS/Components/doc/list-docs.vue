@@ -50,7 +50,7 @@ export default {
   computed: {
     watchData() {
       let { col, status, quote, keyword } = this;
-      return { col, quote };
+      return { col, status, quote, keyword };
     }
   },
   watch: {

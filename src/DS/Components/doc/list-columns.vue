@@ -1,18 +1,18 @@
 <template>
   <div class="doc--list-columns">
-    <div v-for="(item,index) in tree" :key="item.id">
+    <div v-for="(item, index) in tree" :key="item.id">
       <p>
-        <span
-          @click="(item.children.length && item.type==2) ? isShowItem(item,index) : select(item)"
-        >{{item.name}}</span>
+        <span @click="item.children.length && item.type == 2 ? isShowItem(item, index) : select(item)">{{
+          item.name
+        }}</span>
         <mark
-          @click="isShowItem(item,index)"
-          :class="{active: item.isFolder==false}"
+          @click="isShowItem(item, index)"
+          :class="{ active: item.isFolder == false }"
           v-if="item.children.length"
         ></mark>
       </p>
       <doc--list-columns
-        :class="{folder:item.isFolder == true}"
+        :class="{ folder: item.isFolder == true }"
         :tree="item.children"
         @select="select"
         v-if="item.children.length"
@@ -78,4 +78,3 @@ export default {
   }
 }
 </style>
-

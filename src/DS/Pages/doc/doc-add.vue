@@ -72,8 +72,8 @@ export default {
         this.columns = data.filter(item => !item.parent_id);
         this.selectBar = [
           { type: 'column', returnWord: 'col', value: '', valueName: '所有栏目', list: this.columns },
-          { type: 'normal', returnWord: 'status', value: '', valueName: '所有状态', list: this.listStatus },
-          { type: 'normal', returnWord: 'quote', value: '', valueName: '引用标识', list: this.quotes }
+          { type: 'normal', returnWord: 'status', value: -1, valueName: '所有状态', list: this.listStatus },
+          { type: 'normal', returnWord: 'quote', value: 0, valueName: '引用标识', list: this.quotes }
         ];
       });
     },

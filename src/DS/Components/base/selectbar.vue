@@ -3,7 +3,7 @@
     <header class="s-header">
       <div class="s-header-bars">
         <div
-          :class="['s-header-bar', { active: isSpread(bar) }]"
+          :class="{ active: isSpread(bar) }"
           v-for="(bar, index) in selectBar"
           :key="index"
           @click="select(bar, index)"

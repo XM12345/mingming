@@ -33,23 +33,12 @@ export default {
     word-break: break-word;
     overflow: hidden;
 
+    * {
+      max-width: 100% !important;
+    }
+
     p {
       overflow: hidden;
-    }
-    img,
-    video,
-    p,
-    section,
-    div,
-    table.ul,
-    span,
-    article,
-    h1,
-    h1,
-    h3,
-    h4,
-    h5 {
-      max-width: 100% !important;
     }
     table {
       width: auto !important;
@@ -65,20 +54,7 @@ export default {
         //border: 1px solid #ccc;
         padding: 12px 10px;
       }
-      tbody,
-      thead,
-      tr,
-      td,
-      section,
-      div,
-      p,
-      article,
-      h1,
-      h2,
-      h3,
-      h4,
-      h5,
-      h6 {
+      * {
         width: auto !important;
         max-width: 100% !important;
       }

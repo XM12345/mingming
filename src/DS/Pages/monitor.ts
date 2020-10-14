@@ -1,40 +1,34 @@
 export default {
   name: '设备监控',
-  pages: [
-    {
+  component: require('./404').default,
+  routes: {
+    '/signals/:signal_id': {
       name: '信号监控详情',
-      path: '/signals/:signal_id',
       component: require('./monitor/signal-content').default
     },
-    {
+    '/devices/:device_id': {
       name: '设备详情',
-      path: '/devices/:device_id',
       component: require('./monitor/device-content').default
     },
-    {
+    '/machine-roomes/devices/:device_id': {
       name: '机房设备详情',
-      path: '/machine-roomes/devices/:device_id',
       component: require('./monitor/room-content').default
     },
-    {
+    '/apps/:app_id': {
       name: '应用详情',
-      path: '/apps/:app_id',
       component: require('./monitor/app-content').default
     },
-    {
+    '/alarms/:alarm_id': {
       name: '报警详情',
-      path: '/alarms/:alarm_id',
       component: require('./monitor/alarm-content').default
     },
-    {
+    '/control/settings': {
       name: '添加监控设置',
-      path: '/control/settings',
       component: require('./monitor/control-post').default
     },
-    {
+    '/control/settings/:index': {
       name: '修改监控设置',
-      path: '/control/settings/:index',
       component: require('./monitor/control-post').default
     }
-  ]
+  }
 };

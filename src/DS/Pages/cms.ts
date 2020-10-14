@@ -1,20 +1,18 @@
 export default {
   name: 'cms新媒体',
-  pages: [
-    {
+  component: require('./404').default,
+  routes: {
+    '/content/:content_id': {
       name: '新媒体',
-      path: '/cms/content/:content_id',
       component: require('./cms/content').default
     },
-    {
+    '/content-preview/:content_id': {
       name: '新媒体预览',
-      path: '/cms/content-preview/:content_id',
       component: require('./cms/contentPreview').default
     },
-    {
+    '/stat': {
       name: '新媒体统计',
-      path: '/cms/stat',
       component: require('./cms/stat').default
     }
-  ]
+  }
 };

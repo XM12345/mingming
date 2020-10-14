@@ -1,7 +1,7 @@
 <template>
   <div class="page-series">
     <base--topbar title="串联单">
-      <router-link class="h-topbar-search" to="/search/series"></router-link>
+      <router-link class="h-topbar-search" to="/series/search"></router-link>
     </base--topbar>
 
     <div class="s-select">

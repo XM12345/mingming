@@ -20,7 +20,7 @@
             <div>
               <section v-for="item in content.mobjects" :key="item.id">
                 <video :src="item.url" :poster="item.cover_url" v-if="item.type == 2" :ref="item.id"></video>
-                <img :src="item.url" v-else />
+                <img :src="item.url" alt v-else />
                 <mark v-if="item.type == 2" @click="play(item.id)"></mark>
               </section>
             </div>

@@ -1,10 +1,10 @@
 export default {
   name: '通稿库',
-  pages: [
-    {
+  component: require('./404').default,
+  routes: {
+    '/:clue_id': {
       name: '通稿详情',
-      path: '/clues/:clue_id',
       component: require('./clue/clue').default
     }
-  ]
+  }
 };

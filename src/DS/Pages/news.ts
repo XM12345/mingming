@@ -1,10 +1,10 @@
 export default {
   name: '线索库',
-  pages: [
-    {
+  component: require('./404').default,
+  routes: {
+    '/:news_id': {
       name: '线索库详情',
-      path: '/news/:news_id',
       component: require('./news/news').default
     }
-  ]
+  }
 };

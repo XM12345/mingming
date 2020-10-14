@@ -1,15 +1,14 @@
 export default {
   name: '基础中心',
-  pages: [
-    {
+  component: require('./404').default,
+  routes: {
+    '/notice': {
       name: '公告列表',
-      path: '/notice',
       component: require('./general/notice').default
     },
-    {
+    '/notices/:notice_id': {
       name: '公告详情',
-      path: '/notices/:notice_id',
       component: require('./general/notice-detail').default
     }
-  ]
+  }
 };
