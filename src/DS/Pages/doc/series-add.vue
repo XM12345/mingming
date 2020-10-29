@@ -109,7 +109,10 @@ export default {
   data() {
     return {
       tabKey: '',
-      navItems: [{ name: '基本信息', key: 'message' }, { name: '文稿列表', key: 'docs' }],
+      navItems: [
+        { name: '基本信息', key: 'message' },
+        { name: '文稿列表', key: 'docs' }
+      ],
       isModalList: false,
       isModalColumn: false,
       isModalTime: false,
@@ -147,7 +150,10 @@ export default {
           return this.series.title;
         }
         if (this.series.play_time && this.series.col_id) {
-          let newDate = this.constructor.filter('ds_time')(new Date(this.series.play_time) / 1000, 'yyyy/MM');
+          let newDate = this.constructor.filter('ds_time')(
+            new Date(this.series.play_time.replace(/\-/gi, '/')) / 1000,
+            'yyyy-MM'
+          );
           return `${this.series.col_name} ${newDate}`;
         }
       },
@@ -171,7 +177,7 @@ export default {
       this.series_id = series_id;
       this.getCustom();
       this.tabKey = this.navItems[0].key || '';
-      this.pickerDateTime = this.constructor.filter('ds_time')(new Date() / 1000, 'yyyy/MM/dd hh:mm'); // init pickerValue
+      this.pickerDateTime = this.constructor.filter('ds_time')(new Date() / 1000, 'yyyy-MM-dd hh:mm'); // init pickerValue
       let valuesHour = Array.from(Array(24), (v, k) => k.toString().padStart(2, '0'));
       let valuesMin = Array.from(Array(60), (v, k) => k.toString().padStart(2, '0'));
       let valuesSec = Array.from(Array(60), (v, k) => k.toString().padStart(2, '0'));
@@ -218,7 +224,7 @@ export default {
       let data = {};
       if (this.series_id) {
         data = await this.$Model.Doc.series(this.series_id);
-        data.play_time = this.constructor.filter('ds_time')(data.play_time, 'yyyy/MM/dd hh:mm');
+        data.play_time = this.constructor.filter('ds_time')(data.play_time, 'yyyy-MM-dd hh:mm');
         this.series = data;
         this.docs = data.items.map(item => {
           item.isChecked = true;
@@ -332,7 +338,7 @@ export default {
       }
     },
     handleConfirmDateTime(time) {
-      let date = this.constructor.filter('ds_time')(new Date(time) / 1000, 'yyyy/MM/dd hh:mm');
+      let date = this.constructor.filter('ds_time')(new Date(time) / 1000, 'yyyy-MM-dd hh:mm');
       if (this.listIndex == -1) {
         this.series.play_time = date;
       } else {
@@ -396,7 +402,7 @@ export default {
         this.$toast('请输入标题');
         return false;
       }
-      let play_time = new Date(this.series.play_time) / 1000;
+      let play_time = new Date(this.series.play_time.replace(/\-/gi, '/')) / 1000;
       let fields = this.customs.map(item => {
         let content = item.type == 1 ? '' : String(item._value);
         let items = item.type == 1 ? item._value || [] : [];
