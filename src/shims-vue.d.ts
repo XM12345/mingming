@@ -4,3 +4,4 @@ declare module "*.vue" {
 }
 declare module 'mint-ui';
 declare module 'vue-navigation';
+declare module 'vant';

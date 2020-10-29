@@ -2,10 +2,30 @@
   <div class="page-404">
     <div class="page-404-main">
       <img src="../Components/base/_images/404.png" />
+      <!--   <img src="@components/base/_images/404.png" /> -->
       <p>哎呀，这个页面一边凉快去了</p>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  created() {},
+  beforeRouteLeave(to, from, next) {
+    setTimeout(() => {
+      //此处必须要加延迟执行
+      this.$messagebox
+        .confirm('确定要离开吗？')
+        .then(() => {
+          next();
+        })
+        .catch(action => {
+          next(false);
+        });
+    }, 500);
+  }
+};
+</script>
 
 <style lang="scss">
 .page-404 {

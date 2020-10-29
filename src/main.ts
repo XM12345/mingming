@@ -6,6 +6,7 @@ import MobileView from 'mobile-view';
 MobileView();
 
 import Vue from 'vue';
+import { VueConstructor } from 'vue/types/vue';
 import axios from 'axios';
 /* TODO:语言切换 */
 import i18n from './libs/i18n';
@@ -27,14 +28,24 @@ import Model from './DS/Model';
 import RunTime from '@/DS/util';
 
 /* 引入mint-ui */
-import { Loadmore, Toast, MessageBox, Popup, Switch, Picker } from 'mint-ui';
-import 'mint-ui/lib/style.css';
-Vue.component(Loadmore.name, Loadmore);
+import { Toast, MessageBox, Popup, Switch, Picker } from 'mint-ui';
+
 Vue.component(Popup.name, Popup);
 Vue.component(Switch.name, Switch);
 Vue.component(Picker.name, Picker);
-Vue.prototype.$toast = Toast;
+
+(Vue as any).$toast = Vue.prototype.$toast = Toast;
 Vue.prototype.$messagebox = MessageBox;
+
+/* 引入vant */
+
+import { PullRefresh } from 'vant';
+import { List } from 'vant';
+import DSLoadmore from './DS/baseThirdComponents/vant/mt-loadmore.vue';
+
+Vue.use(List);
+Vue.use(PullRefresh);
+Vue.component('mt-loadmore', DSLoadmore);
 
 let ds = DS;
 Vue.prototype.$Model = Model;
@@ -107,7 +118,6 @@ axios.interceptors.response.use(
 declare module 'vue/types/vue' {
   interface Vue {
     $Model: typeof Model;
-    $toast: typeof Toast;
     $message: typeof MessageBox;
     $login: any;
     $back: any;
@@ -115,6 +125,7 @@ declare module 'vue/types/vue' {
     $title: any;
   }
 }
+
 Vue.config.productionTip = false;
 
 new Vue({
