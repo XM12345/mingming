@@ -171,7 +171,7 @@ export default {
             { key: '参与人', name: users },
             { key: '创建时间', name: creationTime },
             { key: '任务类型', name: content.type_name },
-            { key: '状态', name: content.status_name }
+            { key: '状态', name: ['待接受', '执行中', '执行中', '已完成', '已终止'][content.status - 1] }
           ];
           break;
 
