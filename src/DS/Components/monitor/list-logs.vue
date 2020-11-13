@@ -39,6 +39,11 @@ export default {
       return levels[item.level - 1] || '';
     }
   },
+  watch: {
+    content() {
+      this.init();
+    }
+  },
   methods: {
     init() {
       let { content } = this;

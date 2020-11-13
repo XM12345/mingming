@@ -52,6 +52,11 @@ export default {
       return indexes;
     }
   },
+  watch: {
+    content() {
+      this.initData();
+    }
+  },
   methods: {
     initData() {
       let { content, index_key } = this;

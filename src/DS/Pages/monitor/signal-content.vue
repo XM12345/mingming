@@ -37,6 +37,12 @@ export default {
   created() {
     this.tabKey = this.navItems[0].key || '';
     this.init();
+    let tid = setInterval(() => {
+      this.init();
+    }, 5000);
+    this.$once('hook:beforeDestroy', () => {
+      clearInterval(tid);
+    });
   },
   methods: {
     onSwitch(key) {

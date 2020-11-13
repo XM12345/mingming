@@ -77,33 +77,37 @@ export default {
 .monitor--device-ib {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
   text-align: center;
   padding: 15px 0;
-  a {
-    font-size: 17px;
-    color: #26c644;
-    &.unnormal {
-      position: relative;
-      color: #fb4c4c;
-      &::before {
-        content: '!';
-        position: absolute;
-        right: -20px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 15px;
-        height: 15px;
-        background: #fb4c4c;
-        border-radius: 50%;
-        color: #fff;
-        font-size: 12px;
+  & > div {
+    width: 25%;
+    a {
+      font-size: 17px;
+      color: #26c644;
+      &.unnormal {
+        position: relative;
+        color: #fb4c4c;
+        &::before {
+          content: '!';
+          position: absolute;
+          right: -20px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 15px;
+          height: 15px;
+          background: #fb4c4c;
+          border-radius: 50%;
+          color: #fff;
+          font-size: 12px;
+        }
       }
     }
-  }
-  p {
-    font-size: 13px;
-    color: #333;
-    margin: 6px 0;
+    p {
+      font-size: 13px;
+      color: #333;
+      margin: 6px 0;
+    }
   }
 }
 </style>
