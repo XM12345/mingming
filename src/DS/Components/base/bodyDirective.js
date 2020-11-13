@@ -81,7 +81,7 @@ function parseBody(body, bodyComponents) {
     file = (files || []).find(item => item.id == id);
     if (file) {
       let { url, title, name } = file;
-      data = `<a href="${url}" download="${title}" style="color:#9dabc2;">${title || name}</a>`;
+      data = `<a href="${url}" download="${title}" target="_blank" style="color:#9dabc2;">${title || name}</a>`;
     }
     return data;
   };

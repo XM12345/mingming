@@ -10,7 +10,7 @@
       <div class="s-general" v-if="tabKey == 'message'">
         <p @click="select('column')">
           <label for="col"><i>*</i>栏目</label>
-          <input :class="{ readonly: series_id }" type="text" v-model="series.col_name" readonly />
+          <input :class="{ readonly: series_id && series.status }" type="text" v-model="series.col_name" readonly />
           <mark></mark>
         </p>
         <p @click="select('date')">
@@ -141,6 +141,8 @@ export default {
     };
   },
   created() {
+    let { series_id } = this.$route.params;
+    this.series_id = series_id;
     this.init();
   },
   computed: {
@@ -152,7 +154,7 @@ export default {
         if (this.series.play_time && this.series.col_id) {
           let newDate = this.constructor.filter('ds_time')(
             new Date(this.series.play_time.replace(/\-/gi, '/')) / 1000,
-            'yyyy-MM'
+            'yyyy-MM-dd'
           );
           return `${this.series.col_name} ${newDate}`;
         }
@@ -173,8 +175,6 @@ export default {
       this.tabKey = key;
     },
     init() {
-      let { series_id } = this.$route.params;
-      this.series_id = series_id;
       this.getCustom();
       this.tabKey = this.navItems[0].key || '';
       this.pickerDateTime = this.constructor.filter('ds_time')(new Date() / 1000, 'yyyy-MM-dd hh:mm'); // init pickerValue
@@ -269,10 +269,10 @@ export default {
       switch (type) {
         case 'column':
           // 栏目
-          if (!this.series_id) {
-            this.isModalColumn = true;
-          } else {
+          if (this.series_id && this.series.status) {
             this.$toast('栏目不可再修改');
+          } else {
+            this.isModalColumn = true;
           }
           break;
         case 'date':
@@ -443,6 +443,9 @@ export default {
       }
 
       model.then(series_id => {
+        if (!this.series_id) {
+          this.series_id = series_id;
+        }
         this.$toast(isCommit ? '提交成功' : '保存成功');
         if (isCommit) {
           this.$navigation.cleanRoutes();
@@ -466,7 +469,7 @@ export default {
       transform: translateY(-50%);
       button {
         margin: 0 5px;
-        padding: 2px 6px;
+        padding: 1px 6px;
         outline: none;
         color: #1990ff;
         border: 1px solid #1990ff;

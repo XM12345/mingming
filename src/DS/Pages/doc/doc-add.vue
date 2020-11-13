@@ -25,7 +25,7 @@
       :docIds="doc_ids"
       @doc-add-modify="modify"
     ></doc--list-docs>
-    <footer class="s-footer-fixed">
+    <footer class="s-footer-fixed" v-if="isShowBtn">
       <button class="s-cancel" @click="cancel">取消</button>
       <button class="s-confirm" @click="confirm">确定</button>
     </footer>
@@ -43,7 +43,11 @@ export default {
       type: '',
       quote: -1,
       status: -1,
-      quotes: [{ name: '全部', value: 0 }, { name: '未引用', value: 1 }, { name: '已引用', value: 2 }],
+      quotes: [
+        { name: '全部', value: 0 },
+        { name: '未引用', value: 1 },
+        { name: '已引用', value: 2 }
+      ],
       keyword: '',
       message: '',
       name: '',
@@ -56,7 +60,8 @@ export default {
         { name: '三审', value: 3 },
         { name: '通过', value: 10 }
       ],
-      selectBar: []
+      selectBar: [],
+      isShowBtn: true
     };
   },
   created() {
@@ -65,6 +70,19 @@ export default {
     this.doc_ids = (doc_ids && doc_ids.split(',').map(Number)) || [];
     this.type = type;
     this.getColumns();
+  },
+  mounted() {
+    let originHeight = document.documentElement.clientHeight;
+    window.onresize = () => {
+      return (() => {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+          let showHeight = document.body.clientHeight;
+          this.isShowBtn = !(showHeight < originHeight);
+        } else {
+          this.isShowBtn = true;
+        }
+      })();
+    };
   },
   methods: {
     getColumns() {
