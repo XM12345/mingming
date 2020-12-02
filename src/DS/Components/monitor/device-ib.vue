@@ -77,11 +77,12 @@ export default {
 .monitor--device-ib {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   flex-wrap: wrap;
   text-align: center;
   padding: 15px 0;
   & > div {
-    width: 25%;
+    width: (100% / 3);
     a {
       font-size: 17px;
       color: #26c644;

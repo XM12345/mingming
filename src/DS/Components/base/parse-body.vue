@@ -27,18 +27,12 @@ export default {
 <style lang="scss">
 .h-parse-body {
   background: #fff;
-  overflow: hidden;
   article {
     padding: 10px 15px 70px;
-    word-break: break-word;
-    overflow: hidden;
-
+    word-break: break-all;
+    overflow-x: auto;
     * {
       max-width: 100% !important;
-    }
-
-    p {
-      overflow: hidden;
     }
     table {
       width: auto !important;
