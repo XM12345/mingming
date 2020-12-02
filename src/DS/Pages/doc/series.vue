@@ -19,6 +19,9 @@
         <div ref="message">
           <base--list-message :content="content" type="series" v-if="content"></base--list-message>
         </div>
+        <div ref="attachments">
+          <base--list-attachments :mediumId="series_id" type="series"></base--list-attachments>
+        </div>
         <div ref="comments">
           <base--list-comments :mediumId="series_id" type="series"></base--list-comments>
         </div>
@@ -53,6 +56,7 @@ export default {
       navItems: [
         { name: '文稿列表', key: 'docs' },
         { name: '基本信息', key: 'message' },
+        { name: '附件', key: 'attachments' },
         { name: '批注', key: 'comments' }
       ],
       content: '',

@@ -127,6 +127,12 @@ export default class Doc extends BaseModel {
     // http://v1.api.domain.com/internal/series/{series-id}
     return super.$get(`/series/${series_id}`);
   }
+
+  seriesAttachments(series_id: ID) {
+    // 串联单附件
+    // http://v1.api.domain.com/internal/series/{series-id}/attachments
+    return super.$get(`/series/${series_id}/attachments`);
+  }
   audit(page = 1, { col = '', status = -1, name = '', size = 30 }: any = {}) {
     // 待审列表
     // http://v1.api.domain.com/internal/series/audit?page={page}&size={size}&col={col}&name={name}&status={status}&creator={creator}&start={start}&stop={stop}&planstart={planstart}&planstop={planstop}&playstart={playstart}&playstop={playstop}

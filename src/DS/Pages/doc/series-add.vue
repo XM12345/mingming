@@ -37,6 +37,15 @@
           <label for="summary">提要</label>
           <textarea id="summary" v-model="series.summary" ref="summary"></textarea>
         </p>
+        <p class="type-attachments" v-if="series.attachments && series.attachments.length">
+          <label>附件</label>
+          <span v-for="attachment in series.attachments" :key="attachment.id">
+            <img :src="attachment.thumbnail_url || attachment.url" alt />
+            <mark v-if="attachment.type == 2"></mark>
+            <i>{{ attachment.name }}</i>
+            <!-- "type": <int|附件类型：0-未知，1-图片，2-视频，3-音频，10-其他>, -->
+          </span>
+        </p>
       </div>
       <div class="s-docs" v-if="tabKey == 'docs'">
         <ul>
@@ -136,7 +145,8 @@ export default {
         play_time: '',
         summary: '',
         text: '',
-        content: ''
+        content: '',
+        attachments: []
       }
     };
   },
@@ -413,6 +423,7 @@ export default {
         item.playId = 0; //口播类型
         return { id: item.id, type: 1, play_type_id: 0 };
       });
+      let attachments = (this.series.attachments || []).map(({ id, app }) => ({ id, app }));
       let data = {
         title: this.title,
         col_id: this.series.col_id,
@@ -423,6 +434,7 @@ export default {
         content: this.series.content,
         fields,
         items,
+        attachments,
         is_commit: isCommit
       };
       let existData = {
@@ -474,6 +486,7 @@ export default {
         color: #1990ff;
         border: 1px solid #1990ff;
         background: #fff;
+        border-radius: 2px;
       }
     }
   }
@@ -504,7 +517,7 @@ export default {
           color: #999;
         }
       }
-      mark {
+      & > mark {
         width: 15px;
         height: 15px;
         background-color: transparent;
@@ -529,6 +542,47 @@ export default {
           border: none;
           margin-top: 10px;
           outline: none;
+        }
+      }
+      &.type-attachments {
+        display: block;
+        label {
+          display: block;
+        }
+        span {
+          position: relative;
+          display: inline-block;
+          width: (100% / 3);
+          padding: 5px;
+          box-sizing: border-box;
+          img {
+            width: 100%;
+            height: 20vw;
+            background: #f4f6f9;
+            object-fit: contain !important;
+            border-radius: 3px;
+          }
+          i {
+            display: block;
+            font-style: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #555;
+            font-size: 14px;
+          }
+          mark {
+            position: absolute;
+            top: 10vw;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: none;
+            background-image: url('../weibo/_images/play.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+          }
         }
       }
     }

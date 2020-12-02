@@ -1,18 +1,13 @@
 <template>
   <div class="page-cms--list-attachments">
     <h3>附件</h3>
-    <div
-      class="page-cms--list-attachments-item"
-      v-for="item in correlations"
-      :key="item.id"
-      @click="download(item)"
-    >
+    <div class="page-cms--list-attachments-item" v-for="item in correlations" :key="item.id" @click="download(item)">
       <img :src="item.thumbnail_url || item.cover_url || item.mobject_url || item.url" alt />
       <div>
-        <p v-if="type=='clue'">{{item.mobject_name}}</p>
-        <p>{{item.name}}</p>
+        <p v-if="type == 'clue'">{{ item.mobject_name }}</p>
+        <p>{{ item.name }}</p>
         <!-- -1、文件夹0、未知1、图片 2、视频 3、音频 -->
-        <span>{{item.type | filter_type}} | {{item.last_modification_time || item.creation_time | ds_time}}</span>
+        <span>{{ item.type | filter_type }} | {{ item.last_modification_time || item.creation_time | ds_time }}</span>
       </div>
     </div>
   </div>
@@ -64,6 +59,8 @@ export default {
           Model = this.$Model.Media.correlation(this.mediumId);
         } else if (type == 'doc') {
           Model = this.$Model.Doc.attachments(this.mediumId);
+        } else if (type == 'series') {
+          Model = this.$Model.Doc.seriesAttachments(this.mediumId);
         } else if (type == 'subject') {
           Model = this.$Model.Subject.atts(this.mediumId);
         }
@@ -98,6 +95,7 @@ export default {
           content_id: mediumId
         });
       }
+      console.log(result);
       // 回调原生跳转下载
       this.$toMedia(JSON.stringify(result));
     }
