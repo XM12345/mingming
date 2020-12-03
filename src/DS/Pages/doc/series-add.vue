@@ -39,7 +39,7 @@
         </p>
         <p class="type-attachments" v-if="series.attachments && series.attachments.length">
           <label>附件</label>
-          <span v-for="attachment in series.attachments" :key="attachment.id">
+          <span v-for="attachment in series.attachments" :key="attachment.id" @click="previewAttachment(attachment)">
             <img :src="attachment.thumbnail_url || attachment.url" alt />
             <mark v-if="attachment.type == 2"></mark>
             <i>{{ attachment.name }}</i>
@@ -464,6 +464,24 @@ export default {
           this.$router.back();
         }
       });
+    },
+    previewAttachment(attachment) {
+      let result = {
+        type: 'series',
+        media: JSON.stringify({
+          id: attachment.id,
+          type: attachment.type,
+          name: attachment.name,
+          url: attachment.url,
+          cover_url: attachment.thumbnail_url,
+          creation_time: attachment.creation_time,
+          versions: attachment.versions
+        }),
+        extension: ''
+      };
+      console.log(result);
+      // 回调原生跳转下载
+      this.$toMedia(JSON.stringify(result));
     }
   }
 };
