@@ -2,22 +2,22 @@
   <div class="doc--list-sheet">
     <section class="item" v-for="item in contents" :key="item.key" @click="view(item)">
       <div>
-        <p>{{item.title}}</p>
-        <span>{{item.creator_nickname || item.creator_username}} | {{item.text_duration | filter_duration}}</span>
+        <p>{{ item.title }}</p>
+        <span>{{ item.creator_nickname || item.creator_username }} | {{ item.text_duration | filter_duration }}</span>
       </div>
-      <mark :class="item.status | filter_class">{{item.status | filter_status}}</mark>
+      <mark :class="item.status | filter_class">{{ item.status | filter_status }}</mark>
     </section>
     <a class="s-spread" v-if="items.length > 3" @click="spread">
-      {{isSpread ? '收起': `查看全部文稿 (${items.length})`}}
-      <mark :class="{active:isSpread}"></mark>
+      {{ isSpread ? '收起' : `查看全部文稿 (${items.length})` }}
+      <mark :class="{ active: isSpread }"></mark>
     </a>
     <mt-popup class="mint-popup-view" v-model="isView">
       <div>
         <h1>
-          {{pre_item.title}}
+          {{ pre_item.title }}
           <!--  <span>✕</span> -->
         </h1>
-        <p>{{pre_item.content}}</p>
+        <p>{{ pre_item.content }}</p>
       </div>
     </mt-popup>
   </div>
@@ -41,10 +41,10 @@ export default {
   },
   filters: {
     filter_status(status) {
-      return status == 0 ? '草稿' : status == 9 ? '待审' : status == 10 ? '通过' : '其它';
+      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status];
     },
     filter_class(status) {
-      let data = status == 0 ? 'no_start' : status == 10 ? 'success' : status == 9 ? 'fail' : '';
+      let data = status == 0 ? 'no_start' : status == 10 ? 'success' : 'fail';
       return data;
     },
     filter_duration(duration) {
@@ -74,7 +74,7 @@ export default {
       // type: 1-文稿,2-预设项
       let { type, id } = item;
       if (type == 1) {
-        this.$router.push(`/docs/${id}`);
+        this.$toPage('doc', id);
       }
       if (type == 2) {
         this.$Model.Doc.items(id).then(data => {
@@ -86,7 +86,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss">
 .doc--list-sheet {

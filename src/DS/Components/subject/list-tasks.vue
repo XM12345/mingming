@@ -1,14 +1,14 @@
 <template>
   <div class="subject--list-tasks">
     <h3>关联任务</h3>
-    <router-link class="item" :to="`/tasks/${item.id}`" v-for="item in tasks" :key="item.id">
-      <p>{{item.name}}</p>
+    <div class="item" v-for="item in tasks" :key="item.id" @click="to(item)">
+      <p>{{ item.name }}</p>
       <footer>
-        <span class="s-mark">{{item.type_name}}</span>
-        <time>截止时间: {{item.expire_time | ds_time('yyyy-MM-dd: hh:mm')}}</time>
-        <span>{{item.creator_nickname || item.creator_username}}</span>
+        <span class="s-mark">{{ item.type_name }}</span>
+        <time>截止时间: {{ item.expire_time | ds_time('yyyy-MM-dd: hh:mm') }}</time>
+        <span>{{ item.creator_nickname || item.creator_username }}</span>
       </footer>
-    </router-link>
+    </div>
   </div>
 </template>
 
@@ -29,6 +29,11 @@ export default {
     this.$Model.Subject.tasks(this.mediumId).then(data => {
       this.tasks = data;
     });
+  },
+  methods: {
+    to(item) {
+      this.$toPage('task', item.id);
+    }
   }
 };
 </script>

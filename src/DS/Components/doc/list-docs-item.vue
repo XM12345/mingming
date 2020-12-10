@@ -1,14 +1,14 @@
 <template>
   <li class="doc--list-docs-item">
     <mark v-if="index > -1">{{ index + 1 }}</mark>
-    <router-link :to="`/docs/${item.id}`">
+    <div @click="to(item)">
       <h3 :class="{ isMark: index == -1 }" v-html="item.title">{{ item.title }}</h3>
       <p>
         <span>{{ item.col_name }}</span
         ><span>{{ item.used_num ? '已引用' : '未引用' }}</span
         ><span :class="item.status | filter_class">{{ item.status_name }}</span>
       </p>
-    </router-link>
+    </div>
     <label role="checkbox" :class="{ isChecked: item.isChecked == true }" @click="check(item)"></label>
   </li>
 </template>
@@ -32,6 +32,9 @@ export default {
   methods: {
     check(item) {
       this.$emit('check');
+    },
+    to(item) {
+      this.$toPage('doc', item.id);
     }
   }
 };
@@ -45,7 +48,7 @@ export default {
   margin: 0 13px;
   padding: 10px 0;
   border-bottom: 1px solid #f1f1f1;
-  & > a {
+  & > div {
     flex: 1;
     display: block;
     overflow: hidden;

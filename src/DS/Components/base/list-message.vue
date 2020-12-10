@@ -46,10 +46,7 @@ export default {
   },
   filters: {
     filter_status(status) {
-      return (
-        ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status] ||
-        '未知'
-      );
+      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
     },
     filter_time(time) {
       let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');

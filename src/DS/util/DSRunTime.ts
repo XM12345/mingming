@@ -80,6 +80,7 @@ interface IDfsxNative {
   login?: () => void;
   back?: () => void;
   toMedia?: (obj: any) => void;
+  toPage?: (type: string, id: number) => void;
   getUrl?: () => string;
 }
 
@@ -199,6 +200,16 @@ class DSRunTime extends DSEvent {
       return false;
     }
   }
+
+  nativePage(type: string, id: number) {
+    if (this._DfsxNative && this._DfsxNative.toPage) {
+      this._DfsxNative.toPage(type, id);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   getUrl() {
     if (this._DfsxNative && this._DfsxNative.getUrl) {
       return this._DfsxNative.getUrl();

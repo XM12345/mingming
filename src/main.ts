@@ -78,6 +78,25 @@ Vue.prototype.$toMedia = function $toMedia(obj: any) {
   }
 };
 
+Vue.prototype.$toPage = function $toPage(type: string, id: number) {
+  if (RunTime.nativePage(type, id)) {
+    // needRefresh
+    // 回调原生跳转到原生页面
+  } else {
+    let href = '';
+    if (type == 'doc') {
+      href = `/docs/${id}`;
+    } else if (type == 'clue') {
+      href = `/clues/${id}`;
+    } else if (type == 'task') {
+      href = `/tasks/${id}`;
+    } else if (type == 'subject') {
+      href = `/subjects/${id}`;
+    }
+    router.push(href);
+  }
+};
+
 Vue.prototype.$title = function $title(title: any) {
   document.title = title;
 };
@@ -122,6 +141,7 @@ declare module 'vue/types/vue' {
     $login: any;
     $back: any;
     $toMedia: any;
+    $toPage: any;
     $title: any;
   }
 }

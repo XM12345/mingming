@@ -62,7 +62,7 @@ export default {
   },
   filters: {
     filter_status(status) {
-      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status] || '未知';
+      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status];
     }
   },
   computed: {
