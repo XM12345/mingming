@@ -81,6 +81,10 @@ export default {
       return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status];
     }
   },
+  mounted() {
+    // app 刷新状态
+    window.DfsxWeb.freshState = this.init;
+  },
   methods: {
     init() {
       this.$Model.Doc.series(this.series_id).then(data => {

@@ -78,6 +78,7 @@ export default {
     fresh() {
       this.$Model.Subject.task(this.task_id).then(data => {
         this.content.status = data.status;
+        this.content.subject = data.subject;
         this.isFresh = true;
         window.DfsxWeb.freshLogs();
       });

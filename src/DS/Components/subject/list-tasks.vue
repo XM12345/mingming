@@ -26,11 +26,18 @@ export default {
     };
   },
   created() {
-    this.$Model.Subject.tasks(this.mediumId).then(data => {
-      this.tasks = data;
-    });
+    this.init();
+  },
+  mounted() {
+    // app 刷新状态
+    window.DfsxWeb.freshState = this.init;
   },
   methods: {
+    init() {
+      this.$Model.Subject.tasks(this.mediumId).then(data => {
+        this.tasks = data;
+      });
+    },
     to(item) {
       this.$toPage('task', item.id);
     }
