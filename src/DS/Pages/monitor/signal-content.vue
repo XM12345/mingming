@@ -118,19 +118,26 @@ export default {
     video {
       width: 100%;
       height: 55vw;
+      background: #000;
     }
   }
   .s-main {
     position: absolute;
     width: 100%;
-    top: 55vw;
+    top: calc(55vw + 41px);
     bottom: 0;
-    margin-top: 41px;
 
     .s-control {
       padding: 0 15px;
       border-bottom: 10px solid #f4f6f9;
     }
   }
+  .h-tab {
+      &-nav {
+        position: absolute;
+        top: 0;
+        border-top: none;
+      }
+    }
 }
 </style>
