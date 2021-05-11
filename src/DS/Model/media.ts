@@ -84,7 +84,7 @@ export default class Media extends BaseModel {
     //  http://v1.api.domain.com/internal/media/correlation/{medium-id}
     return super.$get(`/media/correlation/${medium_id}`);
   }
-  logs(medium_id: ID, page = 1, { type, size = 30 }: any = {}) {
+  logs(medium_id: ID, page = 1, { type, size = 20 }: any = {}) {
     // 获取素材操作纪录
     // http://v1.api.domain.com/internal/media/{medium-id}/logs?type = <int, 操作类型，0或缺省取全部>& page=<分页索引，从1开始>&size=<分页大小>
     let params = { type, page, size };

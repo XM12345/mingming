@@ -117,14 +117,14 @@ export default {
   .s-video {
     video {
       width: 100%;
-      height: 55vw;
+      height: 56.25vw;
       background: #000;
     }
   }
   .s-main {
     position: absolute;
     width: 100%;
-    top: calc(55vw + 41px);
+    top: calc(56.25vw + 41px);
     bottom: 0;
 
     .s-control {

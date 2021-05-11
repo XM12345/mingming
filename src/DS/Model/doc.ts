@@ -110,13 +110,13 @@ export default class Doc extends BaseModel {
     return super.$get('/series/fields/custom');
   }
 
-  seriesList(page = 1, { col = '', status = -1, name = '', size = 30 }: any = {}) {
+  seriesList(page = 1, { col = '', status = -1, name = '', size = 20 }: any = {}) {
     // 串联单列表
     // http://v1.api.domain.com/internal/series?page={page}&size={size}&col={col}&name={name}&status={status}&creator={creator}&user={user}&start={start}&stop={stop}&planstart={planstart}&planstop={planstop}&playstart={playstart}&playstop={playstop}
     let params = { page, col, status, name, size };
     return super.$get('/series', { params });
   }
-  seriesMine(page = 1, { col = '', status = -1, name = '', size = 30 }: any = {}) {
+  seriesMine(page = 1, { col = '', status = -1, name = '', size = 20 }: any = {}) {
     // 我的串联单
     // http://v1.api.domain.com/internal/series/mine?page={page}&size={size}&col={col-id}&name={name}&status={status}&start={start}&stop={stop}&planstart={planstart}&planstop={planstop}&playstart={playstart}&playstop={playstop}
     let params = { page, col, status, name, size };
@@ -133,13 +133,13 @@ export default class Doc extends BaseModel {
     // http://v1.api.domain.com/internal/series/{series-id}/attachments
     return super.$get(`/series/${series_id}/attachments`);
   }
-  audit(page = 1, { col = '', status = -1, name = '', size = 30 }: any = {}) {
+  audit(page = 1, { col = '', status = -1, name = '', size = 20 }: any = {}) {
     // 待审列表
     // http://v1.api.domain.com/internal/series/audit?page={page}&size={size}&col={col}&name={name}&status={status}&creator={creator}&start={start}&stop={stop}&planstart={planstart}&planstop={planstop}&playstart={playstart}&playstop={playstop}
     let params = { page, col, status, name, size };
     return super.$get('/series/audit', { params });
   }
-  seriesDocs(page = 1, { col = '', status = -1, quote = 0, keyword = '', size = 30 }: any = {}) {
+  seriesDocs(page = 1, { col = '', status = -1, quote = 0, keyword = '', size = 20 }: any = {}) {
     // 获取待选文稿列表
     // http://v1.api.domain.com/internal/series/docs?page={page}&size={size}&col={col}&name={name}&status={status}&creator={creator}&keyword={keyword}&start={start}&stop={stop}&quote={quote}&order={order}
     let params = { page, size, col, status, quote, keyword };
@@ -212,7 +212,7 @@ export default class Doc extends BaseModel {
     // http://v1.api.domain.com/internal/series/{series-id}/commit
     return super.$post(`/series/${series_id}/commit`);
   }
-  recycle(page = 1, { name = '', status = 9, size = 30 }: any = {}) {
+  recycle(page = 1, { name = '', status = 9, size = 20 }: any = {}) {
     // 回收站列表
     // http://v1.api.domain.com/internal/series/recycle?page={page}&size={size}&name={name}
     let params = { page, name, status, size };

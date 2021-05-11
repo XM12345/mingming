@@ -53,7 +53,7 @@ export default class Subjects extends BaseModel {
     ] */
     return super.$post(`/users/current/message/${app}/types`, data);
   }
-  subjects(page = 1, { col, name, status, dstatus, creator, start, stop, size = 30 }: any = {}) {
+  subjects(page = 1, { col, name, status, dstatus, creator, start, stop, size = 20 }: any = {}) {
     // 选题列表
     // http://v1.api.domain.com/internal/subjects?page={page}&size={size}&col={col}&name={name}&status={status}&dstatus={dstatus}&creator={creator}&start={start}&stop={stop}
     let params = { page, size, col, name, status, dstatus, creator, start, stop };

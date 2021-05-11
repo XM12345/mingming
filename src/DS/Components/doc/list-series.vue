@@ -21,7 +21,7 @@
           <!-- <mark></mark> -->
         </section>
         <footer>
-          <span>通过文稿/总文稿: {{ item.succ_doc_num }}/{{ item.doc_num }}</span>
+          <span>通过文稿/总文稿: {{ item.doc_progress }}</span>
           <mark>{{ item.status | filter_status }}</mark>
         </footer>
       </router-link>

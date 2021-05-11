@@ -3,7 +3,7 @@ type ID = number | string;
 
 export default class Weixin extends BaseModel {
   // 用户消息
-  messages(page = 1, { read = 0, size = 30 }: any = {}) {
+  messages(page = 1, { read = 0, size = 20 }: any = {}) {
     // 获取消息列表
     // http://v1.api.domain.com/internal/users/messages?page={page}&size={size}&read={read}
     // read:已读状态，默认0：0-全部，1-已读，2-未读

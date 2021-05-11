@@ -13,7 +13,7 @@ export default class Weibo extends BaseModel {
     // http://v1.api.domain.com/private/accounts/{account-id}/authorise
     return super.$get(`/private/accounts/${account_id}/authorise`);
   }
-  articles(page = 1, { state, searchkey, account, size = 30 }: any = {}) {
+  articles(page = 1, { state, searchkey, account, size = 20 }: any = {}) {
     // 获取文章列表
     // http://v1.api.domain.com/internal/articles?state=<int, 状态1、审核中，2、审核完成（已通过或无审核流程），3、已发布>&searchtype=<int,搜索类型 0、标题>&searchkey=<string, 搜做关键字>&start=<timestamp, 开始时间>&stop=<timestamp, 日志创建结束时间>&account=<long, 公众号id>
     let params = { page, state, searchkey, account, size };
