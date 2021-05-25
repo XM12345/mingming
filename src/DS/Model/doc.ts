@@ -77,6 +77,11 @@ export default class Doc extends BaseModel {
     let params = { page, dept, name, size };
     return super.$get('/users', { params });
   }
+  colUsers(column_id: ID) {
+    // 获取栏目用户
+    // http://v1.api.domain.com/internal/columns/{col-id}/users
+    return super.$get(`/columns/${column_id}/users`);
+  }
   postFollow(column_id: ID, app: string, data: Object) {
     // 设置用户关注单栏目
     // http://v1.api.domain.com/internal/users/current/follow/columns/{column-id}/{app}
@@ -86,10 +91,11 @@ export default class Doc extends BaseModel {
     } */
     return super.$post(`/users/current/follow/columns/${column_id}/${app}`, data);
   }
-  status(col_id: ID) {
+  status(col_id: ID, app: 'doc' | 'series' = 'series') {
     // 获取栏目节点状态列表
-    // http://v1.api.domain.com/internal/columns/{col-id}/status
-    return super.$get(`/columns/${col_id}/status`);
+    // http://v1.api.domain.com/internal/columns/{col-id}/{app}/status
+    // app:doc-文稿，series-串联单
+    return super.$get(`/columns/${col_id}/${app}/status`);
   }
 
   message(app: string) {

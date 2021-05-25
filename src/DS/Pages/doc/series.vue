@@ -12,7 +12,7 @@
                 <time>创建时间: {{ content.creation_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
               </footer>
             </div>
-            <mark>{{ content.status | filter_status }}</mark>
+            <mark v-if="content.status_name">{{ content.status_name }}</mark>
           </div>
           <doc--list-sheet :items="content.items" v-if="content.items"></doc--list-sheet>
         </div>
@@ -75,11 +75,6 @@ export default {
     this.series_id = series_id;
     this.tabKey = this.navItems[0].key || '';
     this.init();
-  },
-  filters: {
-    filter_status(status) {
-      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status];
-    }
   },
   mounted() {
     // app 刷新状态

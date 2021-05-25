@@ -74,13 +74,6 @@ export default {
         { name: '待审', value: 9 },
         { name: '通过', value: 10 }
       ],
-      auditStatus: [
-        { name: '待审', value: 9 },
-        { name: '一审', value: 1 },
-        { name: '二审', value: 2 },
-        { name: '三审', value: 3 },
-        { name: '已审', value: 10 }
-      ],
       footerNavs: [
         { name: '我的串联单', key: 'mine' },
         { name: '串联单库', key: 'list' },
@@ -98,13 +91,10 @@ export default {
   },
   watch: {
     activeKey() {
-      this.pk = 'series.view';
-      this.getStatus();
-      if (this.activeKey == 'audit') {
-        this.pk = 'series.audit';
-      }
+      this.pk = this.activeKey == 'audit' ? 'series.audit' : 'series.view';
+      this.getStatus(this.listStatus);
 
-      if (this.activeKey == 'audit' || this.activeKey == 'list') {
+      if (['audit', 'list'].includes(this.activeKey)) {
         this.getColumns();
       } else {
         this.col = undefined;
@@ -118,14 +108,23 @@ export default {
         if (data.length) {
           this.col = data[0].id;
           this.columnName = data[0].name;
+          if (this.activeKey == 'audit') {
+            this.getAuditStatus();
+          }
         }
       });
     },
-    getStatus() {
-      let { activeKey, listStatus, auditStatus } = this;
-      this.allStatus = activeKey == 'audit' ? auditStatus : listStatus;
-      this.status = this.allStatus[0].value;
-      this.statusName = this.allStatus[0].name;
+    getStatus(listStatus) {
+      this.allStatus = listStatus;
+      if (this.allStatus.length) {
+        this.status = this.allStatus[0].value;
+        this.statusName = this.allStatus[0].name;
+      }
+    },
+    async getAuditStatus() {
+      let status = await this.$Model.Doc.status(this.col);
+      let listStatus = status.map(item => ({ name: item.status_name, value: item.status }));
+      this.getStatus(listStatus);
     },
     getTotal(total) {
       this.total = total;
@@ -148,6 +147,9 @@ export default {
         this.col = item.id;
         this.columnName = item.name;
         this.isColSpread = !this.isColSpread;
+        if (this.activeKey == 'audit') {
+          this.getAuditStatus();
+        }
       } else if (this.isStatusSpread) {
         this.status = item.value;
         this.statusName = item.name;

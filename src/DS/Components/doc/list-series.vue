@@ -22,7 +22,7 @@
         </section>
         <footer>
           <span>通过文稿/总文稿: {{ item.doc_progress }}</span>
-          <mark>{{ item.status | filter_status }}</mark>
+          <mark v-if="item.status_name">{{ item.status_name }}</mark>
         </footer>
       </router-link>
     </div>
@@ -58,11 +58,6 @@ export default {
   created() {
     if (this.isLoad == true) {
       this.loadFirst();
-    }
-  },
-  filters: {
-    filter_status(status) {
-      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status];
     }
   },
   computed: {

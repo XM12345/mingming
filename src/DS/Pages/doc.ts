@@ -18,11 +18,11 @@ export default {
       name: '电视文稿历史版本',
       component: require('./doc/doc-history').default
     },
-    '/user/add/:type_name': {
+    '/:col_id/user/add/:type_name': {
       name: '选择用户',
       component: require('./doc/add-user').default
     },
-    '/user/add/:type_name/:user_ids': {
+    '/:col_id/user/add/:type_name/:user_ids': {
       name: '编辑用户',
       component: require('./doc/add-user').default
     }

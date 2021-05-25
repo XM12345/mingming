@@ -23,7 +23,7 @@
           <input id="title" type="text" v-model="title" @input="listenInput" ref="title" />
         </p>
         <!-- "type":<int|字段类型：0-普通文本，1-用户列表，2-日期，3-时间，4-选项列表>, -->
-        <p v-for="(custom, index) in customs" :key="custom.id" @click="select(custom.type, custom, index)">
+        <p v-for="(custom, index) in customs" :key="index" @click="select(custom.type, custom, index)">
           <label :for="custom.id">{{ custom.name }}</label>
           <template v-if="custom.type == 0">
             <input type="text" v-model="custom._value" />
@@ -295,11 +295,15 @@ export default {
           break;
         case 1:
           // 用户列表
+          if (!this.series.col_id) {
+            this.$toast('请先设置栏目');
+            return false;
+          }
           this.listIndex = index;
           if (custom._value.length) {
-            this.$router.push(`/docs/user/add/${custom.name}/${custom._value}`);
+            this.$router.push(`/docs/${this.series.col_id}/user/add/${custom.name}/${custom._value}`);
           } else {
-            this.$router.push(`/docs/user/add/${custom.name}`);
+            this.$router.push(`/docs/${this.series.col_id}/user/add/${custom.name}`);
           }
           break;
         case 2:
@@ -414,7 +418,7 @@ export default {
       }
       let play_time = new Date(this.series.play_time.replace(/\-/gi, '/')) / 1000;
       let fields = this.customs.map(item => {
-        let content = item.type == 1 ? '' : String(item._value);
+        let content = item.type == 1 ? '' : String(item._value || '');
         let items = item.type == 1 ? item._value || [] : [];
         return { id: item.id, items, content };
       });

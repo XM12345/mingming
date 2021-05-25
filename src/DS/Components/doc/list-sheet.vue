@@ -5,7 +5,7 @@
         <p>{{ item.title }}</p>
         <span>{{ item.creator_nickname || item.creator_username }} | {{ item.text_duration | filter_duration }}</span>
       </div>
-      <mark :class="item.status | filter_class">{{ item.status | filter_status }}</mark>
+      <mark :class="item.status | filter_class">{{ item.status_name }}</mark>
     </section>
     <a class="s-spread" v-if="items.length > 3" @click="spread">
       {{ isSpread ? '收起' : `查看全部文稿 (${items.length})` }}
@@ -40,9 +40,6 @@ export default {
     };
   },
   filters: {
-    filter_status(status) {
-      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过'][status];
-    },
     filter_class(status) {
       let data = status == 0 ? 'no_start' : status == 10 ? 'success' : 'fail';
       return data;
