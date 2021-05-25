@@ -55,9 +55,7 @@ export default {
       listStatus: [
         { name: '全部', value: -1 },
         { name: '草稿', value: 0 },
-        { name: '一审', value: 1 },
-        { name: '二审', value: 2 },
-        { name: '三审', value: 3 },
+        { name: '待审', value: 9 },
         { name: '通过', value: 10 }
       ],
       selectBar: [],
@@ -90,7 +88,13 @@ export default {
         this.columns = data.filter(item => !item.parent_id);
         this.selectBar = [
           { type: 'column', returnWord: 'col', value: '', valueName: '所有栏目', list: this.columns },
-          { type: 'normal', returnWord: 'status', value: -1, valueName: '所有状态', list: this.listStatus },
+          {
+            type: 'normal',
+            returnWord: 'status',
+            value: -1,
+            valueName: '所有状态',
+            list: this.listStatus
+          },
           { type: 'normal', returnWord: 'quote', value: 0, valueName: '引用标识', list: this.quotes }
         ];
       });
