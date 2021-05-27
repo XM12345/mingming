@@ -98,6 +98,15 @@ export default class Monitor extends BaseModel {
     // http://v1.api.domain.com/internal/signals/alarms/{alarm-id}/video
     return super.$get(`/signals/alarms/${alarm_id}/video`);
   }
+
+  /**
+   * 获取信号回看地址
+   * http://192.168.6.120:3100/mock/225/internal/signals/{signal-id}/{date}/playbacks
+   */
+  playbacks(signal_id: ID, date: string) {
+    return super.$get(`/signals/${signal_id}/${date}/playbacks`);
+  }
+
   types() {
     // 获取监控类型
     // http://v1.api.domain.com/internal/monitor-types

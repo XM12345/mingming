@@ -6,6 +6,10 @@ export default {
       name: '信号监控详情',
       component: require('./monitor/signal-content').default
     },
+    '/signals/:signal_id/:date/playback/:index': {
+      name: '信号监控回看',
+      component: require('./monitor/signal-playback').default
+    },
     '/devices/:device_id': {
       name: '设备详情',
       component: require('./monitor/device-content').default
