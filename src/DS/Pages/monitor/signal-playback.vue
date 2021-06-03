@@ -2,7 +2,7 @@
   <div class="page-signal-playback">
     <base--topbar title="回看"></base--topbar>
     <div class="page-signal-playback-video">
-      <base--video controls autoplay :src="video && video.stream_address"></base--video>
+      <base--video controls autoplay :src="video && video.playback_address"></base--video>
     </div>
   </div>
 </template>
