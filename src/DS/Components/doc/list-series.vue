@@ -8,7 +8,7 @@
     ref="loadmore"
   >
     <div class="s-list">
-      <router-link class="item" :to="`/series/${item.id}`" v-for="item in seriesList" :key="item.id">
+      <base--link class="item" :to="`/series/${item.id}`" v-for="item in seriesList" :key="item.id">
         <section>
           <div>
             <p>{{ item.title }}</p>
@@ -24,7 +24,7 @@
           <span>通过文稿/总文稿: {{ item.doc_progress }}</span>
           <mark v-if="item.status_name">{{ item.status_name }}</mark>
         </footer>
-      </router-link>
+      </base--link>
     </div>
   </mt-loadmore>
 </template>

@@ -1,7 +1,11 @@
 <template>
   <div class="page-weixin">
     <base--topbar title="微信文稿">
-      <router-link class="h-topbar-search" :to="`/weixin/search/${col}/${columnName}`" v-if="col && columnName"></router-link>
+      <base--link
+        class="h-topbar-search"
+        :to="`/weixin/search/${col}/${columnName}`"
+        v-if="col && columnName"
+      ></base--link>
     </base--topbar>
 
     <div class="s-select">

@@ -17,7 +17,7 @@
         <mark @click.stop="del(item, index)" v-if="isDelete && index == activeIndex">删除</mark>
       </li>
     </ul>
-    <router-link to="/control/settings" class="s-add">+</router-link>
+    <base--link to="/control/settings" class="s-add">+</base--link>
   </div>
 </template>
 

@@ -1,14 +1,14 @@
 <template>
   <div class="doc--list-edition">
     <h3>历史版本</h3>
-    <router-link class="item" :to="`/docs/${mediumId}/histories/${item.version}`" v-for="(item,index) in histories" :key="item.version">
+    <base--link class="item" :to="`/docs/${mediumId}/histories/${item.version}`" v-for="(item,index) in histories" :key="item.version">
       <mark>V{{index}}</mark>
       <div>
         <p>版本{{item.version}}</p>
         <span>{{item.creator_nickname || item.creator_username}}</span>
       </div>
       <time>{{item.creation_time | ds_time}}</time>
-    </router-link>
+    </base--link>
   </div>
 </template>
 

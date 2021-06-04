@@ -1,7 +1,7 @@
 <template>
   <div class="page-weibo">
     <base--topbar title="微博文稿">
-      <router-link class="h-topbar-search" to="/weibo/search"></router-link>
+      <base--link class="h-topbar-search" to="/weibo/search"></base--link>
     </base--topbar>
 
     <div class="s-select">

@@ -13,9 +13,9 @@
       <base--parse-body :content="article"></base--parse-body>
     </div>
     <footer class="s-footer">
-      <router-link class="s-comment" :to="`/weixin/${account_id}/content/${content_id}`">
+      <base--link class="s-comment" :to="`/weixin/${account_id}/content/${content_id}`">
         <span>批注</span>
-      </router-link>
+      </base--link>
     </footer>
   </div>
 </template>

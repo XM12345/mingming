@@ -35,7 +35,8 @@ export default {
     background-color: #fff;
     border-bottom: 1px solid #eee;
     z-index: 999;
-    height: 40px;
+    height: 41px;
+    box-sizing: border-box;
     label {
       position: absolute;
       height: 40px;

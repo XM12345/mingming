@@ -8,7 +8,7 @@
       ref="loadmore"
     >
       <div class="s-list">
-        <router-link :to="`/weibo/articles/${item.id}`" class="item" v-for="item in contents" :key="item.id">
+        <base--link :to="`/weibo/articles/${item.id}`" class="item" v-for="item in contents" :key="item.id">
           <section>
             <div>
               <p>{{ item.title }}</p>
@@ -25,7 +25,7 @@
             <!-- 1-审核中，2-已通过，3-已发布 -->
             <mark :class="item.state | filter_class">{{ item.state | filter_state }}</mark>
           </footer>
-        </router-link>
+        </base--link>
       </div>
     </mt-loadmore>
   </div>

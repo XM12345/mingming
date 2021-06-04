@@ -1,6 +1,6 @@
 <template>
   <div class="general--list-notice">
-    <router-link
+    <base--link
       :to="`/notices/${item.id}`"
       v-for="item in contents"
       :key="item.id"
@@ -16,7 +16,7 @@
         >
       </div>
       <mark></mark>
-    </router-link>
+    </base--link>
   </div>
 </template>
 <script>

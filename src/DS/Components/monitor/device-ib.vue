@@ -1,10 +1,10 @@
 <template>
   <div class="monitor--device-ib">
     <div v-for="item in indexes" :key="item.id">
-      <router-link :class="{ unnormal: item.is_alarming }" to="" @click.native="go(item)">
+      <base--link :class="{ unnormal: item.is_alarming }" to="" @click.native="go(item)">
         <span v-if="item.value_type == VALUE_TYPE.ENUMS">{{ item.detail || '—' }}</span>
         <span v-else>{{ item | filter_data }}</span>
-      </router-link>
+      </base--link>
       <p>{{ item.name }}</p>
     </div>
   </div>
