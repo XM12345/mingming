@@ -3,6 +3,9 @@ import Filters from './Filters';
 
 // 加载组件Components
 import Components from './Components';
+import baseThirdComponents from './baseThirdComponents';
+
+Vue.use(baseThirdComponents);
 
 Object.entries(Components).forEach(([name, component]) => {
   Vue.component(name, component);

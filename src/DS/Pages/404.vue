@@ -10,20 +10,7 @@
 
 <script>
 export default {
-  created() {},
-  beforeRouteLeave(to, from, next) {
-    setTimeout(() => {
-      //此处必须要加延迟执行
-      this.$messagebox
-        .confirm('确定要离开吗？')
-        .then(() => {
-          next();
-        })
-        .catch(action => {
-          next(false);
-        });
-    }, 500);
-  }
+  created() {}
 };
 </script>
 

@@ -15,6 +15,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+
 /* 引入公共样式文件 */
 import './style.scss';
 
@@ -27,25 +28,7 @@ import DS from '@/DS';
 import Model from './DS/Model';
 import RunTime from '@/DS/util';
 
-/* 引入mint-ui */
-import { Toast, MessageBox, Popup, Switch, Picker } from 'mint-ui';
 
-Vue.component(Popup.name, Popup);
-Vue.component(Switch.name, Switch);
-Vue.component(Picker.name, Picker);
-
-(Vue as any).$toast = Vue.prototype.$toast = Toast;
-Vue.prototype.$messagebox = MessageBox;
-
-/* 引入vant */
-
-import { PullRefresh } from 'vant';
-import { List } from 'vant';
-import DSLoadmore from './DS/baseThirdComponents/vant/mt-loadmore.vue';
-
-Vue.use(List);
-Vue.use(PullRefresh);
-Vue.component('mt-loadmore', DSLoadmore);
 
 let ds = DS;
 Vue.prototype.$Model = Model;
@@ -137,7 +120,6 @@ axios.interceptors.response.use(
 declare module 'vue/types/vue' {
   interface Vue {
     $Model: typeof Model;
-    $message: typeof MessageBox;
     $login: any;
     $back: any;
     $toMedia: any;
