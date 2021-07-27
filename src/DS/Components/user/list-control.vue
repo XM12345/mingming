@@ -17,7 +17,7 @@
         <mark @click.stop="del(item, index)" v-if="isDelete && index == activeIndex">删除</mark>
       </li>
     </ul>
-    <base--link to="/control/settings" class="s-add">+</base--link>
+    <base--link to="/monitor/control/settings" class="s-add">+</base--link>
   </div>
 </template>
 
@@ -78,7 +78,7 @@ export default {
       this.putConfig();
     },
     modify(index) {
-      this.$router.push(`/control/settings/${index}`);
+      this.$router.push(`/monitor/control/settings/${index}`);
     },
     putConfig() {
       this.$Model.Monitor.putSettings(this.content).then(() => {

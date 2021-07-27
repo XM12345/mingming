@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     toAlarms(item) {
-      this.$router.push(`/alarms/${item.alarm_id}`);
+      this.$router.push(`/monitor/alarms/${item.alarm_id}`);
     }
   }
 };

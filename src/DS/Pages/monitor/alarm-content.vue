@@ -143,17 +143,17 @@ export default {
         return false;
       }
       if (type == 'ups' || type == 'detector') {
-        this.$router.push(`/machine-roomes/devices/${target_id}`);
+        this.$router.push(`/monitor/machine-roomes/devices/${target_id}`);
       }
 
       if (type == 'tv-signal') {
-        this.$router.push(`/signals/${target_id}`);
+        this.$router.push(`/monitor/signals/${target_id}`);
       }
       if (type == 'switchboard' || type == 'ib' || type == 'cloud-storage' || type == 'server') {
-        this.$router.push(`/devices/${target_id}`);
+        this.$router.push(`/monitor/devices/${target_id}`);
       }
       if (type == 'database' || type == 'web' || type == 'process') {
-        this.$router.push(`/apps/${target_id}`);
+        this.$router.push(`/monitor/apps/${target_id}`);
       }
     },
     confirm() {

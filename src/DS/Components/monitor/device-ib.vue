@@ -64,7 +64,7 @@ export default {
   methods: {
     go(item) {
       if (item.is_alarming) {
-        this.$router.push(`/alarms/${item.alarm_id}`);
+        this.$router.push(`/monitor/alarms/${item.alarm_id}`);
       } else {
         return false;
       }

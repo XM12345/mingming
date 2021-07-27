@@ -8,7 +8,7 @@
     ref="loadmore"
   >
     <div class="s-list">
-      <base--link class="item" :to="`/series/${item.id}`" v-for="item in seriesList" :key="item.id">
+      <base--link class="item" :to="`/docs/series/${item.id}`" v-for="item in seriesList" :key="item.id">
         <section>
           <div>
             <p>{{ item.title }}</p>

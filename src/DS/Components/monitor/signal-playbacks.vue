@@ -88,7 +88,7 @@ export default Vue.extend({
     },
     to(item: any) {
       if (item.playback_address) {
-        this.$router.push(`/signals/${this.content.id}/${this.date}/playback/${item.index + 1}`);
+        this.$router.push(`/monitor/signals/${this.content.id}/${this.date}/playback/${item.index + 1}`);
       }
     },
     changeDay(item: any) {

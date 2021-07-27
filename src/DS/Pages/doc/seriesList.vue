@@ -1,7 +1,7 @@
 <template>
   <div class="page-series">
     <base--topbar title="串联单">
-      <base--link class="h-topbar-search" to="/series/search"></base--link>
+      <base--link class="h-topbar-search" to="/docs/series/search"></base--link>
     </base--topbar>
 
     <div class="s-select">
@@ -48,7 +48,7 @@
         @total="getTotal"
         v-if="['list', 'audit'].includes(activeKey) ? col : 'true'"
       ></doc--list-series>
-      <base--link class="s-series-add" to="/series/add"></base--link>
+      <base--link class="s-series-add" to="/docs/series/add"></base--link>
     </div>
 
     <base--footer :footerNavs="footerNavs" @switchTo="switchTo"></base--footer>

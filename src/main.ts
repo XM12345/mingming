@@ -15,7 +15,6 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-
 /* 引入公共样式文件 */
 import './style.scss';
 
@@ -27,8 +26,6 @@ Vue.use(Navigation, { router });
 import DS from '@/DS';
 import Model from './DS/Model';
 import RunTime from '@/DS/util';
-
-
 
 let ds = DS;
 Vue.prototype.$Model = Model;
@@ -72,7 +69,7 @@ Vue.prototype.$toPage = function $toPage(type: string, id: number) {
     } else if (type == 'clue') {
       href = `/clues/${id}`;
     } else if (type == 'task') {
-      href = `/tasks/${id}`;
+      href = `/subjects/tasks/${id}`;
     } else if (type == 'subject') {
       href = `/subjects/${id}`;
     }

@@ -144,7 +144,7 @@ export default {
       }
     },
     toAlarms(id) {
-      this.$router.push(`/alarms/${id}`);
+      this.$router.push(`/monitor/alarms/${id}`);
     }
   }
 };

@@ -2,7 +2,7 @@
   <div class="monitor--list-logs">
     <h2>告警日志</h2>
     <div>
-      <base--link :to="`/alarms/${item.id}`" v-for="item in logs" :key="item.id">
+      <base--link :to="`/monitor/alarms/${item.id}`" v-for="item in logs" :key="item.id">
         <p>
           <label>{{ item.detail }}</label>
           <span :class="{ active: item.is_alarming }">{{ item.is_alarming ? '告警中' : '已恢复' }}</span>

@@ -115,7 +115,7 @@ export default {
     handle(key) {
       switch (key) {
         case 'edit':
-          this.$router.push(`/series/edit/${this.series_id}`);
+          this.$router.push(`/docs/series/edit/${this.series_id}`);
           break;
         case 'audit_':
           this.isAudit = true;

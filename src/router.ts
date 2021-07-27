@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import basePages from './DS/basePages';
+import basePages from './DS/Pages';
 
 let routes: any[] = flatRoutes(basePages);
 

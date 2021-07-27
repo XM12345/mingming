@@ -1,14 +1,14 @@
 export default {
   name: '选题任务',
-  component: require('./404').default,
+  component: require('../404').default,
   routes: {
     '/:subject_id': {
       name: '选题详情',
-      component: require('./subject/subject').default
+      component: require('./subject').default
     },
     '/tasks/:task_id': {
       name: '任务详情',
-      component: require('./subject/task').default
+      component: require('./task').default
     }
   }
 };

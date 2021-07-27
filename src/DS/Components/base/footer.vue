@@ -5,7 +5,8 @@
       v-for="item in footerNavs"
       :key="item.key"
       @click="switchTo(item.key)"
-    >{{item.name}}</span>
+      >{{ item.name }}</span
+    >
   </footer>
 </template>
 <script>
@@ -33,7 +34,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss">
 .h-footer {
