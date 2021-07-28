@@ -21,7 +21,7 @@ function parseBody(body, bodyComponents) {
   let replaceImage = (result, id) => {
     let picture = (pictures || []).find(item => item.id == id) || {};
     return picture.url;
-  }
+  };
 
   let replacePictureSet = (result, id) => {
     let pictureset = (picturesets || []).find(item => item.id == id);
@@ -48,7 +48,10 @@ function parseBody(body, bodyComponents) {
     if (video) {
       let { versions } = video;
       if (versions.length) {
-        data = `<video controls="controls" src="${versions[0].url}" poster="${video.cover_url}"></video>`;
+        let mp4Reg = /(.mp4)$/;
+        let versionMp4 = versions.find(({ url }) => mp4Reg.test(url));
+        let version = versionMp4 || versions[0];
+        data = `<video controls="controls" src="${version.url}" poster="${video.cover_url}"></video>`;
       } else if (video.url) {
         data = `<video controls="controls" src="${video.url}"></video>`;
       } else {
