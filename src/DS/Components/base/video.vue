@@ -25,10 +25,10 @@
     @error="onError"
   >
     <source
-      v-for="item in versions"
+      v-for="(item, index) in versions"
       :src="item.url"
       :data-version="`${item.name}_${item.width}X${item.height}_${(item.bitrate * 1000) | 0}kbps`"
-      :key="item.name"
+      :key="index"
     />
   </video>
 </template>

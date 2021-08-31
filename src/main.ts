@@ -2,8 +2,8 @@
 import 'babel-polyfill';
 require('es6-promise').polyfill();
 
-import MobileView from 'mobile-view';
-MobileView();
+/* import MobileView from 'mobile-view';
+MobileView(); */
 
 import Vue from 'vue';
 import { VueConstructor } from 'vue/types/vue';

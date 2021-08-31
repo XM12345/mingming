@@ -89,7 +89,7 @@ export default {
           this.contents = [
             { key: '标题', name: content.title },
             { key: '栏目', name: content.col_name },
-            { key: '编辑', name: content.editor_nickname || content.editor_username }
+            { key: '创建人', name: content.creator_nickname || content.creator_username }
           ];
           break;
 

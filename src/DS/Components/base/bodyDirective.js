@@ -47,13 +47,14 @@ function parseBody(body, bodyComponents) {
     video = (videos || []).find(item => item.id == id);
     if (video) {
       let { versions } = video;
+      let poster = video.cover_url || video.coverUrl;
       if (versions.length) {
         let mp4Reg = /(.mp4)$/;
         let versionMp4 = versions.find(({ url }) => mp4Reg.test(url));
         let version = versionMp4 || versions[0];
-        data = `<video controls="controls" src="${version.url}" poster="${video.cover_url}"></video>`;
+        data = `<video controls="controls" src="${version.url}" poster="${poster}"></video>`;
       } else if (video.url) {
-        data = `<video controls="controls" src="${video.url}"></video>`;
+        data = `<video controls="controls" src="${video.url}" poster="${poster}"></video>`;
       } else {
         data = result;
       }
