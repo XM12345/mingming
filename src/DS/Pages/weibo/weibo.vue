@@ -7,9 +7,7 @@
     <div class="s-select">
       <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>
     </div>
-
-    <p class="s-main-nodata" v-if="!total"></p>
-    <weibo--list-article :account="col" :state="status" @total="getTotal"></weibo--list-article>
+    <weibo--list-article :account="col" :state="status"></weibo--list-article>
   </div>
 </template>
 <script>
@@ -27,7 +25,6 @@ export default {
       ],
       statusName: '',
       status: '',
-      total: 0,
       selectBar: []
     };
   },
@@ -56,9 +53,6 @@ export default {
         default:
           break;
       }
-    },
-    getTotal(total) {
-      this.total = total;
     }
   }
 };
@@ -78,20 +72,6 @@ export default {
       background-color: #f9f9f9;
       z-index: 999;
     }
-  }
-
-  .s-main-nodata {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 210px;
-    background: url('../doc/_images/noContent@2x.png');
-    margin: 0;
-    background-repeat: no-repeat;
-    background-size: 210px;
-    background-position: center;
   }
 }
 </style>

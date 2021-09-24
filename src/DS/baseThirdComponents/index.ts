@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { Toast, MessageBox, Popup, Switch, Picker } from 'mint-ui';
 import { PullRefresh, List } from 'vant';
-import DSLoadmore from './mt-loadmore.vue';
+import DSLoadmore from './ds-loadmore.vue';
 
 export default function install() {
   Vue.component(Popup.name, Popup);
@@ -10,7 +10,7 @@ export default function install() {
 
   Vue.use(List);
   Vue.use(PullRefresh);
-  Vue.component('mt-loadmore', DSLoadmore);
+  Vue.component('ds-loadmore', DSLoadmore);
 
   (Vue as any).$toast = Vue.prototype.$toast = Toast;
   Vue.prototype.$messagebox = MessageBox;

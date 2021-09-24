@@ -40,13 +40,12 @@
     </div>
 
     <div class="page-series-main">
-      <p class="s-main-nodata" v-if="!total"></p>
       <doc--list-series
+        v-if="['list', 'audit'].includes(activeKey) ? col : 'true'"
         :col="col"
         :status="status"
         :activeKey="activeKey"
         @total="getTotal"
-        v-if="['list', 'audit'].includes(activeKey) ? col : 'true'"
       ></doc--list-series>
       <base--link class="s-series-add" to="/docs/series/add"></base--link>
     </div>
@@ -95,6 +94,7 @@ export default {
       this.getStatus(this.listStatus);
 
       if (['audit', 'list'].includes(this.activeKey)) {
+        this.col = undefined;
         this.getColumns();
       } else {
         this.col = undefined;
@@ -175,19 +175,6 @@ $default-color: #1890ff;
       background-color: #f9f9f9;
       z-index: 999;
     }
-  }
-  .s-main-nodata {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 210px;
-    background: url('./_images/noContent@2x.png');
-    margin: 0;
-    background-repeat: no-repeat;
-    background-size: 210px;
-    background-position: center;
   }
 
   &-main {

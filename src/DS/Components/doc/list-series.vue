@@ -1,36 +1,31 @@
 <template>
-  <mt-loadmore
-    class="doc--list-series"
-    :bottomMethod="loadNext"
-    :topMethod="loadFirst"
-    :bottomAllLoaded="allLoaded"
-    :autoFill="false"
-    ref="loadmore"
-  >
-    <div class="s-list">
-      <base--link class="item" :to="`/docs/series/${item.id}`" v-for="item in seriesList" :key="item.id">
-        <section>
-          <div>
-            <p>{{ item.title }}</p>
-            <span>{{ item.col_name }}</span>
-            <span v-if="activeKey != 'mine'">{{ item.creator_nickname || item.creator_username }}</span>
-            <!-- 回收站按照删除时间排序，其他按照最新编辑时间排序 -->
-            <span v-if="item.delete_time">{{ item.delete_time | ds_time('', '删除') }}</span>
-            <span v-else>{{ item.edit_time || item.creation_time | ds_time('', '更新') }}</span>
-          </div>
-          <!-- <mark></mark> -->
-        </section>
-        <footer>
-          <span>通过文稿/总文稿: {{ item.doc_progress }}</span>
-          <mark v-if="item.status_name">{{ item.status_name }}</mark>
-        </footer>
-      </base--link>
-    </div>
-  </mt-loadmore>
+  <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
+    <template #list="{ data }">
+      <div class="s-list">
+        <base--link class="item" :to="`/docs/series/${item.id}`" v-for="item in data" :key="item.id">
+          <section>
+            <div>
+              <p>{{ item.title }}</p>
+              <span>{{ item.col_name }}</span>
+              <span v-if="activeKey != 'mine'">{{ item.creator_nickname || item.creator_username }}</span>
+              <!-- 回收站按照删除时间排序，其他按照最新编辑时间排序 -->
+              <span v-if="item.delete_time">{{ item.delete_time | ds_time('', '删除') }}</span>
+              <span v-else>{{ item.edit_time || item.creation_time | ds_time('', '更新') }}</span>
+            </div>
+          </section>
+          <footer>
+            <span>通过文稿/总文稿: {{ item.doc_progress }}</span>
+            <mark v-if="item.status_name">{{ item.status_name }}</mark>
+          </footer>
+        </base--link>
+      </div>
+    </template>
+  </h-loadmore>
 </template>
 
 <script>
 export default {
+  name: 'doc--list-series',
   props: {
     col: {
       default: undefined
@@ -49,17 +44,9 @@ export default {
     }
   },
   data() {
-    return {
-      allLoaded: false,
-      page: 1,
-      seriesList: []
-    };
+    return {};
   },
-  created() {
-    if (this.isLoad == true) {
-      this.loadFirst();
-    }
-  },
+  created() {},
   computed: {
     watchData() {
       let { col, status, activeKey, name } = this;
@@ -68,62 +55,21 @@ export default {
   },
   watch: {
     watchData(cur, old) {
-      this.loadFirst();
+      this.$refs['loadmore']?.doRefresh();
     }
   },
   methods: {
-    loadFirst() {
-      this.allLoaded = false;
-      this.page = 1;
-      let { col, status, activeKey, name } = this;
-      let Model;
+    onLoad(page, size) {
+      let { activeKey, col, status, name } = this;
       if (activeKey == 'mine') {
-        Model = this.$Model.Doc.seriesMine(this.page, { col, status, name });
+        return this.$Model.Doc.seriesMine(page, { col, status, name, size });
       } else if (activeKey == 'list') {
-        Model = this.$Model.Doc.seriesList(this.page, { col, status, name });
+        return this.$Model.Doc.seriesList(page, { col, status, name, size });
       } else if (activeKey == 'audit') {
-        Model = this.$Model.Doc.audit(this.page, { col, status, name });
+        return this.$Model.Doc.audit(page, { col, status, name, size });
       } else if (activeKey == 'recycle') {
-        Model = this.$Model.Doc.recycle(this.page, { col, status, name });
+        return this.$Model.Doc.recycle(page, { col, status, name, size });
       }
-      Model.then(
-        data => {
-          this.seriesList = data.data;
-          this.$emit('total', data.total);
-          this.page++;
-          this.$refs.loadmore.onTopLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onTopLoaded();
-        }
-      );
-    },
-    loadNext() {
-      let { col, status, activeKey, name } = this;
-      let Model;
-      if (activeKey == 'mine') {
-        Model = this.$Model.Doc.seriesMine(this.page, { col, status, name });
-      } else if (activeKey == 'list') {
-        Model = this.$Model.Doc.seriesList(this.page, { col, status, name });
-      } else if (activeKey == 'audit') {
-        Model = this.$Model.Doc.audit(this.page, { col, status, name });
-      } else if (activeKey == 'recycle') {
-        Model = this.$Model.Doc.recycle(this.page, { col, status, name });
-      }
-      Model.then(
-        data => {
-          this.seriesList.push(...data.data);
-          this.page++;
-          if (!data.data.length) {
-            this.$toast('没有更多内容了');
-            this.allLoaded = true;
-          }
-          this.$refs.loadmore.onBottomLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onBottomLoaded();
-        }
-      );
     }
   }
 };

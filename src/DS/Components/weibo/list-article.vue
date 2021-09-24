@@ -1,20 +1,13 @@
 <template>
-  <div class="weibo--list-article">
-    <mt-loadmore
-      :bottomMethod="loadNext"
-      :topMethod="loadFirst"
-      :bottomAllLoaded="allLoaded"
-      :autoFill="false"
-      ref="loadmore"
-    >
+  <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
+    <template #list="{ data }">
       <div class="s-list">
-        <base--link :to="`/weibo/articles/${item.id}`" class="item" v-for="item in contents" :key="item.id">
+        <base--link :to="`/weibo/articles/${item.id}`" class="item" v-for="item in data" :key="item.id">
           <section>
             <div>
               <p>{{ item.title }}</p>
-              <span>{{ item.edit_time || item.creation_time | ds_time('','更新') }}</span>
+              <span>{{ item.edit_time || item.creation_time | ds_time('', '更新') }}</span>
             </div>
-            <!-- <mark></mark> -->
           </section>
           <footer>
             <span class="s-view">{{ item.view_count }}</span>
@@ -27,21 +20,19 @@
           </footer>
         </base--link>
       </div>
-    </mt-loadmore>
-  </div>
+    </template>
+  </h-loadmore>
 </template>
 
 <script>
 export default {
+  name: 'weibo--list-article',
   props: {
     account: {
       default: undefined
     },
     state: {
       default: ''
-    },
-    isLoad: {
-      default: true
     },
     searchkey: {
       default: ''
@@ -54,11 +45,7 @@ export default {
       contents: []
     };
   },
-  created() {
-    if (this.isLoad == true) {
-      this.loadFirst();
-    }
-  },
+  created() {},
   filters: {
     filter_state(state) {
       return ['审核中', '已通过', '已发布'][state - 1] || '未知';
@@ -75,42 +62,17 @@ export default {
   },
   watch: {
     watchData(cur, old) {
-      this.loadFirst();
+      this.$refs['loadmore']?.doRefresh();
     }
   },
   methods: {
-    loadFirst() {
-      this.allLoaded = false;
-      this.page = 1;
-      let { account, state, searchkey } = this;
-      this.$Model.Weibo.articles(this.page, { account, state, searchkey }).then(
-        data => {
-          this.contents = data.data;
-          this.$emit('total', data.total);
-          this.page++;
-          this.$refs.loadmore.onTopLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onTopLoaded();
-        }
-      );
-    },
-    loadNext() {
-      let { account, state, searchkey } = this;
-      this.$Model.Weibo.articles(this.page, { account, state, searchkey }).then(
-        data => {
-          this.contents.push(...data.data);
-          this.page++;
-          if (!data.data.length) {
-            this.$toast('没有更多内容了');
-            this.allLoaded = true;
-          }
-          this.$refs.loadmore.onBottomLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onBottomLoaded();
-        }
-      );
+    onLoad(page, size) {
+      return this.$Model.Weibo.articles(page, {
+        account: this.account,
+        state: this.state,
+        searchkey: this.searchkey,
+        size
+      });
     }
   }
 };

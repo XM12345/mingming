@@ -1,14 +1,8 @@
 <template>
-  <div class="weixin--list-tuwen">
-    <mt-loadmore
-      :bottomMethod="loadNext"
-      :topMethod="loadFirst"
-      :bottomAllLoaded="allLoaded"
-      :autoFill="false"
-      ref="loadmore"
-    >
+  <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
+    <template #list="{ data }">
       <div class="s-list">
-        <section v-for="item in contents" :key="item.id">
+        <section v-for="item in data" :key="item.id">
           <header>
             <time>{{ item.lastEditTime || item.creationTime | ds_time('', '更新') }}</time>
             <!-- 0-草稿，1-一审，2-二审，3-三审，9-待审，10-通过，11-入库，12-已发布，13-发布失败 -->
@@ -30,12 +24,13 @@
           }}</span>
         </footer>
       </mt-popup>
-    </mt-loadmore>
-  </div>
+    </template>
+  </h-loadmore>
 </template>
 
 <script>
 export default {
+  name: 'weixin--list-tuwen',
   props: {
     accountId: {
       required: true,
@@ -44,28 +39,18 @@ export default {
     status: {
       default: -1
     },
-    isLoad: {
-      default: true
-    },
     keyword: {
       default: ''
     }
   },
   data() {
     return {
-      allLoaded: false,
-      page: 1,
-      contents: [],
       isOperate: false,
       operate_able: [],
       oper_id: undefined
     };
   },
-  created() {
-    if (this.isLoad == true) {
-      this.loadFirst();
-    }
-  },
+  created() {},
   filters: {
     filter_status(status) {
       return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
@@ -79,43 +64,14 @@ export default {
   },
   watch: {
     watchData(cur, old) {
-      this.loadFirst();
+      this.$refs['loadmore']?.doRefresh();
     }
   },
   methods: {
-    loadFirst() {
-      this.allLoaded = false;
-      this.page = 1;
-      let { status, keyword } = this;
-      this.$Model.Weixin.contents(this.accountId, this.page, { status, keyword }).then(
-        data => {
-          this.contents = data.data;
-          this.$emit('total', data.total);
-          this.page++;
-          this.$refs.loadmore.onTopLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onTopLoaded();
-        }
-      );
+    onLoad(page, size) {
+      return this.$Model.Weixin.contents(this.accountId, page, { status: this.status, keyword: this.keyword, size });
     },
-    loadNext() {
-      let { status, keyword } = this;
-      this.$Model.Weixin.contents(this.accountId, this.page, { status, keyword }).then(
-        data => {
-          this.contents.push(...data.data);
-          this.page++;
-          if (!data.data.length) {
-            this.$toast('没有更多内容了');
-            this.allLoaded = true;
-          }
-          this.$refs.loadmore.onBottomLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onBottomLoaded();
-        }
-      );
-    },
+
     operate(item) {
       this.isOperate = !this.isOperate;
       this.oper_id = item.id;
@@ -156,7 +112,7 @@ export default {
       this.$messagebox.confirm('确定要删除吗？').then(action => {
         this.$Model.Weixin.delete(accountId, oper_id).then(() => {
           this.$toast('删除成功');
-          this.loadFirst();
+          this.$refs['loadmore']?.doRefresh();
         });
       });
     },
@@ -171,7 +127,7 @@ export default {
         this.$Model.Weixin.commit(accountId, oper_id).then(() => {
           this.$toast('提交成功');
           this.isOperate = false;
-          this.loadFirst();
+          this.$refs['loadmore']?.doRefresh();
         });
       });
     }

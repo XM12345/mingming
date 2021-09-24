@@ -15,8 +15,7 @@
     </base--topbar>
     <div class="s-main">
       <p class="s-main-message" v-if="message">{{ message }}</p>
-      <p class="s-main-nodata" v-if="name && !total"></p>
-      <weibo--list-article :searchkey="name" :isLoad="isLoad" @total="getTotal"></weibo--list-article>
+      <weibo--list-article :searchkey="name" v-if="name"></weibo--list-article>
     </div>
   </div>
 </template>

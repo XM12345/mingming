@@ -11,9 +11,7 @@
     <div class="s-select">
       <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>
     </div>
-
-    <p class="s-main-nodata" v-if="!total"></p>
-    <weixin--list-tuwen :accountId="col" :status="status" @total="getTotal" v-if="col"></weixin--list-tuwen>
+    <weixin--list-tuwen :accountId="col" :status="status" v-if="col"></weixin--list-tuwen>
   </div>
 </template>
 
@@ -35,7 +33,6 @@ export default {
         { name: '已发布', value: 12 },
         { name: '发布失败', value: 13 }
       ],
-      total: 0,
       selectBar: []
     };
   },
@@ -66,9 +63,6 @@ export default {
         default:
           break;
       }
-    },
-    getTotal(total) {
-      this.total = total;
     }
   }
 };
@@ -88,19 +82,6 @@ export default {
       background-color: #f9f9f9;
       z-index: 999;
     }
-  }
-  .s-main-nodata {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 210px;
-    background: url('../doc/_images/noContent@2x.png');
-    margin: 0;
-    background-repeat: no-repeat;
-    background-size: 210px;
-    background-position: center;
   }
 }
 </style>

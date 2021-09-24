@@ -1,5 +1,5 @@
 <template>
-  <van-pull-refresh class="mt-loadmore ds-loadmore" v-model="isTopLoading" success-text="刷新成功" @refresh="onRefresh">
+  <van-pull-refresh class="ds-loadmore" v-model="isTopLoading" success-text="刷新成功" @refresh="onRefresh">
     <!-- <mark class=" ds-loadmore__debug">
       {{ { countOfRefresh, isBottomLoading, bottomAllLoaded, isTopLoading, hasError } }}
     </mark> -->
@@ -40,6 +40,9 @@ export default {
     autoFill: {
       type: Boolean,
       default: false
+    },
+    isFirstLoaded: {
+      default: true
     }
   },
 
@@ -66,8 +69,8 @@ export default {
     },
     onLoad() {
       // console.log('onLoad', [this.isTopLoading, this.isBottomLoading]);
-      if (!this.isTopLoading) {
-        // 在没有刷新时才加载更多
+      if (!this.isTopLoading && this.isFirstLoaded) {
+        // 在没有刷新时/loadFirst完成时才加载更多
         this.bottomMethod();
         // console.log('onLoad ......');
       } else {

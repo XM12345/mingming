@@ -15,8 +15,7 @@
     </base--topbar>
     <div class="s-main">
       <p class="s-main-message" v-if="message">{{ message }}</p>
-      <p class="s-main-nodata" v-if="name && !total"></p>
-      <weixin--list-tuwen :accountId="col" :keyword="name" :isLoad="isLoad" @total="getTotal"></weixin--list-tuwen>
+      <weixin--list-tuwen :accountId="col" :keyword="name" v-if="name"></weixin--list-tuwen>
     </div>
   </div>
 </template>

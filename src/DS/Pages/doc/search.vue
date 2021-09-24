@@ -15,8 +15,7 @@
     </base--topbar>
     <div class="s-main">
       <p class="s-main-message" v-if="message">{{ message }}</p>
-      <p class="s-main-nodata" v-if="name && !total"></p>
-      <doc--list-series :name="name" :isLoad="isLoad" @total="getTotal"></doc--list-series>
+      <doc--list-series :name="name" v-if="name"></doc--list-series>
     </div>
   </div>
 </template>
@@ -27,9 +26,7 @@ export default {
       keyword: '',
       _jobID: undefined,
       message: '',
-      name: '',
-      isLoad: false,
-      total: 0
+      name: ''
     };
   },
   mounted() {
@@ -51,12 +48,6 @@ export default {
           this.message = '';
         }, 1000);
         this.name = this.keyword;
-      }
-    },
-    getTotal(total) {
-      this.total = total;
-      if (total) {
-        this.isLoad = true;
       }
     },
     clear() {

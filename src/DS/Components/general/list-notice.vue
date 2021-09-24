@@ -1,36 +1,40 @@
 <template>
-  <div class="general--list-notice">
-    <base--link
-      :to="`/notices/${item.id}`"
-      v-for="item in contents"
-      :key="item.id"
-      :class="{ readed: item.has_read }"
-      @click.native="item.has_read = true"
-    >
-      <div>
-        <label v-if="!item.has_read"></label>
-        <p>{{ item.title }}</p>
-        <span
-          >{{ item.author_nickname || item.author_name }} |
-          {{ parseInt(item.publish_time) || parseInt(item.creation_time) | ds_time('', '发布') }}</span
+  <div :class="[B()]">
+    <h-loadmore :onLoad="onLoad" ref="loadmore">
+      <template #list="{ data }">
+        <base--link
+          :to="`/notices/${item.id}`"
+          v-for="item in data"
+          :key="item.id"
+          :class="{ readed: item.has_read }"
+          @click.native="item.has_read = true"
         >
-      </div>
-      <mark></mark>
-    </base--link>
+          <div>
+            <label v-if="!item.has_read"></label>
+            <p>{{ item.title }}</p>
+            <span
+              >{{ item.author_nickname || item.author_name }} |
+              {{ parseInt(item.publish_time) || parseInt(item.creation_time) | ds_time('', '发布') }}</span
+            >
+          </div>
+          <mark></mark>
+        </base--link>
+      </template>
+    </h-loadmore>
   </div>
 </template>
 <script>
 export default {
+  name: 'general--list-notice',
   data() {
-    return {
-      contents: []
-    };
+    return {};
   },
-  created() {
-    this.$Model.General.notices().then(data => {
-      this.contents = data;
-    });
-  }
+  methods: {
+    onLoad(page, size) {
+      return this.$Model.General.v2Notices({ page, size });
+    }
+  },
+  created() {}
 };
 </script>
 

@@ -1,25 +1,21 @@
 <template>
-  <mt-loadmore
-    class="doc--list-docs"
-    :bottomMethod="loadNext"
-    :topMethod="loadFirst"
-    :bottomAllLoaded="allLoaded"
-    :autoFill="false"
-    ref="loadmore"
-  >
-    <ul>
-      <doc--list-docs-item
-        v-for="(item, index) in contents"
-        :key="index"
-        :item="item"
-        @check="check(item, index)"
-      ></doc--list-docs-item>
-    </ul>
-  </mt-loadmore>
+  <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
+    <template #list="{ data }">
+      <ul>
+        <doc--list-docs-item
+          v-for="(item, index) in data"
+          :key="index"
+          :item="item"
+          @check="check(item)"
+        ></doc--list-docs-item>
+      </ul>
+    </template>
+  </h-loadmore>
 </template>
 
 <script>
 export default {
+  name: 'doc--list-docs',
   props: {
     col: {
       default: ''
@@ -39,14 +35,10 @@ export default {
   },
   data() {
     return {
-      allLoaded: false,
-      page: 1,
       contents: []
     };
   },
-  created() {
-    this.loadFirst();
-  },
+  created() {},
   computed: {
     watchData() {
       let { col, status, quote, keyword } = this;
@@ -55,57 +47,32 @@ export default {
   },
   watch: {
     watchData(cur, old) {
-      this.loadFirst();
+      this.$refs['loadmore']?.doRefresh();
     }
   },
   methods: {
-    loadFirst() {
-      this.allLoaded = false;
-      this.page = 1;
-      let { status, col, quote, keyword } = this;
-      this.$Model.Doc.seriesDocs(this.page, { status, col, quote, keyword }).then(
-        data => {
-          this.contents = data.data.map(item => {
-            //item.isChecked = !!this.docIds.includes(item.id);
-            item.isChecked = false;
-            item.timeStamp = 0;
-            return item;
-          });
-          this.$emit('total', data.total);
-          this.page++;
-          this.$refs.loadmore.onTopLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onTopLoaded();
-        }
-      );
+    onLoad(page, size) {
+      return this.$Model.Doc.seriesDocs(page, {
+        status: this.status,
+        col: this.col,
+        quote: this.quote,
+        keyword: this.keyword,
+        size
+      }).then(async result => {
+        let { data } = result;
+        result.data = data.map(item => ({ ...item, isChecked: false, timeStamp: 0 }));
+        return result;
+      });
     },
-    loadNext() {
-      let { status, col, quote, keyword } = this;
-      this.$Model.Doc.seriesDocs(this.page, { status, col, quote, keyword }).then(
-        data => {
-          this.contents.push(
-            ...data.data.map(item => {
-              //item.isChecked = !!this.docIds.includes(item.id);
-              item.isChecked = false;
-              item.timeStamp = 0;
-              return item;
-            })
-          );
-          this.page++;
-          if (!data.data.length) {
-            this.$toast('没有更多内容了');
-            this.allLoaded = true;
-          }
-          this.$refs.loadmore.onBottomLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onBottomLoaded();
-        }
-      );
-    },
-    check(item, index) {
-      this.contents[index].isChecked = !this.contents[index].isChecked;
+
+    check(item) {
+      item.isChecked = !item.isChecked;
+      if (!item.isChecked) {
+        let index = this.contents.findIndex(({ id }) => id == item.id);
+        this.contents.splice(index, 1);
+      } else {
+        this.contents.push(item);
+      }
       item.timeStamp = Date.now();
       let CheckedData = this.contents.filter(item => item.isChecked == true);
       CheckedData.sort((a, b) => a.timeStamp - b.timeStamp);

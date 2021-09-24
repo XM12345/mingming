@@ -6,6 +6,15 @@ export default class General extends BaseModel {
     // http://v1.api.example.com/internal/notices
     return super.$get('/notices');
   }
+
+  /**
+   * 获取公告列表
+   * http://v1.api.example.com/internal/v2/notices?page=1&size=20
+   */
+  v2Notices({ page = 1, size = 20 } = {}) {
+    return super.$get('/v2/notices', { params: { page, size } });
+  }
+
   notice(notice_id: ID) {
     // 获取公告
     // http://v1.api.example.com/internal/notices/{notice-id}

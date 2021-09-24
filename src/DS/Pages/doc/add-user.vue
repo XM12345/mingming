@@ -1,14 +1,12 @@
 <template>
   <div class="page-doc-user-add">
-    <base--topbar :title="type_name"> </base--topbar>
-    <mt-loadmore :topMethod="loadFirst" :bottomAllLoaded="allLoaded" :autoFill="false" ref="loadmore">
-      <ul class="s-users">
-        <li v-for="(item, index) in contents" :key="item.id" @click="check(item, index)">
-          <span>{{ item.nickname }}</span>
-          <label role="checkbox" :class="{ isChecked: item.isChecked == true }"></label>
-        </li>
-      </ul>
-    </mt-loadmore>
+    <base--topbar :title="type_name"></base--topbar>
+    <ul class="s-users">
+      <li v-for="(item, index) in contents" :key="item.id" @click="check(item, index)">
+        <span>{{ item.nickname }}</span>
+        <label role="checkbox" :class="{ isChecked: item.isChecked == true }"></label>
+      </li>
+    </ul>
     <footer class="s-footer">
       <div class="mint-accounts">
         <span v-for="item in CheckedData" :key="item.id">{{ item.nickname }}</span>
@@ -22,8 +20,6 @@
 export default {
   data() {
     return {
-      allLoaded: false,
-      page: 1,
       type_name: '',
       columns: [],
       col_id: 0,
@@ -40,32 +36,25 @@ export default {
     this.col_id = col_id;
     this.type_name = type_name;
     this.user_ids = (user_ids && user_ids.split(',').map(Number)) || [];
-    this.loadFirst();
+
+    this.init();
   },
   methods: {
+    init() {
+      this.$Model.Doc.colUsers(this.col_id).then(data => {
+        this.contents = data.map(item => {
+          item.isChecked = !!this.user_ids.includes(item.id);
+          return item;
+        });
+        this.CheckedData = this.contents.filter(item => item.isChecked == true);
+      });
+    },
     getDepts() {
       this.$Model.Doc.depts().then(data => {
         this.columns = data;
         this.columns.unshift({ id: '', name: '所有部门' });
         this.selectBar = [{ type: 'normal', returnWord: 'dept', value: '', valueName: '所有部门', list: this.columns }];
       });
-    },
-    loadFirst() {
-      this.allLoaded = false;
-      this.$Model.Doc.colUsers(this.col_id).then(
-        data => {
-          this.contents = data.map(item => {
-            item.isChecked = !!this.user_ids.includes(item.id);
-            return item;
-          });
-          this.CheckedData = this.contents.filter(item => item.isChecked == true);
-          this.$emit('total', data.total);
-          this.$refs.loadmore.onTopLoaded();
-        },
-        e => {
-          this.$refs.loadmore.onTopLoaded();
-        }
-      );
     },
     select(item) {
       this.dept = item.id;
@@ -94,7 +83,7 @@ export default {
     max-height: 30vh !important;
   }
   .s-users {
-    padding-bottom: 50px;
+    padding-bottom: 50px !important;
     li {
       position: relative;
       margin: 0 13px;
