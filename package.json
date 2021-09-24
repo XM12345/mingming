@@ -35,7 +35,7 @@
     "vue-loader": "^15.7.0",
     "vue-navigation": "^1.1.4",
     "vue-property-decorator": "^8.0.0",
-    "vue-router": "^3.0.0",
+    "vue-router": "^3.0.7",
     "vue-style-loader": "^4.1.2",
     "vuex": "^3.0.1"
   },
