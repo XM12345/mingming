@@ -1,0 +1,73 @@
+{
+  ":class=B(__)": {
+    "scope": "vue-html",
+    "prefix": ":B",
+    "body": [":class=\"[B('__$1')]\""]
+  },
+  "div:class": {
+    "scope": "vue-html",
+    "prefix": "div",
+    "body": ["<div :class=\"[B('__$1')]\">$2</div>"]
+  },
+  "section:class": {
+    "scope": "vue-html",
+    "prefix": "section",
+    "body": ["<section :class=\"[B('__$1')]\">$2</section>"]
+  },
+  "mark:class": {
+    "scope": "vue-html",
+    "prefix": "mark",
+    "body": ["<mark :class=\"[B('__$1')]\">$2</mark>"]
+  },
+  "span:class": {
+    "scope": "vue-html",
+    "prefix": "span",
+    "body": ["<span :class=\"[B('__$1')]\">$2</span>"]
+  },
+  "header:class": {
+    "scope": "vue-html",
+    "prefix": "header",
+    "body": ["<header :class=\"[B('__$1')]\">$2</header>"]
+  },
+  "footer:class": {
+    "scope": "vue-html",
+    "prefix": "footer",
+    "body": ["<footer :class=\"[B('__$1')]\">$2</footer>"]
+  },
+
+  "img:class-src": {
+    "scope": "vue-html",
+    "prefix": "img",
+    "body": ["<img :class=\"[B('__$1')]\" src=\"$2\" alt=\"\"/>"]
+  },
+  "img-class:src": {
+    "scope": "vue-html",
+    "prefix": "img-",
+    "body": ["<img :src=\"$2 | imageSize($3)\" alt=\"\"/>"]
+  },
+  "img:class:src": {
+    "scope": "vue-html",
+    "prefix": "img--",
+    "body": ["<img :class=\"[B('__$1')]\" :src=\"$2 | imageSize($3)\" alt=\"\"/>"]
+  },
+
+  "BME class": {
+    "body": [
+      "<${1|section,div,span,button,p,mark,header,footer,video,audio,h1,h2,h3,h4|} :class=\"[B('__$2')]\">$3<${1}>"
+    ],
+    "description": "",
+    "prefix": "b",
+    "scope": "vue-html"
+  },
+
+  "多行文本截断": {
+    "scope": "css, scss",
+    "prefix": "line",
+    "body": [
+      "display: -webkit-box;",
+      "-webkit-box-orient: vertical;",
+      "-webkit-line-clamp: ${1:2};",
+      "overflow: hidden;"
+    ]
+  }
+}

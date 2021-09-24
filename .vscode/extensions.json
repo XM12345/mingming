@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "octref.vetur",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "maggie.eslint-rules-zh-plugin",
+    "hcl2020.vue-project-manager",
+    "streetsidesoftware.code-spell-checker",
+    "wayou.vscode-todo-highlight",
+    "gruntfuggly.todo-tree",
+    "ms-ceintl.vscode-language-pack-zh-hans"
+  ]
+}
