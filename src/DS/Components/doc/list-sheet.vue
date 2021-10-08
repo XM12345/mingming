@@ -11,15 +11,14 @@
       {{ isSpread ? '收起' : `查看全部文稿 (${items.length})` }}
       <mark :class="{ active: isSpread }"></mark>
     </a>
-    <mt-popup class="mint-popup-view" v-model="isView">
+    <h-popup class="s-popup-view" v-model="isView">
       <div>
         <h1>
           {{ pre_item.title }}
-          <!--  <span>✕</span> -->
         </h1>
         <p>{{ pre_item.content }}</p>
       </div>
-    </mt-popup>
+    </h-popup>
   </div>
 </template>
 
@@ -153,8 +152,9 @@ export default {
       }
     }
   }
-  .mint-popup-view {
+  .s-popup-view {
     width: 80%;
+    border-radius: 4px;
     div {
       padding: 10px;
       border-radius: 4px;

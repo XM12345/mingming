@@ -23,20 +23,9 @@
       }}</span>
     </footer>
     <!-- 审核 -->
-    <mt-popup class="mint-popup-audit" v-model="isAudit" position="bottom">
-      <footer>
-        <input placeholder="请输入审核意见" v-model="comment" />
-        <button class="s-fail" @click="pass(false)">退回</button>
-        <button class="s-success" @click="pass(true)">通过</button>
-      </footer>
-    </mt-popup>
+    <base--popup-audit @audit="audit" v-model="isAudit"></base--popup-audit>
     <!-- 批注 -->
-    <mt-popup class="mint-popup-comment" v-model="isComment" position="bottom">
-      <footer>
-        <input placeholder="我想说..." v-model.trim="text" />
-        <button class="s-success" @click="comments">发表</button>
-      </footer>
-    </mt-popup>
+    <base--popup-comment @comment="comment" v-model="isComment"></base--popup-comment>
   </div>
 </template>
 
@@ -57,8 +46,6 @@ export default {
       operate_able: [],
       isAudit: false,
       isComment: false,
-      text: '',
-      comment: '',
       operate_status: -1
     };
   },
@@ -131,70 +118,53 @@ export default {
           break;
       }
     },
-    pass(is_approved) {
-      // 审核true/false
+    async audit({ pass, comment }) {
       let data = {
-        is_approved: is_approved,
-        comment: this.comment,
+        is_approved: pass,
+        comment,
         status: this.operate_status
       };
-      this.$Model.Weixin.audit(this.account_id, this.content_id, data).then(() => {
-        this.isAudit = false;
-        this.comment = '';
-        // 刷新批注
-        window.DfsxWeb.freshComment();
-        // 刷新操作纪录
-        window.DfsxWeb.freshLogs();
-        this.init();
-      });
+      await this.$Model.Weixin.audit(this.account_id, this.content_id, data);
+      this.isAudit = false;
+      window.DfsxWeb.freshComment(); // 刷新批注
+      window.DfsxWeb.freshLogs(); // 刷新操作纪录
+      this.init();
     },
-    revoke() {
+    async revoke() {
       // 撤销
-      this.$messagebox.confirm('确定要撤销吗？').then(action => {
-        this.$Model.Weixin.revoke(this.account_id, this.content_id, this.operate_status).then(() => {
-          this.init();
-          this.$toast('撤销成功');
-        });
-      });
-    },
-    del() {
-      // 删除
-      this.$messagebox.confirm('确定要删除吗？').then(action => {
-        this.$Model.Weixin.delete(this.account_id, this.content_id).then(() => {
-          this.$toast('删除成功');
-          this.$navigation.cleanRoutes();
-          this.$router.back();
-        });
-      });
-    },
-    comments() {
-      // 批注
-      if (this.text != '') {
-        this.$Model.Weixin.addComments(this.account_id, this.content_id, JSON.stringify(this.text)).then(data => {
-          this.isComment = false;
-          // 刷新批注
-          window.DfsxWeb.freshComment();
-          // 刷新操作纪录
-          window.DfsxWeb.freshLogs();
-          this.text = '';
-        });
-      } else {
-        this.$toast('批注不能为空');
+      if (await this.$confirm('确定要撤销吗？')) {
+        await this.$Model.Weixin.revoke(this.account_id, this.content_id, this.operate_status);
+        this.init();
+        this.$toast('撤销成功');
       }
+    },
+    async del() {
+      // 删除
+      if (await this.$confirm('确定要删除吗？')) {
+        await this.$Model.Weixin.delete(this.account_id, this.content_id);
+        this.$toast('删除成功');
+        this.$navigation.cleanRoutes();
+        this.$router.back();
+      }
+    },
+    async comment(text) {
+      // 批注
+      await this.$Model.Weixin.addComments(this.account_id, this.content_id, JSON.stringify(text));
+      this.isComment = false;
+      window.DfsxWeb.freshComment(); // 刷新批注
+      window.DfsxWeb.freshLogs(); // 刷新操作纪录
     },
     publish() {
       let { account_id, content_id } = this;
       this.$router.push(`/weixin/${account_id}/content/${content_id}/publish/now`);
     },
-    commit() {
+    async commit() {
       // 提交群发图文
-      let { account_id, content_id } = this;
-      this.$messagebox.confirm('确定要提交吗？').then(action => {
-        this.$Model.Weixin.commit(account_id, content_id).then(() => {
-          this.$toast('提交成功');
-          this.init();
-        });
-      });
+      if (await this.$confirm('确定要提交吗？')) {
+        await this.$Model.Weixin.commit(this.account_id, this.content_id);
+        this.$toast('提交成功');
+        this.init();
+      }
     }
   }
 };

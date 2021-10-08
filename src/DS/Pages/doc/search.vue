@@ -96,19 +96,6 @@ export default {
       text-align: center;
       margin: 5px 0;
     }
-    &-nodata {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%;
-      height: 210px;
-      background: url('./_images/noContent@2x.png');
-      margin: 0;
-      background-repeat: no-repeat;
-      background-size: 210px;
-      background-position: center;
-    }
   }
 }
 </style>

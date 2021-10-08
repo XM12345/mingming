@@ -32,19 +32,10 @@
         item.name
       }}</span>
     </footer>
-    <mt-popup class="mint-popup-audit" v-model="isAudit" position="bottom">
-      <footer>
-        <input placeholder="请输入审核意见" v-model="comment" />
-        <button class="s-fail" @click="pass(false)">退回</button>
-        <button class="s-success" @click="pass(true)">通过</button>
-      </footer>
-    </mt-popup>
-    <mt-popup class="mint-popup-comment" v-model="isComment" position="bottom">
-      <footer>
-        <input placeholder="我想说..." v-model.trim="text" />
-        <button class="s-success" @click="comments">发表</button>
-      </footer>
-    </mt-popup>
+    <!-- 审核 -->
+    <base--popup-audit @audit="audit" v-model="isAudit"></base--popup-audit>
+    <!-- 批注 -->
+    <base--popup-comment @comment="comment" v-model="isComment"></base--popup-comment>
   </div>
 </template>
 
@@ -63,9 +54,7 @@ export default {
       isAudit: false,
       isComment: false,
       operate_able: [],
-      comment: '',
       series_id: undefined,
-      text: '',
       operate_status: -1
     };
   },
@@ -142,82 +131,64 @@ export default {
           break;
       }
     },
-    pass(is_approved) {
-      // 审核true/false
+    async audit({ pass, comment }) {
       let data = {
-        is_approved: is_approved,
-        comment: this.comment,
+        is_approved: pass,
+        comment,
         status: this.operate_status
       };
-      this.$Model.Doc.post_audit(this.series_id, data).then(() => {
-        this.isAudit = false;
-        this.comment = '';
-        // 刷新批注
-        window.DfsxWeb.freshComment();
-        this.init(); // 刷新审核
-      });
+      await this.$Model.Doc.post_audit(this.series_id, data);
+      this.isAudit = false;
+      window.DfsxWeb.freshComment(); // 刷新批注
+      this.init(); // 刷新审核
     },
-    revoke() {
+    async revoke() {
       // 撤销
-      let data = {
-        status: this.operate_status
-      };
-      this.$messagebox.confirm('确定要撤销吗？').then(action => {
-        this.$Model.Doc.revoke(this.series_id, data).then(() => {
-          this.init();
-          this.$toast('撤销成功');
+      if (await this.$confirm('确定要撤销吗？')) {
+        await this.$Model.Doc.revoke(this.series_id, {
+          status: this.operate_status
         });
-      });
-    },
-    restore() {
-      // 还原
-      let ids = [this.series_id];
-      this.$messagebox.confirm('确定要恢复吗？').then(action => {
-        this.$Model.Doc.restore(ids).then(() => {
-          this.$navigation.cleanRoutes();
-          this.$router.back();
-        });
-      });
-    },
-    del() {
-      // 删除
-      this.$messagebox.confirm('确定要删除吗？').then(action => {
-        this.$Model.Doc.delete_series(this.series_id).then(() => {
-          this.$navigation.cleanRoutes();
-          this.$router.back();
-        });
-      });
-    },
-    delFinal() {
-      // 彻底删除
-      this.$messagebox.confirm('确定要彻底删除吗？').then(action => {
-        this.$Model.Doc.delFinal(this.series_id).then(() => {
-          this.$navigation.cleanRoutes();
-          this.$router.back();
-        });
-      });
-    },
-    comments() {
-      // 批注post
-      if (this.text != '') {
-        this.$Model.Doc.series_addComments(this.series_id, JSON.stringify(this.text)).then(data => {
-          this.isComment = false;
-          // 刷新批注
-          window.DfsxWeb.freshComment();
-          this.text = '';
-        });
-      } else {
-        this.$toast('批注不能为空');
+        this.init();
+        this.$toast('撤销成功');
       }
     },
-    commit() {
+    async restore() {
+      // 还原
+      if (await this.$confirm('确定要恢复吗？')) {
+        await this.$Model.Doc.restore([this.series_id]);
+        this.$navigation.cleanRoutes();
+        this.$router.back();
+      }
+    },
+    async del() {
+      // 删除
+      if (await this.$confirm('确定要删除吗？')) {
+        await this.$Model.Doc.delete_series(this.series_id);
+        this.$navigation.cleanRoutes();
+        this.$router.back();
+      }
+    },
+    async delFinal() {
+      // 彻底删除
+      if (await this.$confirm('确定要彻底删除吗？')) {
+        await this.$Model.Doc.delFinal(this.series_id);
+        this.$navigation.cleanRoutes();
+        this.$router.back();
+      }
+    },
+    async comment(text) {
+      // 批注
+      await this.$Model.Doc.series_addComments(this.series_id, JSON.stringify(text));
+      this.isComment = false;
+      window.DfsxWeb.freshComment(); // 刷新批注
+    },
+    async commit() {
       // 提交
-      this.$messagebox.confirm('确定要提交吗？').then(action => {
-        this.$Model.Doc.commit(this.series_id).then(() => {
-          this.init();
-          this.$toast('提交成功');
-        });
-      });
+      if (await this.$confirm('确定要提交吗？')) {
+        await this.$Model.Doc.commit(this.series_id);
+        this.init();
+        this.$toast('提交成功');
+      }
     }
   }
 };

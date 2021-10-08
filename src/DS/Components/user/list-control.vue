@@ -13,7 +13,7 @@
           <p>{{ item.start_time | filter_time }}-{{ item.stop_time | filter_time }}</p>
           <span>{{ item.days_of_week | filter_day }}</span>
         </div>
-        <mt-switch v-model="item.is_on" @change.self="change(item, index)"></mt-switch>
+        <van-switch v-model="item.is_on" @change.self="change(item, index)"></van-switch>
         <mark @click.stop="del(item, index)" v-if="isDelete && index == activeIndex">删除</mark>
       </li>
     </ul>
@@ -23,6 +23,7 @@
 
 <script>
 export default {
+  name: 'user--list-control',
   data() {
     return {
       activeIndex: 0,
@@ -116,22 +117,19 @@ export default {
         font-size: 12px;
         color: rgb(16, 16, 16);
       }
-      .mint-switch {
+      .van-switch {
         position: absolute;
         right: 13px;
         top: 50%;
+        width: 40px;
+        height: 20px;
         transform: translateY(-50%);
-        &-core {
-          width: 40px;
+        &__node {
+          width: 20px;
           height: 20px;
-          &::before {
-            width: 38px;
-            height: 18px;
-          }
-          &::after {
-            width: 18px;
-            height: 18px;
-          }
+        }
+        &--on .van-switch__node {
+          transform: translateX(20px);
         }
       }
       mark {

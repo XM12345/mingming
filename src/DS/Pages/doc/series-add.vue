@@ -63,7 +63,7 @@
       </div>
     </base--tab>
     <!-- 弹出弹窗 -->
-    <mt-popup class="mint-popup-operate" v-model="isModalList" position="bottom">
+    <h-popup class="s-popup-operate" v-model="isModalList" position="bottom">
       <ul class="s-popup-main" v-if="list.length">
         <li v-for="(item, index) in list" :key="index" @click="handleConfirm('list', item, index)">
           <label role="checkbox" :class="{ isChecked: item == value }"></label>
@@ -72,48 +72,37 @@
       </ul>
       <p v-else>暂无选项可选</p>
       <button @click="isModalList = false">取消</button>
-    </mt-popup>
+    </h-popup>
 
     <!-- 弹出栏目弹窗 -->
-    <mt-popup class="mint-popup-operate" v-model="isModalColumn" position="bottom">
+    <h-popup class="s-popup-operate" v-model="isModalColumn" position="bottom">
       <doc--list-columns :tree="columns" @select="handleConfirmColumn"></doc--list-columns>
-    </mt-popup>
+    </h-popup>
 
     <!-- 弹出文稿操作弹窗 -->
-    <mt-popup class="mint-popup-operate" v-model="isModalDoc" position="bottom">
+    <h-popup class="s-popup-operate" v-model="isModalDoc" position="bottom">
       <ul class="s-docs-operate">
         <li @click="operateDoc('insert')">插入文稿</li>
         <li @click="operateDoc('up')" v-if="docIndex">上移</li>
         <li @click="operateDoc('down')" v-if="docs.length > 1 && docs.length - 1 != docIndex">下移</li>
         <li @click="operateDoc('delete')">删除</li>
       </ul>
-    </mt-popup>
+    </h-popup>
 
     <!-- 年月日时分插件 -->
-    <mt-datetime-picker
-      ref="picker"
-      v-model="pickerDateTime"
-      type="datetime"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      date-format="{value} 日"
-      hour-format="{value} 时"
-      minute-format="{value} 分"
+    <doc--popup-datetime-picker
+      v-model="isDatetimeVisible"
       @confirm="handleConfirmDateTime"
-    >
-    </mt-datetime-picker>
+    ></doc--popup-datetime-picker>
 
     <!-- 时分秒插件 -->
-    <mt-popup class="mint-popup-operate" v-model="isModalTime" position="bottom">
-      <mt-picker :slots="slots" @change="handleConfirmTime"></mt-picker>
-    </mt-popup>
+    <doc--popup-picker v-model="isModalTime" :columns="slots" @confirm="handleConfirmTime"></doc--popup-picker>
   </div>
 </template>
 
 <script>
 import Vue from 'vue';
-import { DatetimePicker } from 'mint-ui'; // 日期选择
-Vue.component(DatetimePicker.name, DatetimePicker);
+
 export default {
   data() {
     return {
@@ -126,10 +115,10 @@ export default {
       isModalColumn: false,
       isModalTime: false,
       isModalDoc: false,
+      isDatetimeVisible: false,
       columns: [],
       customs: [],
       docs: [],
-      pickerDateTime: '',
       slots: [],
       list: [],
       listIndex: 0,
@@ -187,7 +176,11 @@ export default {
     init() {
       this.getCustom();
       this.tabKey = this.navItems[0].key || '';
-      this.pickerDateTime = this.constructor.filter('ds_time')(new Date() / 1000, 'yyyy-MM-dd hh:mm'); // init pickerValue
+      this.getSlots();
+      this.getColumns();
+      this.ensureEmit();
+    },
+    getSlots() {
       let valuesHour = Array.from(Array(24), (v, k) => k.toString().padStart(2, '0'));
       let valuesMin = Array.from(Array(60), (v, k) => k.toString().padStart(2, '0'));
       let valuesSec = Array.from(Array(60), (v, k) => k.toString().padStart(2, '0'));
@@ -199,8 +192,6 @@ export default {
         { values: valuesMin, defaultIndex: indexMin, className: 'slot2', flex: 1, textAlign: 'center' },
         { values: valuesSec, defaultIndex: indexSec, className: 'slot3', flex: 1, textAlign: 'center' }
       ];
-      this.getColumns();
-      this.ensureEmit();
     },
     ensureEmit() {
       let getUserIds = checkData => {
@@ -288,7 +279,7 @@ export default {
         case 'date':
           // 播出日期
           this.listIndex = -1;
-          this.$refs.picker.open();
+          this.isDatetimeVisible = true;
           break;
         case 0:
           // 普通文本
@@ -309,7 +300,7 @@ export default {
         case 2:
           // 日期
           this.listIndex = index;
-          this.$refs.picker.open();
+          this.isDatetimeVisible = true;
           break;
         case 3:
           // 时间
@@ -325,7 +316,7 @@ export default {
           break;
       }
     },
-    handleConfirmTime(picker, values) {
+    handleConfirmTime(values) {
       let new_values = values.map(Number);
       let valueName = values.toString().replace(/,/gi, ':');
       let value = new_values[0] * 60 * 60 + new_values[1] * 60 + new_values[2];
@@ -351,12 +342,12 @@ export default {
           break;
       }
     },
-    handleConfirmDateTime(time) {
-      let date = this.constructor.filter('ds_time')(new Date(time) / 1000, 'yyyy-MM-dd hh:mm');
+    handleConfirmDateTime(timeStamp) {
+      let date = this.constructor.filter('ds_time')(timeStamp, 'yyyy-MM-dd hh:mm');
       if (this.listIndex == -1) {
         this.series.play_time = date;
       } else {
-        this.customs[this.listIndex]._value = new Date(time) / 1000;
+        this.customs[this.listIndex]._value = timeStamp;
         this.customs[this.listIndex]._valueName = date;
       }
     },
@@ -641,7 +632,7 @@ export default {
       padding: 0 4px;
     }
   }
-  .mint-popup-operate {
+  .s-popup-operate {
     width: 100%;
     max-height: 50vh;
     overflow-y: auto;

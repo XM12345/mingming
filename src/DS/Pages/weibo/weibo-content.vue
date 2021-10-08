@@ -43,19 +43,10 @@
         >{{ item.name }}</span
       >
     </footer>
-    <mt-popup class="mint-popup-audit" v-model="isAudit" position="bottom">
-      <footer>
-        <input placeholder="请输入审核意见" v-model="comment" />
-        <button class="s-fail" @click="pass(false)">退回</button>
-        <button class="s-success" @click="pass(true)">通过</button>
-      </footer>
-    </mt-popup>
-    <mt-popup class="mint-popup-comment" v-model="isComment" position="bottom">
-      <footer>
-        <input placeholder="我想说..." v-model.trim="text" />
-        <button class="s-success" @click="comments">发表</button>
-      </footer>
-    </mt-popup>
+    <!-- 审核 -->
+    <base--popup-audit @audit="audit" v-model="isAudit"></base--popup-audit>
+    <!-- 批注 -->
+    <base--popup-comment @comment="comment" v-model="isComment"></base--popup-comment>
   </div>
 </template>
 
@@ -67,7 +58,6 @@ export default {
       account_id: undefined,
       article_id: undefined,
       content: '',
-      comment: '',
       isComment: false,
       isAudit: false,
       operate_able: [
@@ -78,7 +68,6 @@ export default {
         { key: 'comment', name: '批注' }
       ],
       tabKey: '',
-      text: '',
       navItems: [
         { name: '文稿内容', key: 'content' },
         { name: '基本信息', key: 'message' },
@@ -139,40 +128,24 @@ export default {
         this.collect();
       }
     },
-    comments() {
+    async comment(text) {
       // 批注
-      let data = { content: this.text };
-      if (this.text != '') {
-        this.$Model.Weibo.addPostils(this.article_id, data).then(data => {
-          this.isComment = false;
-          // 刷新批注
-          window.DfsxWeb.freshComment();
-          this.text = '';
-        });
-      } else {
-        this.$toast('批注不能为空');
+      await this.$Model.Weibo.addPostils(this.article_id, { content: text });
+      this.isComment = false;
+      window.DfsxWeb.freshComment(); // 刷新批注
+    },
+    async del() {
+      // 删除
+      if (await this.$confirm('确定要删除吗？')) {
+        await this.$Model.Weibo.delete(this.article_id);
+        this.$navigation.cleanRoutes();
+        this.$router.back();
       }
     },
-    del() {
-      // 删除
-      this.$messagebox.confirm('确定要删除吗？').then(action => {
-        this.$Model.Weibo.delete(this.article_id).then(() => {
-          this.$navigation.cleanRoutes();
-          this.$router.back();
-        });
-      });
-    },
-    pass(isPass) {
-      let data = {
-        pass: isPass,
-        content: this.comment
-      };
-      this.$Model.Weibo.audit(this.article_id, data).then(() => {
-        this.isAudit = false;
-        this.comment = '';
-        // 刷新批注
-        window.DfsxWeb.freshComment();
-      });
+    async audit({ pass, comment }) {
+      await this.$Model.Weibo.audit(this.article_id, { pass, comment });
+      this.isAudit = false;
+      window.DfsxWeb.freshComment(); // 刷新批注
     },
     publish() {
       // 发布

@@ -1,6 +1,18 @@
 <template>
   <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
     <template #list="{ data }">
+      <h-popup
+        class="s-popup-operate"
+        v-model="isOperate"
+        position="bottom"
+        :overlayStyle="{ background: 'transparent', opacity: 0 }"
+      >
+        <footer>
+          <span :class="`s-${item.key}`" v-for="item in operate_able" :key="item.key" @click="handle(item.key)">{{
+            item.name
+          }}</span>
+        </footer>
+      </h-popup>
       <div class="s-list">
         <section v-for="item in data" :key="item.id">
           <header>
@@ -17,13 +29,6 @@
           </footer>
         </section>
       </div>
-      <mt-popup class="mint-popup-operate" v-model="isOperate" position="bottom">
-        <footer>
-          <span :class="`s-${item.key}`" v-for="item in operate_able" :key="item.key" @click="handle(item.key)">{{
-            item.name
-          }}</span>
-        </footer>
-      </mt-popup>
     </template>
   </h-loadmore>
 </template>
@@ -107,29 +112,25 @@ export default {
       let { accountId, oper_id } = this;
       this.$router.push(`/weixin/${accountId}/content/${oper_id}`);
     },
-    del() {
-      let { accountId, oper_id } = this;
-      this.$messagebox.confirm('确定要删除吗？').then(action => {
-        this.$Model.Weixin.delete(accountId, oper_id).then(() => {
-          this.$toast('删除成功');
-          this.$refs['loadmore']?.doRefresh();
-        });
-      });
+    async del() {
+      if (await this.$confirm('确定要删除吗？')) {
+        await this.$Model.Weixin.delete(this.accountId, this.oper_id);
+        this.$toast('删除成功');
+        this.$refs['loadmore']?.doRefresh();
+      }
     },
     publish() {
       let { accountId, oper_id } = this;
       this.$router.push(`/weixin/${accountId}/content/${oper_id}/publish/now`);
     },
-    commit() {
+    async commit() {
       // 提交群发图文
-      let { accountId, oper_id } = this;
-      this.$messagebox.confirm('确定要提交吗？').then(action => {
-        this.$Model.Weixin.commit(accountId, oper_id).then(() => {
-          this.$toast('提交成功');
-          this.isOperate = false;
-          this.$refs['loadmore']?.doRefresh();
-        });
-      });
+      if (await this.$confirm('确定要提交吗？')) {
+        await this.$Model.Weixin.commit(this.accountId, this.oper_id);
+        this.$toast('提交成功');
+        this.isOperate = false;
+        this.$refs['loadmore']?.doRefresh();
+      }
     }
   }
 };
@@ -236,12 +237,8 @@ export default {
       }
     }
   }
-  .v-modal {
-    opacity: 0;
-    background: #fff;
-  }
-  .mint-popup-operate {
-    min-height: 50px;
+  .s-popup-operate {
+    min-height: 70px;
     width: 100%;
     background: #fff;
 
@@ -271,37 +268,6 @@ export default {
       }
       .s-content {
         background-image: url('./_images/content@2x.png');
-      }
-    }
-  }
-  .mint-popup-delete {
-    width: 75vw;
-    box-shadow: 1px 1px 50px #ccc;
-    border-radius: 5px;
-    .s-de {
-      p,
-      div {
-        text-align: center;
-        color: #333;
-        font-size: 14px;
-      }
-      &-info {
-        margin: 32px 0;
-      }
-      div {
-        border-top: 1px solid #eee;
-        button {
-          width: 50%;
-          padding: 10px 0;
-          border: none;
-          background: none;
-        }
-      }
-      &-cancel {
-        border-right: 1px solid #eee !important;
-      }
-      &-confirm {
-        color: #1890ff;
       }
     }
   }

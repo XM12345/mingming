@@ -65,13 +65,13 @@
     <footer class="s-footer" v-if="content.is_manager">
       <button @click="popup">处理意见</button>
     </footer>
-    <mt-popup v-model="isPopup">
-      <textarea placeholder="请输入处理意见" v-model="remark" ref="textarea"></textarea>
+    <h-popup class="s-popup" v-model="isPopup">
+      <textarea placeholder="请输入处理意见" v-model.trim="remark" ref="textarea"></textarea>
       <footer>
         <button class="s-cancel" @click="isPopup = false">取消</button>
         <button class="s-confirm" @click="confirm">确定</button>
       </footer>
-    </mt-popup>
+    </h-popup>
   </div>
 </template>
 
@@ -160,6 +160,7 @@ export default {
       let { contentId, remark } = this;
       if (!remark.trim()) {
         this.$refs.textarea.focus();
+        this.$toast('请输入处理意见');
         return false;
       }
       this.$Model.Monitor.putAlarms(contentId, { remark }).then(data => {
@@ -295,7 +296,7 @@ export default {
       border-radius: 5px;
     }
   }
-  .mint-popup {
+  .s-popup {
     width: 65%;
     padding: 15px;
     textarea {

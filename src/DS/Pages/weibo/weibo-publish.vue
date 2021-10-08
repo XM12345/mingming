@@ -11,12 +11,17 @@
         </li>
       </ul>
     </div>
-    <mt-popup class="mint-popup-operate" v-model="isOperate" position="bottom">
-      <div class="mint-accounts">
+    <h-popup
+      class="s-popup-operate"
+      v-model="isOperate"
+      position="bottom"
+      :overlayStyle="{ background: 'transparent', opacity: 0 }"
+    >
+      <div class="s-accounts">
         <span v-for="item in CheckedData" :key="item.id">{{ item.name }}</span>
       </div>
-      <button class="mint-operate-button" @click="push">确定</button>
-    </mt-popup>
+      <button class="s-operate-button" @click="push">确定</button>
+    </h-popup>
   </div>
 </template>
 
@@ -139,10 +144,10 @@ export default {
   .v-modal {
     display: none;
   }
-  .mint-popup-operate {
+  .s-popup-operate {
     width: 100%;
     background: #fff;
-    .mint-accounts {
+    .s-accounts {
       display: flex;
       white-space: nowrap;
       overflow-x: auto;
@@ -154,7 +159,7 @@ export default {
         font-size: 13px;
       }
     }
-    .mint-operate-button {
+    .s-operate-button {
       position: absolute;
       right: 0;
       bottom: 0;

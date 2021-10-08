@@ -14,7 +14,7 @@
           {{ issueEnd }}
         </p>
       </header>
-      <mt-picker :slots="slots" @change="onValuesChange" v-if="start_time > -1"></mt-picker>
+      <van-picker :columns="slots" @change="onValuesChange" v-if="start_time > -1"></van-picker>
     </div>
     <div class="s-days">
       <h2>重复</h2>
@@ -87,6 +87,9 @@ export default {
           { values: valuesMin, defaultIndex: indexMin, className: 'slot2', textAlign: 'left' }
         ];
         this.start_time = indexHour * 60 + indexMin;
+        this.issueStart = [(indexHour + '').padStart(2, '0'), (indexMin + '').padStart(2, '0')]
+          .toString()
+          .replace(/,/, ':');
       });
     },
     onValuesChange(picker, values) {
