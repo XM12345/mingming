@@ -3,9 +3,9 @@
     <section class="item" v-for="item in contents" :key="item.key" @click="view(item)">
       <div>
         <p>{{ item.title }}</p>
-        <span>{{ item.creator_nickname || item.creator_username }} | {{ item.text_duration | filter_duration }}</span>
+        <span>{{ item.creator_nickname || item.creator_username }} | {{ duration(item.text_duration) }}</span>
       </div>
-      <mark :class="item.status | filter_class">{{ item.status_name }}</mark>
+      <mark :class="className(item.status)">{{ item.status_name }}</mark>
     </section>
     <a class="s-spread" v-if="items.length > 3" @click="spread">
       {{ isSpread ? '收起' : `查看全部文稿 (${items.length})` }}
@@ -38,12 +38,16 @@ export default {
       isView: false
     };
   },
-  filters: {
-    filter_class(status) {
+
+  created() {
+    this.contents = this.items.slice(0, 3);
+  },
+  methods: {
+    className(status) {
       let data = status == 0 ? 'no_start' : status == 10 ? 'success' : 'fail';
       return data;
     },
-    filter_duration(duration) {
+    duration(duration) {
       if (duration > 0) {
         let h = (((duration / 60 / 60) | 0) + '').padStart(2, '0');
         let m = (((duration / 60) % 60 | 0) + '').padStart(2, '0');
@@ -52,12 +56,7 @@ export default {
       } else {
         return '00:00:00';
       }
-    }
-  },
-  created() {
-    this.contents = this.items.slice(0, 3);
-  },
-  methods: {
+    },
     spread() {
       this.isSpread = !this.isSpread;
       if (this.isSpread) {

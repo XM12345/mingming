@@ -7,7 +7,7 @@
         <p v-if="type == 'clue'">{{ item.mobject_name }}</p>
         <p>{{ item.name }}</p>
         <!-- -1、文件夹0、未知1、图片 2、视频 3、音频 -->
-        <span>{{ item.type | filter_type }} | {{ item.last_modification_time || item.creation_time | ds_time }}</span>
+        <span>{{ typeName(item.type) }} | {{ item.last_modification_time || item.creation_time | ds_time }}</span>
       </div>
     </div>
   </div>
@@ -39,15 +39,6 @@ export default {
   created() {
     this.init();
   },
-  filters: {
-    filter_type(type) {
-      if (type == -1) {
-        return '文件夹';
-      } else {
-        return ['未知文件', '图片', '视频', '音频'][type];
-      }
-    }
-  },
   methods: {
     init() {
       let { type } = this;
@@ -67,6 +58,13 @@ export default {
         Model.then(data => {
           this.correlations = data;
         });
+      }
+    },
+    typeName(type) {
+      if (type == -1) {
+        return '文件夹';
+      } else {
+        return ['未知文件', '图片', '视频', '音频'][type];
       }
     },
     download(item) {

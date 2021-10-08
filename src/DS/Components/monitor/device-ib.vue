@@ -3,7 +3,7 @@
     <div v-for="item in indexes" :key="item.id">
       <base--link :class="{ unnormal: item.is_alarming }" to="" @click.native="go(item)">
         <span v-if="item.value_type == VALUE_TYPE.ENUMS">{{ item.detail || '—' }}</span>
-        <span v-else>{{ item | filter_data }}</span>
+        <span v-else>{{ dataName(item) }}</span>
       </base--link>
       <p>{{ item.name }}</p>
     </div>
@@ -56,12 +56,10 @@ export default {
       return indexes;
     }
   },
-  filters: {
-    filter_data(item) {
-      return item.current_data != null ? item.current_data.toFixed(2) + item.unit_name : '—';
-    }
-  },
   methods: {
+    dataName(item) {
+      return item.current_data != null ? item.current_data.toFixed(2) + item.unit_name : '—';
+    },
     go(item) {
       if (item.is_alarming) {
         this.$router.push(`/monitor/alarms/${item.alarm_id}`);

@@ -10,7 +10,7 @@
         <footer>
           <span :class="{ active: item.is_alarming }">
             <i v-for="i in item.level" :key="i"></i>
-            &nbsp;{{ item | filter_level }}
+            &nbsp;{{ levelName(item) }}
           </span>
           <time>{{ item.alarm_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
         </footer>
@@ -32,13 +32,6 @@ export default {
   created() {
     this.init();
   },
-  filters: {
-    filter_level(item) {
-      /*  <int, 等级 1-低级2-中级3-高级4-紧急>, */
-      let levels = ['低级告警', '中级告警', '高级告警', '紧急告警'];
-      return levels[item.level - 1] || '';
-    }
-  },
   watch: {
     content() {
       this.init();
@@ -51,6 +44,11 @@ export default {
       this.$Model.Monitor.alarmList(type, id).then(data => {
         this.logs = data.data;
       });
+    },
+    levelName(item) {
+      /*  <int, 等级 1-低级2-中级3-高级4-紧急>, */
+      let levels = ['低级告警', '中级告警', '高级告警', '紧急告警'];
+      return levels[item.level - 1] || '';
     }
   }
 };

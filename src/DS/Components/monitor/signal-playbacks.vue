@@ -15,7 +15,7 @@
     <ul>
       <li v-for="(item, index) in playbacks" :key="index" @click="to(item)">
         <img src="./_images/signal-icon.png" alt="" />
-        <time>{{ item.index | filter_time }}</time>
+        <time>{{ timeFormat(item.index) }}</time>
         <span :class="{ active: item.playback_address }">{{ item.playback_address ? '播放' : '文件不存在' }}</span>
       </li>
     </ul>
@@ -47,13 +47,7 @@ export default Vue.extend({
   created() {
     this.init();
   },
-  filters: {
-    filter_time(index: number) {
-      let startHour = String(index).padStart(2, '0');
-      let stopHour = String(index + 1).padStart(2, '0');
-      return `${startHour}:00 - ${stopHour}:00`;
-    }
-  },
+
   computed: {
     today() {
       let date = (this.constructor as any).filter('ds_time')(Date.now() / 1000, 'yyyy/MM/dd');
@@ -68,6 +62,11 @@ export default Vue.extend({
     },
     async getPlaybacks() {
       this.playbacks = (await this.$Model.Monitor.playbacks(this.content.id, this.date))?.reverse();
+    },
+    timeFormat(index: number) {
+      let startHour = String(index).padStart(2, '0');
+      let stopHour = String(index + 1).padStart(2, '0');
+      return `${startHour}:00 - ${stopHour}:00`;
     },
     modifyDates() {
       let day = new Date().getDay();

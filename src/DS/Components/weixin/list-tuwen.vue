@@ -18,7 +18,7 @@
           <header>
             <time>{{ item.lastEditTime || item.creationTime | ds_time('', '更新') }}</time>
             <!-- 0-草稿，1-一审，2-二审，3-三审，9-待审，10-通过，11-入库，12-已发布，13-发布失败 -->
-            <mark>{{ item.status | filter_status }}</mark>
+            <mark>{{ statusName(item.status) }}</mark>
             <span @click="operate(item)"></span>
           </header>
           <footer>
@@ -56,11 +56,6 @@ export default {
     };
   },
   created() {},
-  filters: {
-    filter_status(status) {
-      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
-    }
-  },
   computed: {
     watchData() {
       let { accountId, status, keyword } = this;
@@ -75,6 +70,9 @@ export default {
   methods: {
     onLoad(page, size) {
       return this.$Model.Weixin.contents(this.accountId, page, { status: this.status, keyword: this.keyword, size });
+    },
+    statusName(status) {
+      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
     },
 
     operate(item) {

@@ -44,17 +44,6 @@ export default {
   created() {
     this.init();
   },
-  filters: {
-    filter_status(status) {
-      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
-    },
-    filter_time(time) {
-      let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');
-      let m = (((time / 60) % 60 | 0) + '').padStart(2, '0');
-      let s = ((time % 60) + '').padStart(2, '0');
-      return h + ':' + m + ':' + s;
-    }
-  },
   watch: {
     content() {
       this.init();
@@ -77,7 +66,7 @@ export default {
           } else if (item.type == 2) {
             item.value = this.constructor.filter('ds_time')(parseInt(item.content), 'yyyy-MM-dd hh:mm');
           } else if (item.type == 3) {
-            item.value = this.constructor.filter('filter_time')(parseInt(item.content || 0), 'hh:mm:ss');
+            item.value = this.time(parseInt(item.content || 0));
           } else {
             item.value = item.content;
           }
@@ -122,7 +111,7 @@ export default {
           break;
 
         case 'weixin':
-          let status = this.constructor.filter('filter_status')(content.status);
+          let status = this.statusName(content.status);
           this.contents = [
             { key: '公众号', name: content.accountName },
             { key: '创建人', name: content.creatorNickname || content.creatorUsername },
@@ -175,6 +164,15 @@ export default {
         default:
           break;
       }
+    },
+    statusName(status) {
+      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
+    },
+    time(time) {
+      let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');
+      let m = (((time / 60) % 60 | 0) + '').padStart(2, '0');
+      let s = ((time % 60) + '').padStart(2, '0');
+      return h + ':' + m + ':' + s;
     }
   }
 };

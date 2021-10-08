@@ -16,7 +16,7 @@
             <label></label>
             <span class="s-lun">{{ item.comment_count }}</span>
             <!-- 1-审核中，2-已通过，3-已发布 -->
-            <mark :class="item.state | filter_class">{{ item.state | filter_state }}</mark>
+            <mark :class="className(item.state)">{{ stateName(item.state) }}</mark>
           </footer>
         </base--link>
       </div>
@@ -46,14 +46,6 @@ export default {
     };
   },
   created() {},
-  filters: {
-    filter_state(state) {
-      return ['审核中', '已通过', '已发布'][state - 1] || '未知';
-    },
-    filter_class(state) {
-      return ['pending', 'pass', 'success'][state - 1];
-    }
-  },
   computed: {
     watchData() {
       let { account, state, searchkey } = this;
@@ -73,6 +65,12 @@ export default {
         searchkey: this.searchkey,
         size
       });
+    },
+    stateName(state) {
+      return ['审核中', '已通过', '已发布'][state - 1] || '未知';
+    },
+    className(state) {
+      return ['pending', 'pass', 'success'][state - 1];
     }
   }
 };

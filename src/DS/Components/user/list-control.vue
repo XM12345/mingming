@@ -10,8 +10,8 @@
         @touchend="touchend(item)"
       >
         <div @click="modify(index)">
-          <p>{{ item.start_time | filter_time }}-{{ item.stop_time | filter_time }}</p>
-          <span>{{ item.days_of_week | filter_day }}</span>
+          <p>{{ timeFormat(item.start_time) }}-{{ timeFormat(item.stop_time) }}</p>
+          <span>{{ day(item.days_of_week) }}</span>
         </div>
         <van-switch v-model="item.is_on" @change.self="change(item, index)"></van-switch>
         <mark @click.stop="del(item, index)" v-if="isDelete && index == activeIndex">删除</mark>
@@ -32,21 +32,6 @@ export default {
       intervalId: 0
     };
   },
-  filters: {
-    filter_time(time) {
-      let h = (Math.floor(time / 60) + '').padStart(2, '0');
-      let m = ((time % 60) + '').padStart(2, '0');
-      return h + ':' + m;
-    },
-    filter_day(day) {
-      let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-      let result = day
-        .map(item => days[item - 1])
-        .toString()
-        .replace(/,/g, '、');
-      return result;
-    }
-  },
   created() {
     this.init();
   },
@@ -55,6 +40,19 @@ export default {
       this.$Model.Monitor.settings().then(data => {
         this.content = data;
       });
+    },
+    timeFormat(time) {
+      let h = (Math.floor(time / 60) + '').padStart(2, '0');
+      let m = ((time % 60) + '').padStart(2, '0');
+      return h + ':' + m;
+    },
+    day(day) {
+      let days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+      let result = day
+        .map(item => days[item - 1])
+        .toString()
+        .replace(/,/g, '、');
+      return result;
     },
     touchstart(item, index) {
       this.intervalId = setInterval(() => {

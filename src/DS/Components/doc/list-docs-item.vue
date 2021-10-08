@@ -6,7 +6,7 @@
       <p>
         <span>{{ item.col_name }}</span
         ><span>{{ item.used_num ? '已引用' : '未引用' }}</span
-        ><span :class="item.status | filter_class">{{ item.status_name }}</span>
+        ><span :class="className(item.status)">{{ item.status_name }}</span>
       </p>
     </div>
     <label role="checkbox" :class="{ isChecked: item.isChecked == true }" @click="check(item)"></label>
@@ -23,13 +23,11 @@ export default {
       default: -1
     }
   },
-  filters: {
-    filter_class(status) {
+  methods: {
+    className(status) {
       let data = status == 0 ? 'no_start' : status == 10 ? 'success' : status == 9 ? 'fail' : '';
       return data;
-    }
-  },
-  methods: {
+    },
     check(item) {
       this.$emit('check');
     },

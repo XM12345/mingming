@@ -9,7 +9,7 @@
           font-size="20"
           text-anchor="middle"
           dominant-baseline="middle"
-          :fill="item.level | filter_level"
+          :fill="levelColor(item.level)"
         >
           {{ item.current_data + item.unit_name }}
         </text>
@@ -18,12 +18,12 @@
           cy="50"
           r="50"
           stroke-width="19"
-          :stroke="item.level | filter_level"
+          :stroke="levelColor(item.level)"
           fill="none"
-          :stroke-dasharray="item | filter_dash"
+          :stroke-dasharray="dash(item)"
           transform="rotate(-90,50,50)"
         >
-          <animate attributeName="stroke-dasharray" from="0 50" :to="item | filter_dash" dur="0.4s" />
+          <animate attributeName="stroke-dasharray" from="0 50" :to="dash(item)" dur="0.4s" />
         </circle>
       </svg>
       <div class="title">{{ item.name }}</div>
@@ -39,26 +39,24 @@ export default {
       type: Object
     }
   },
-  filters: {
-    filter_dash(item) {
-      let lineLength = 2 * Math.PI * 50;
-      let dash = lineLength * (item.current_data / 100) + ' ' + lineLength * (1 - item.current_data / 100);
-      return dash;
-    },
-    filter_level(level) {
-      let colors = ['#26c644', '#ff802c', '#ff802c', '#fb4c4c', '#fb4c4c'];
-      return colors[level];
-    }
-  },
   computed: {
     indexes() {
       let { content } = this;
       let { indexes = [] } = content;
-      indexes = indexes.filter(item => item.unit_name == '%');// 圆环图筛选指标单位为%
+      indexes = indexes.filter(item => item.unit_name == '%'); // 圆环图筛选指标单位为%
       return indexes;
     }
   },
   methods: {
+    dash(item) {
+      let lineLength = 2 * Math.PI * 50;
+      let dash = lineLength * (item.current_data / 100) + ' ' + lineLength * (1 - item.current_data / 100);
+      return dash;
+    },
+    levelColor(level) {
+      let colors = ['#26c644', '#ff802c', '#ff802c', '#fb4c4c', '#fb4c4c'];
+      return colors[level];
+    },
     toAlarms(item) {
       this.$router.push(`/monitor/alarms/${item.alarm_id}`);
     }

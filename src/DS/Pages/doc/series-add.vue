@@ -161,14 +161,6 @@ export default {
       set(newVal) {}
     }
   },
-  filters: {
-    filter_time(time) {
-      let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');
-      let m = (((time / 60) % 60 | 0) + '').padStart(2, '0');
-      let s = ((time % 60) + '').padStart(2, '0');
-      return h + ':' + m + ':' + s;
-    }
-  },
   methods: {
     onSwitch(key) {
       this.tabKey = key;
@@ -179,6 +171,12 @@ export default {
       this.getSlots();
       this.getColumns();
       this.ensureEmit();
+    },
+    timeFormat(time) {
+      let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');
+      let m = (((time / 60) % 60 | 0) + '').padStart(2, '0');
+      let s = ((time % 60) + '').padStart(2, '0');
+      return h + ':' + m + ':' + s;
     },
     getSlots() {
       let valuesHour = Array.from(Array(24), (v, k) => k.toString().padStart(2, '0'));
@@ -249,7 +247,7 @@ export default {
                 break;
               case 3:
                 _value = field.content;
-                _valueName = this.constructor.filter('filter_time')(field.content || 0);
+                _valueName = this.timeFormat(field.content || 0);
                 break;
               default:
                 _value = field.content;

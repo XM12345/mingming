@@ -16,7 +16,7 @@
               </footer>
             </div>
             <!-- 0、未提交，1、已提交，2、已发布，3、已回收 -->
-            <mark>{{ content.state | filter_state }}</mark>
+            <mark>{{ stateName(content.state) }}</mark>
           </div>
           <base--parse-body :content="content"></base--parse-body>
         </div>
@@ -66,11 +66,6 @@ export default {
     this.init();
     this.tabKey = this.navItems[0].key || '';
   },
-  filters: {
-    filter_state(state) {
-      return ['未提交', '已提交', '已发布', '已回收'][state];
-    }
-  },
   mounted() {
     // app 刷新状态
     window.DfsxWeb.freshState = this.fresh;
@@ -92,6 +87,9 @@ export default {
         this.content = data;
         this.$title(data.title);
       });
+    },
+    stateName(state) {
+      return ['未提交', '已提交', '已发布', '已回收'][state];
     },
     onSwitch(key) {
       this.tabKey = key;

@@ -13,7 +13,7 @@
               </footer>
             </div>
             <!-- 1、审核中，2、审核完成（已通过或无审核流程），3、已发布，4、已回收 -->
-            <mark v-if="content.state">{{ content.state | filter_state }}</mark>
+            <mark v-if="content.state">{{ stateName(content.state) }}</mark>
           </div>
           <base--parse-body :content="content"></base--parse-body>
           <div class="s-insert-img">
@@ -82,11 +82,6 @@ export default {
     this.tabKey = this.navItems[0].key || '';
     this.init();
   },
-  filters: {
-    filter_state(state) {
-      return ['审核中', '已通过', '已发布', '已回收'][state - 1];
-    }
-  },
   methods: {
     init() {
       this.$Model.Weibo.article(this.article_id).then(data => {
@@ -104,6 +99,9 @@ export default {
           return item;
         });
       });
+    },
+    stateName(state) {
+      return ['审核中', '已通过', '已发布', '已回收'][state - 1];
     },
     onSwitch(key) {
       this.tabKey = key;
