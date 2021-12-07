@@ -1,3 +1,7 @@
+body {
+  overscroll-behavior-y: contain;
+  overflow: hidden;
+}
 .page-detail {
   position: relative;
   min-height: 100%;

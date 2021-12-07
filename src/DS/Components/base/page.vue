@@ -30,8 +30,14 @@ export default {
 
 <style lang="scss">
 .page {
+  position: absolute;
+  z-index: 0;
+  background: #fff;
   height: 100%;
-  position: relative;
+  width: 100%;
+  top: 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
   &-content {
     position: absolute;
     box-sizing: border-box;
