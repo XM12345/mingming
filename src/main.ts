@@ -1,31 +1,22 @@
 /* es6转es5 */
 import 'babel-polyfill';
 require('es6-promise').polyfill();
-
-/* import MobileView from 'mobile-view';
-MobileView(); */
-
 import Vue from 'vue';
 import { VueConstructor } from 'vue/types/vue';
 import axios from 'axios';
 /* TODO:语言切换 */
 import i18n from './libs/i18n';
-
-import App from './App.vue';
 import router from './router';
 import store from './store';
-
-/* 引入公共样式文件 */
-import './style.scss';
-
-/* 使用vue-navigation插件缓存页面 */
-import Navigation from 'vue-navigation';
-Vue.use(Navigation, { router });
-
-/* 引入DS */
 import DS from '@/DS';
 import Model from './DS/Model';
-import RunTime from '@/DS/util';
+import { RunTime } from '@/DS/util';
+/* 引入公共样式文件 */
+import './style.scss';
+/* 使用vue-navigation插件缓存页面 */
+import Navigation from 'vue-navigation';
+import App from './App.vue';
+Vue.use(Navigation, { router });
 
 let ds = DS;
 Vue.prototype.$Model = Model;

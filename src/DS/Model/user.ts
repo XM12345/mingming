@@ -1,5 +1,5 @@
 import BaseModel from './baseModel';
-import RunTime from '@/DS/util';
+import { RunTime } from '@/DS/util';
 let axios = BaseModel.axios;
 
 export default class User extends BaseModel {
@@ -19,14 +19,8 @@ export default class User extends BaseModel {
   constructor(basePath: string) {
     super(basePath);
     //  TOKEN 处理
-    if (RunTime.isApp) {
-      // 如果是客户端（原生APP）中，从URL读取token
-      // TODO 在原生APP中不记录token, 由APP管理
-      this._token = RunTime.userToken;
-    } else {
-      // 不是客户端（可能是微信登录带有token）
-      this._token = localStorage.getItem('user_token') || RunTime.userToken;
-    }
+    this._token = RunTime.userToken;
+
     RunTime.on('update', () => {
       // APP重新注入js后主动更新登录状态
       this._token = RunTime.userToken;

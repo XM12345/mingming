@@ -11,7 +11,7 @@ import News from './news';
 import Stream from './stream';
 import Monitor from './monitor';
 import Cms from './cms';
-import RunTime from '@/DS/util';
+import { RunTime } from '@/DS/util';
 
 let apiAddress = process.env.NODE_ENV === 'development' ? 'http://192.168.8.107:8000/api' : RunTime.getUrl();
 

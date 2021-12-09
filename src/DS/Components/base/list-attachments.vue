@@ -95,7 +95,7 @@ export default {
       }
       console.log(result);
       // 回调原生跳转下载
-      this.$toMedia(JSON.stringify(result));
+      this.$toMedia(result);
     }
   }
 };

@@ -33,8 +33,11 @@ let siteBuildConfig = {
     resolve: configureWebpackResolve,
     output: {
       // pathinfo: false,
-      filename: `static/js/[name]--${version}--[hash:6].js`,
-      chunkFilename: `static/js/[name]--[chunkhash:6].js`
+      filename: `static/js/[name]--${version}.js`,
+      chunkFilename: `static/js/[name].js`
+    },
+    optimization: {
+      splitChunks: false
     }
   },
   chainWebpack: config => {
@@ -42,6 +45,8 @@ let siteBuildConfig = {
       args[0].minify = false;
       return args;
     });
+    config.plugins.delete('prefetch');
+    config.plugins.delete('preload');
     config.module
       .rule('images')
       .use('url-loader')
