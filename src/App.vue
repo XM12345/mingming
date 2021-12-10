@@ -19,7 +19,7 @@ body {
 }
 
 #app {
-  height: 100vh;
+  height: 100%;
   background-color: #fff;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
