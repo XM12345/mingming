@@ -3,7 +3,7 @@
     <div v-for="item in list" :key="item.id">
       <div>
         <img
-          :src="item.url | ds_image('L')"
+          :src="$F.image(item.url, 'L')"
           alt="item.introduction"
           :style="{ height: (item.height * 100) / item.width + 'vw' }"
         />

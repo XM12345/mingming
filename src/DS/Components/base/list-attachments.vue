@@ -7,7 +7,7 @@
         <p v-if="type == 'clue'">{{ item.mobject_name }}</p>
         <p>{{ item.name }}</p>
         <!-- -1、文件夹0、未知1、图片 2、视频 3、音频 -->
-        <span>{{ typeName(item.type) }} | {{ item.last_modification_time || item.creation_time | ds_time }}</span>
+        <span>{{ typeName(item.type) }} | {{ $F.time(item.last_modification_time || item.creation_time) }}</span>
       </div>
     </div>
   </div>

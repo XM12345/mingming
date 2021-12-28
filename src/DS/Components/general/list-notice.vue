@@ -14,7 +14,7 @@
             <p>{{ item.title }}</p>
             <span
               >{{ item.author_nickname || item.author_name }} |
-              {{ parseInt(item.publish_time) || parseInt(item.creation_time) | ds_time('', '发布') }}</span
+              {{ $F.time(parseInt(item.publish_time || item.creation_time), '', '发布') }}</span
             >
           </div>
           <mark></mark>

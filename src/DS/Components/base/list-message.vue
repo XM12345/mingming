@@ -58,13 +58,13 @@ export default {
     init() {
       let { content, type } = this;
       let { fields, creation_time } = content;
-      let creationTime = this.constructor.filter('ds_time')(creation_time || content.creationTime, 'yyyy-MM-dd hh:mm');
+      let creationTime = this.$F.time(creation_time || content.creationTime, 'yyyy-MM-dd hh:mm');
       if (fields && (type == 'series' || type == 'doc' || type == 'subject')) {
         fields.map(item => {
           if (item.type == 1) {
             item.value = item.items.map(item => item.name).toString();
           } else if (item.type == 2) {
-            item.value = this.constructor.filter('ds_time')(parseInt(item.content), 'yyyy-MM-dd hh:mm');
+            item.value = this.$F.time(parseInt(item.content), 'yyyy-MM-dd hh:mm');
           } else if (item.type == 3) {
             item.value = this.time(parseInt(item.content || 0));
           } else {
@@ -104,7 +104,7 @@ export default {
                 item.value = item.value.map(item => item.nick).toString();
               }
             } else if (item.input_type == 3) {
-              item.value = this.constructor.filter('ds_time')(parseInt(item.value), 'yyyy-MM-dd hh:mm');
+              item.value = this.$F.time(parseInt(item.value), 'yyyy-MM-dd hh:mm');
             }
             return item;
           });

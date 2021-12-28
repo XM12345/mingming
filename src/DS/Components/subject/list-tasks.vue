@@ -5,7 +5,7 @@
       <p>{{ item.name }}</p>
       <footer>
         <span class="s-mark">{{ item.type_name }}</span>
-        <time>截止时间: {{ item.expire_time | ds_time('yyyy-MM-dd: hh:mm') }}</time>
+        <time>截止时间: {{ $F.time(item.expire_time, 'yyyy-MM-dd: hh:mm') }}</time>
         <span>{{ item.creator_nickname || item.creator_username }}</span>
       </footer>
     </div>

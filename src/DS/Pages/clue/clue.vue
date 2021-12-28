@@ -12,7 +12,7 @@
               </p>
               <footer>
                 <span>创建者: {{ content.creator_nick_name || content.creator_user_name }}</span>
-                <time>创建时间: {{ content.creation_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
+                <time>创建时间: {{ $F.time(content.creation_time, 'yyyy-MM-dd hh:mm') }}</time>
               </footer>
             </div>
             <!-- 0、未提交，1、已提交，2、已发布，3、已回收 -->

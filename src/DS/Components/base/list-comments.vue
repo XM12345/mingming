@@ -14,7 +14,7 @@
         <span>{{ item.content || item.body || item.detail }}</span>
       </div>
       <!-- weixin:creationTime -->
-      <time>{{ item.creation_time || item.creationTime | ds_time }}</time>
+      <time>{{ $F.time(item.creation_time || item.creationTime) }}</time>
     </div>
   </div>
 </template>

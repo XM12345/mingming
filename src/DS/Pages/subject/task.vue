@@ -9,7 +9,7 @@
               <p>{{ content.name }}</p>
               <footer>
                 <span>负责人: {{ content.leader_nickname }}</span>
-                <time>截止时间: {{ content.expire_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
+                <time>截止时间: {{ $F.time(content.expire_time, 'yyyy-MM-dd hh:mm') }}</time>
               </footer>
             </div>
             <!-- 1-待接受，2-已接受（执行中），3-执行中，4-已完成，5-已终止 -->

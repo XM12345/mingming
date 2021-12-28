@@ -41,11 +41,11 @@
         </p>
         <p>
           <label>告警时间:</label>
-          <span>{{ content.alarm_time | ds_time('yyyy-MM-dd hh:mm') }}</span>
+          <span>{{ $F.time(content.alarm_time, 'yyyy-MM-dd hh:mm') }}</span>
         </p>
         <p>
           <label>结束时间:</label>
-          <span>{{ content.alarm_stop_time | ds_time('yyyy-MM-dd hh:mm') || '—' }}</span>
+          <span>{{ $F.time(content.alarm_stop_time, 'yyyy-MM-dd hh:mm') || '—' }}</span>
         </p>
         <p>
           <label>处理意见:</label>

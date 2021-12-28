@@ -12,7 +12,7 @@
             <i v-for="i in item.level" :key="i"></i>
             &nbsp;{{ levelName(item) }}
           </span>
-          <time>{{ item.alarm_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
+          <time>{{ $F.time(item.alarm_time, 'yyyy-MM-dd hh:mm') }}</time>
         </footer>
       </base--link>
     </div>

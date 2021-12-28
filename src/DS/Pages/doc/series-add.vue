@@ -151,10 +151,7 @@ export default {
           return this.series.title;
         }
         if (this.series.play_time && this.series.col_id) {
-          let newDate = this.constructor.filter('ds_time')(
-            new Date(this.series.play_time.replace(/\-/gi, '/')) / 1000,
-            'yyyy-MM-dd'
-          );
+          let newDate = this.$F.time(new Date(this.series.play_time.replace(/\-/gi, '/')) / 1000, 'yyyy-MM-dd');
           return `${this.series.col_name} ${newDate}`;
         }
       },
@@ -223,7 +220,7 @@ export default {
       let data = {};
       if (this.series_id) {
         data = await this.$Model.Doc.series(this.series_id);
-        data.play_time = this.constructor.filter('ds_time')(data.play_time, 'yyyy-MM-dd hh:mm');
+        data.play_time = this.$F.time(data.play_time, 'yyyy-MM-dd hh:mm');
         this.series = data;
         this.docs = data.items.map(item => {
           item.isChecked = true;
@@ -243,7 +240,7 @@ export default {
                 break;
               case 2:
                 _value = field.content;
-                _valueName = this.constructor.filter('ds_time')(parseInt(field.content), 'yyyy-MM-dd hh:mm');
+                _valueName = this.$F.time(parseInt(field.content), 'yyyy-MM-dd hh:mm');
                 break;
               case 3:
                 _value = field.content;
@@ -341,7 +338,7 @@ export default {
       }
     },
     handleConfirmDateTime(timeStamp) {
-      let date = this.constructor.filter('ds_time')(timeStamp, 'yyyy-MM-dd hh:mm');
+      let date = this.$F.time(timeStamp, 'yyyy-MM-dd hh:mm');
       if (this.listIndex == -1) {
         this.series.play_time = date;
       } else {

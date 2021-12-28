@@ -14,7 +14,7 @@
         <header v-if="content.author_id">
           <base--img :imgUrl="content.author_avatar_url"></base--img>
           <span>{{ content.author_nickname || content.author_name }}</span>
-          <time>{{ content.publish_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
+          <time>{{ $F.time(content.publish_time, 'yyyy-MM-dd hh:mm') }}</time>
         </header>
       </div>
     </div>

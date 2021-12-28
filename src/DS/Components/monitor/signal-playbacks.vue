@@ -8,7 +8,7 @@
         :key="item.id"
         @click="changeDay(item)"
       >
-        <span>{{ item.time | ds_time('MM.dd') }}</span>
+        <span>{{ $F.time(item.time, 'MM.dd') }}</span>
         <span>{{ item.name }}</span>
       </div>
     </div>
@@ -50,7 +50,7 @@ export default Vue.extend({
 
   computed: {
     today() {
-      let date = (this.constructor as any).filter('ds_time')(Date.now() / 1000, 'yyyy/MM/dd');
+      let date = this.$F.time(Date.now() / 1000, 'yyyy/MM/dd');
       let timestamp: any = new Date(date).getTime() / 1000;
       return parseInt(timestamp);
     }
@@ -71,7 +71,7 @@ export default Vue.extend({
     modifyDates() {
       let day = new Date().getDay();
       this.activeIndex = day;
-      this.date = (this.constructor as any).filter('ds_time')(Date.now() / 1000, 'yyyy-MM-dd');
+      this.date = this.$F.time(Date.now() / 1000, 'yyyy-MM-dd');
       this.dates.forEach(item => {
         if (item.id == day) {
           item.name = '今天';
@@ -92,7 +92,7 @@ export default Vue.extend({
     },
     changeDay(item: any) {
       this.activeIndex = item.id;
-      this.date = (this.constructor as any).filter('ds_time')(item.time, 'yyyy-MM-dd');
+      this.date = this.$F.time(item.time, 'yyyy-MM-dd');
       this.getPlaybacks();
     }
   }

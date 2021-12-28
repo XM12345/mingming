@@ -4,16 +4,16 @@
     <div class="s-main page-detail-main">
       <div class="s-intro">
         <div class="s-intro-mes">
-          <p>{{content.title}}</p>
+          <p>{{ content.title }}</p>
           <footer>
-            <time>{{content.creation_time | ds_time('yyyy-MM-dd hh:mm')}}</time>
-            <span>来源：{{content.source_name}}</span>
-            <span>作者：{{content.author}}</span>
+            <time>{{ $F.time(content.creation_time, 'yyyy-MM-dd hh:mm') }}</time>
+            <span>来源：{{ content.source_name }}</span>
+            <span>作者：{{ content.author }}</span>
             <!-- <span>{{content.keywords}}</span> -->
           </footer>
           <div class="s-intro-mes-link" v-if="content.refer_url">
             原文链接:
-            <a :href="content.refer_url">{{content.refer_url}}</a>
+            <a :href="content.refer_url">{{ content.refer_url }}</a>
           </div>
         </div>
       </div>

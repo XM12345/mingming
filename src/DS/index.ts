@@ -10,6 +10,7 @@ import { BaseComponentPackage } from './baseComponents';
 
 Vue.use(baseThirdComponents);
 Vue.use(BemClassName);
+Vue.use(Filters);
 
 Object.entries(Components).forEach(([name, component]) => {
   Vue.component(name, component);
@@ -17,10 +18,5 @@ Object.entries(Components).forEach(([name, component]) => {
 });
 
 regVueComponents(BaseComponentPackage, Vue);
-
-// 注册 Filters
-Object.keys(Filters).forEach(k => {
-  Vue.filter(k, Filters[k]);
-});
 
 export default {};

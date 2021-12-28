@@ -6,7 +6,7 @@
         <h3>{{ content.title }}</h3>
         <p>
           <span>{{ content.author_nickname || content.author_name }}</span>
-          <time>{{ parseInt(content.creation_time) | ds_time('yyyy-MM-dd hh:mm') }}</time>
+          <time>{{ $F.time(parseInt(content.creation_time), 'yyyy-MM-dd hh:mm') }}</time>
         </p>
       </header>
       <base--parse-body :content="content"></base--parse-body>
@@ -19,7 +19,7 @@
           :key="item.id"
         >
           <p>{{ item.title }}</p>
-          <span>{{ item.size | ds_size }}</span>
+          <span>{{ $F.size(item.size) }}</span>
         </a>
       </div>
     </div>

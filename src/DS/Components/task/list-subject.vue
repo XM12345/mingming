@@ -7,7 +7,7 @@
         <span>{{ subject.creator_nickname || subject.creator_username }}</span>
         <span>{{ subject.source }}</span>
         <span>{{ subject.category }}</span>
-        <time>{{ subject.creation_time | ds_time('yyyy-MM-dd: hh:mm') }}</time>
+        <time>{{ $F.time(subject.creation_time, 'yyyy-MM-dd: hh:mm') }}</time>
       </footer>
     </div>
   </div>

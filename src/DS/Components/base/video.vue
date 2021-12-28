@@ -7,7 +7,7 @@
     webkit-playsinline
     controlslist="nodownload"
     :data-vid="video.id"
-    :poster="video_poster | ds_image('L')"
+    :poster="$F.image(video_poster, 'L')"
     :src="video_src"
     @play="onPlay"
     @error="onError"
@@ -20,7 +20,7 @@
     webkit-playsinline
     controlslist="nodownload"
     :data-vid="video.id"
-    :poster="video_poster | ds_image('L')"
+    :poster="$F.image(video_poster, 'L')"
     @play="onPlay"
     @error="onError"
   >

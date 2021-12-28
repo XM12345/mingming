@@ -1,6 +1,6 @@
 <template>
   <div class="page-cms-stat page-detail">
-   <!--  <base--topbar title="统计"></base--topbar> -->
+    <!--  <base--topbar title="统计"></base--topbar> -->
     <div class="s-main page-detail-main">
       <div class="s-stat">
         <h2><span>发布数据</span></h2>
@@ -92,7 +92,7 @@ export default {
       return types;
     },
     today() {
-      return this.constructor.filter('ds_time')(new Date() / 1000, 'yyyy/MM/dd');
+      return this.$F.time(new Date() / 1000, 'yyyy/MM/dd');
     }
   },
   methods: {
@@ -123,12 +123,15 @@ export default {
       let start = stop - 60 * 60 * 24 * 14;
       this.getstatApi()
         .types(types, { start, stop })
-        .then(data => {
-          this.days = data;
-          this.initTypes();
-        },err=>{
-          this.$toast(err)
-        });
+        .then(
+          data => {
+            this.days = data;
+            this.initTypes();
+          },
+          err => {
+            this.$toast(err);
+          }
+        );
     },
     getViewRank() {
       this.getstatApi()
@@ -173,7 +176,7 @@ export default {
           axisLabel: {
             color: '#ababab',
             formatter: params => {
-              return this.constructor.filter('ds_time')(parseInt(params), 'MM/dd');
+              return this.$F.time(parseInt(params), 'MM/dd');
             },
             fontSize: 12
           },

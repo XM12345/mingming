@@ -9,7 +9,7 @@
               <p>{{ content.title }}</p>
               <footer>
                 <span>创建者: {{ content.creator_nickname || content.creator_username }}</span>
-                <time>创建时间: {{ content.creation_time | ds_time('yyyy-MM-dd hh:mm') }}</time>
+                <time>创建时间: {{ $F.time(content.creation_time, 'yyyy-MM-dd hh:mm') }}</time>
               </footer>
             </div>
             <mark v-if="content.status_name">{{ content.status_name }}</mark>

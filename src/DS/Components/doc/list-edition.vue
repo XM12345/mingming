@@ -1,13 +1,18 @@
 <template>
   <div class="doc--list-edition">
     <h3>历史版本</h3>
-    <base--link class="item" :to="`/docs/${mediumId}/histories/${item.version}`" v-for="(item,index) in histories" :key="item.version">
-      <mark>V{{index}}</mark>
+    <base--link
+      class="item"
+      :to="`/docs/${mediumId}/histories/${item.version}`"
+      v-for="(item, index) in histories"
+      :key="item.version"
+    >
+      <mark>V{{ index }}</mark>
       <div>
-        <p>版本{{item.version}}</p>
-        <span>{{item.creator_nickname || item.creator_username}}</span>
+        <p>版本{{ item.version }}</p>
+        <span>{{ item.creator_nickname || item.creator_username }}</span>
       </div>
-      <time>{{item.creation_time | ds_time}}</time>
+      <time>{{ $F.time(item.creation_time) }}</time>
     </base--link>
   </div>
 </template>
@@ -41,7 +46,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss">
 .doc--list-edition {

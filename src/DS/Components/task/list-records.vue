@@ -3,7 +3,7 @@
     <h3>任务进度</h3>
     <ul class="s-list">
       <li class="s-list-item" v-for="item in contents" :key="item.id">
-        <time>{{ item.operate_time | ds_time('MM-dd') }}<br />{{ item.operate_time | ds_time('hh:mm') }}</time>
+        <time>{{ $F.time(item.operate_time, 'MM-dd') }}<br />{{ $F.time(item.operate_time, 'hh:mm') }}</time>
         <div class="s-line">
           <i></i>
           <span></span>

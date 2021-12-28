@@ -6,7 +6,7 @@
           <section>
             <div>
               <p>{{ item.title }}</p>
-              <span>{{ item.edit_time || item.creation_time | ds_time('', '更新') }}</span>
+              <span>{{ $F.time(item.edit_time || item.creation_time, '', '更新') }}</span>
             </div>
           </section>
           <footer>
