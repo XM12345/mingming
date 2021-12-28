@@ -29,7 +29,7 @@ export default {
     switchTo(key) {
       this.activeKey = key;
       this.$emit('switchTo', key);
-      history.replaceState(null, 'key', `/#/series?key=${key}`);
+      this.$setQuery({ key });
     }
   }
 };

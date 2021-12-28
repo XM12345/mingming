@@ -11,7 +11,7 @@
         <span class="s-column-line-value" v-if="item.type == 'grade'">
           <i v-for="i in item.value" :key="i">&#9733;</i>
         </span>
-        <span class="s-column-line-value" v-else-if="item.type == 'size'">{{ item.value | ds_size }}</span>
+        <span class="s-column-line-value" v-else-if="item.type == 'size'">{{ $F.size(item.value) }}</span>
         <span class="s-column-line-value" v-else>{{ item.value }}</span>
         <mark v-if="item.is_alarming" @click="toAlarms(item.alarm_id)">!</mark>
       </p>
