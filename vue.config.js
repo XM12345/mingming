@@ -59,87 +59,10 @@ let siteBuildConfig = {
 
   devServer: {
     hotOnly: true
-    /*  proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8090',
-        changeOrigin: true
-      }
-    } */
-  }
-};
-let hybridBuildConfig = {
-  publicPath: './',
-  outputDir: `hybrid_APP/dist/hybrid_app_${version}`,
-  productionSourceMap: false,
-  css: {
-    // 强制内联
-    extract: false
-  },
-  configureWebpack: {
-    resolve: configureWebpackResolve,
-    output: {
-      filename: '[name].js',
-      chunkFilename: 'common.[name].js'
-    },
-    optimization: {
-      splitChunks: false
-    }
-  },
-  chainWebpack: config => {
-    // 禁止js预加载
-    config.plugins.delete('prefetch');
-    config.plugins.delete('prefetch-contentBody');
-    config.plugins.delete('preload');
-    config.plugins.delete('preload-contentBody');
-
-    config.plugin('html-contentBody').tap(args => {
-      args[0].minify = false;
-      return args;
-    });
-
-    config.module
-      .rule('images')
-      .use('url-loader')
-      .tap(options =>
-        Object.assign({}, options, {
-          name: '[name].[ext]',
-          limit: 40960,
-          fallback: {
-            loader: 'file-loader',
-            options: {
-              name: '[name].[ext]'
-            }
-          }
-        })
-      );
-  },
-  pages: {
-    contentBody: {
-      entry: 'hybrid_app/src/pages/contentBody/main.js',
-      template: 'hybrid_app/src/pages/contentBody/index.html',
-      filename: 'contentBody.html'
-
-      // 当使用 title 选项时，
-      // template 中的 title 标签需要是 <title><%= htmlWebpackPlugin.options.title %></title>
-      // title: 'Index Page',
-
-      // 在这个页面中包含的块，默认情况下会包含
-      // 提取出来的通用 chunk 和 vendor chunk。
-      // chunks: ['chunk-vendors', 'chunk-common', 'cmsContentBody']
-    }
   }
 };
 
-let rawArgv = process.argv.slice(2);
-let args = require('minimist')(rawArgv, { string: ['config'] });
-let modName = '';
-
-if (args.config == 'hybrid') {
-  modName = '混合APP 内嵌页面模式';
-  module.exports = hybridBuildConfig;
-} else {
-  modName = '普通模式';
-  module.exports = siteBuildConfig;
-}
+modName = '普通模式';
+module.exports = siteBuildConfig;
 process.title = modName;
 console.log(`${chalk.yellowBright.bold(modName)}.`);

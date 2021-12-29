@@ -35,6 +35,16 @@ function flatRoutes(routes: any = [], basePath = '') {
   return routeList;
 }
 
+const orginalPush = Router.prototype.push;
+// @ts-ignore
+Router.prototype.push = function push(location, onComplete, onAbort) {
+  if (onComplete || onAbort) {
+    return orginalPush.call(this, location, onComplete, onAbort);
+  }
+  // @ts-ignore
+  return orginalPush.call(this, location).catch((err: any) => err);
+};
+
 Vue.use(Router);
 export default new Router({
   mode: 'hash',

@@ -13,7 +13,7 @@ export default class User extends BaseModel {
     }
   }
   get _token() {
-    return axios.defaults.headers.common['X-CSRF-Token'];
+    return axios.defaults.headers.common['X-CSRF-Token'] || null;
   }
 
   constructor(basePath: string) {

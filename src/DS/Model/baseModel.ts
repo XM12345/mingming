@@ -1,20 +1,9 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
-// 默认json
-axios.defaults.headers['Content-Type'] = 'application/json';
-
-class CacheStorage {
-  static _storage: Record<string, any> = {};
-  static _key(path: string, { params = {} } = {}) {
-    return `${path}?${JSON.stringify(params)}`;
-  }
-  static get(path: string, config: any) {
-    let key = CacheStorage._key(path, config);
-    return CacheStorage._storage[key];
-  }
-  static set(path: string, config: any, data: any) {
-    let key = CacheStorage._key(path, config);
-    CacheStorage._storage[key] = data;
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    _noToast?: boolean;
+    _noLogin?: boolean;
   }
 }
 
@@ -22,6 +11,7 @@ export default class BaseModel {
   static axios = axios;
 
   private readonly _basePath: string;
+
   get $basePath() {
     return this._basePath;
   }
@@ -30,54 +20,56 @@ export default class BaseModel {
     this._basePath = basePath;
   }
 
-  $create(config: any) {
+  $create(config: AxiosRequestConfig) {
     return axios.create(config);
   }
 
-  $get(path: string, config?: any) {
-    // 优先从请求网络, 网络失败再从缓存获取
+  $setConfig(config: AxiosRequestConfig = {}, data?: any) {
+    if (['string', 'boolean', 'number'].includes(typeof data)) {
+      data = String(data);
+      config['headers'] = config['headers'] || {};
+      config['headers']['Content-Type'] = 'application/json';
+    }
+    return config;
+  }
+
+  $get(path: string, config?: AxiosRequestConfig) {
     return axios
       .get(this._basePath + path, config)
       .then(({ data }) => {
-        CacheStorage.set(path, config, data);
         return data;
       })
       .catch(e => {
-        console.log({ e });
-        let cache = CacheStorage.get(path, config);
-        //  && e.code == 'ECONNABORTED'
-        if (cache) {
-          return cache;
-        } else {
-          throw e.response && e.response.data;
-        }
+        throw (e.response && e.response.data) || e;
       });
   }
 
-  $post(path: string, data?: any, config?: any) {
+  $post(path: string, data?: any, config?: AxiosRequestConfig) {
+    config = this.$setConfig(config, data);
     return axios
       .post(this._basePath + path, data, config)
       .then(res => res.data)
       .catch(e => {
-        throw e.response && e.response.data;
+        throw (e.response && e.response.data) || e;
       });
   }
 
-  $delete(path: string, config?: any) {
+  $delete(path: string, config?: AxiosRequestConfig) {
     return axios
       .delete(this._basePath + path, config)
       .then(res => res.data)
       .catch(e => {
-        throw e.response && e.response.data;
+        throw (e.response && e.response.data) || e;
       });
   }
 
-  $put(path: string, data?: any, config?: any) {
+  $put(path: string, data?: any, config?: AxiosRequestConfig) {
+    config = this.$setConfig(config, data);
     return axios
       .put(this._basePath + path, data, config)
       .then(res => res.data)
       .catch(e => {
-        throw e.response && e.response.data;
+        throw (e.response && e.response.data) || e;
       });
   }
 

@@ -478,6 +478,7 @@ export default {
 </script>
 
 <style lang="scss">
+@use 'sass:math';
 .page-series-add {
   height: 100%;
   .h-topbar header {
@@ -560,7 +561,7 @@ export default {
         span {
           position: relative;
           display: inline-block;
-          width: (100% / 3);
+          width: math.div(100%, 3);
           padding: 5px;
           box-sizing: border-box;
           img {

@@ -26,7 +26,7 @@ export let install = createVuePlugin(Vue => {
       // needRefresh
       // 跳转到原生登陆界面
     } else {
-      message && this.$toast(message);
+      message && Vue.prototype.$toast(message);
       this.$router.push('/user/login');
     }
   };
