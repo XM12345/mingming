@@ -1,41 +1,42 @@
 <template>
-  <div :class="[B()]">
-    <h-loadmore :onLoad="onLoad" ref="loadmore">
-      <template #list="{ data }">
-        <h-link
-          :to="`/notices/${item.id}`"
-          v-for="item in data"
-          :key="item.id"
-          :class="{ readed: item.has_read }"
-          @click.native="item.has_read = true"
-        >
-          <div>
-            <label v-if="!item.has_read"></label>
-            <p>{{ item.title }}</p>
-            <span
-              >{{ item.author_nickname || item.author_name }} |
-              {{ $F.time(parseInt(item.publish_time || item.creation_time), '', '发布') }}</span
-            >
-          </div>
-          <mark></mark>
-        </h-link>
-      </template>
-    </h-loadmore>
-  </div>
+  <h-loadmore ref="loadmore" :class="[B()]" :onLoad="onLoad">
+    <template #list="{ data }">
+      <h-link
+        v-for="item in data"
+        :key="item.id"
+        :class="{ readed: item.has_read }"
+        :to="`/notices/${item.id}`"
+        @click.native="item.has_read = true"
+      >
+        <div>
+          <label v-if="!item.has_read"></label>
+          <p>{{ item.title }}</p>
+          <span>
+            {{ item.author_nickname || item.author_name }} |
+            {{ $F.time(parseInt(item.publish_time || item.creation_time), '', '发布') }}
+          </span>
+        </div>
+        <mark></mark>
+      </h-link>
+    </template>
+  </h-loadmore>
 </template>
-<script>
-export default {
+
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'general--list-notice',
   data() {
     return {};
   },
+  created() {},
   methods: {
-    onLoad(page, size) {
+    onLoad(page: number, size: number) {
       return this.$Model.General.v2Notices({ page, size });
     }
-  },
-  created() {}
-};
+  }
+});
 </script>
 
 <style lang="scss">
