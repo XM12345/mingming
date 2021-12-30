@@ -1,6 +1,6 @@
 <template>
   <div class="weixin-publish">
-    <base--topbar title="发布到"></base--topbar>
+    <h-topbar title="发布到"></h-topbar>
     <div class="weixin-publish-main">
       <ul>
         <li v-for="(item, index) in contents" :key="item.id" @click="check(item, index)">

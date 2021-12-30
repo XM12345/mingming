@@ -2,7 +2,7 @@
   <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
     <template #list="{ data }">
       <div class="s-list">
-        <base--link class="item" :to="`/docs/series/${item.id}`" v-for="item in data" :key="item.id">
+        <h-link class="item" :to="`/docs/series/${item.id}`" v-for="item in data" :key="item.id">
           <section>
             <div>
               <p>{{ item.title }}</p>
@@ -17,7 +17,7 @@
             <span>通过文稿/总文稿: {{ item.doc_progress }}</span>
             <mark v-if="item.status_name">{{ item.status_name }}</mark>
           </footer>
-        </base--link>
+        </h-link>
       </div>
     </template>
   </h-loadmore>

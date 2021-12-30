@@ -1,11 +1,11 @@
 <template>
   <div class="page-signal-content">
-    <base--topbar :title="content.name"></base--topbar>
+    <h-topbar :title="content.name"></h-topbar>
     <div class="s-video">
-      <base--video controls autoplay :src="content.stream_address"></base--video>
+      <h-video controls autoplay :src="content.stream_address"></h-video>
     </div>
     <div class="s-main">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div class="s-control" ref="control">
           <monitor--device-ib :content="content" v-if="content.id"></monitor--device-ib>
         </div>
@@ -19,7 +19,7 @@
         <div class="s-playback" ref="playback">
           <monitor--signal-playbacks :content="content" v-if="content.id"></monitor--signal-playbacks>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

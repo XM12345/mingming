@@ -1,8 +1,8 @@
 <template>
   <div class="page-subject-detail page-detail">
-    <base--topbar :title="content.title"></base--topbar>
+    <h-topbar :title="content.title"></h-topbar>
     <div class="page-subject-detail-main page-detail-main">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div ref="content" class="main-content">
           <div class="s-intro">
             <div class="s-intro-mes">
@@ -31,7 +31,7 @@
         <div ref="operlog">
           <base--list-operlog :mediumId="subjectId" type="subject"></base--list-operlog>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

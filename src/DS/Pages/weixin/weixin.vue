@@ -1,12 +1,8 @@
 <template>
   <div class="page-weixin">
-    <base--topbar title="微信文稿">
-      <base--link
-        class="h-topbar-search"
-        :to="`/weixin/search/${col}/${columnName}`"
-        v-if="col && columnName"
-      ></base--link>
-    </base--topbar>
+    <h-topbar title="微信文稿">
+      <h-link class="h-topbar-search" :to="`/weixin/search/${col}/${columnName}`" v-if="col && columnName"></h-link>
+    </h-topbar>
 
     <div class="s-select">
       <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>

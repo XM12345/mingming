@@ -2,7 +2,7 @@
   <div :class="[B()]">
     <h-loadmore :onLoad="onLoad" ref="loadmore">
       <template #list="{ data }">
-        <base--link
+        <h-link
           :to="`/notices/${item.id}`"
           v-for="item in data"
           :key="item.id"
@@ -18,7 +18,7 @@
             >
           </div>
           <mark></mark>
-        </base--link>
+        </h-link>
       </template>
     </h-loadmore>
   </div>

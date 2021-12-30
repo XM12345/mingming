@@ -1,6 +1,6 @@
 <template>
   <div class="page-news-content page-detail">
-    <base--topbar></base--topbar>
+    <h-topbar></h-topbar>
     <div class="s-main page-detail-main">
       <div class="s-intro">
         <div class="s-intro-mes">

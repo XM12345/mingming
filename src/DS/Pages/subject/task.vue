@@ -1,8 +1,8 @@
 <template>
   <div class="page-task page-detail">
-    <base--topbar :title="content.name"></base--topbar>
+    <h-topbar :title="content.name"></h-topbar>
     <div class="page-detail-main">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div ref="content" class="main-content">
           <div class="s-intro">
             <div class="s-intro-mes">
@@ -29,7 +29,7 @@
         <div ref="records">
           <task--list-records :taskId="task_id"></task--list-records>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

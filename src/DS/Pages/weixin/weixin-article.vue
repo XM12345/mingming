@@ -1,6 +1,6 @@
 <template>
   <div class="page-weixin-article page-detail">
-    <base--topbar :title="article.title"></base--topbar>
+    <h-topbar :title="article.title"></h-topbar>
     <div class="page-weixin-article-main page-detail-main">
       <div class="s-intro">
         <div class="s-intro-mes">
@@ -13,9 +13,9 @@
       <base--parse-body :content="article"></base--parse-body>
     </div>
     <footer class="s-footer">
-      <base--link class="s-comment" :to="`/weixin/${account_id}/content/${content_id}`">
+      <h-link class="s-comment" :to="`/weixin/${account_id}/content/${content_id}`">
         <span>批注</span>
-      </base--link>
+      </h-link>
     </footer>
   </div>
 </template>

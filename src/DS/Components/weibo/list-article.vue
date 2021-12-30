@@ -2,7 +2,7 @@
   <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
     <template #list="{ data }">
       <div class="s-list">
-        <base--link :to="`/weibo/articles/${item.id}`" class="item" v-for="item in data" :key="item.id">
+        <h-link :to="`/weibo/articles/${item.id}`" class="item" v-for="item in data" :key="item.id">
           <section>
             <div>
               <p>{{ item.title }}</p>
@@ -18,7 +18,7 @@
             <!-- 1-审核中，2-已通过，3-已发布 -->
             <mark :class="className(item.state)">{{ stateName(item.state) }}</mark>
           </footer>
-        </base--link>
+        </h-link>
       </div>
     </template>
   </h-loadmore>

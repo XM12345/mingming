@@ -1,6 +1,6 @@
 <template>
   <div class="page-search">
-    <base--topbar>
+    <h-topbar>
       <div>
         <input
           type="text"
@@ -12,7 +12,7 @@
         />
         <mark @click="clear" v-if="keyword != ''">✕</mark>
       </div>
-    </base--topbar>
+    </h-topbar>
     <div class="s-main">
       <p class="s-main-message" v-if="message">{{ message }}</p>
       <weixin--list-tuwen :accountId="col" :keyword="name" v-if="name"></weixin--list-tuwen>

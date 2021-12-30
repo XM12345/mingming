@@ -1,6 +1,6 @@
 <template>
   <div class="page-doc-history">
-    <base--topbar :title="`版本${version.version}`"></base--topbar>
+    <h-topbar :title="`版本${version.version}`"></h-topbar>
     <article v-html="compare"></article>
   </div>
 </template>
@@ -25,7 +25,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="scss">
 .page-doc-history {

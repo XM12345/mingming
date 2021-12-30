@@ -3,7 +3,7 @@
     <h3>批注</h3>
     <div class="list-comments-item" v-for="item in logs" :key="item.id" v-if="item.content || item.body || item.detail">
       <!-- doc&&series:avatar_url,weixin:avatarUrl,media:creator_cover_url -->
-      <base--img :imgUrl="item.avatar_url || item.avatarUrl || item.icon_url || item.creator_cover_url"></base--img>
+      <h-user :src="item.avatar_url || item.avatarUrl || item.icon_url || item.creator_cover_url"></h-user>
       <div>
         <p>
           <!-- weixin: creatorNickname || creatorUsername-->

@@ -1,8 +1,8 @@
 <template>
   <div class="page-weibo-content page-detail">
-    <base--topbar :title="content.title"></base--topbar>
+    <h-topbar :title="content.title"></h-topbar>
     <div class="page-detail-main" :style="{ 'padding-bottom': operate_able.length ? '70px' : '0' }">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div ref="content" class="main-content">
           <div class="s-intro">
             <div class="s-intro-mes">
@@ -32,7 +32,7 @@
         <div ref="comments">
           <base--list-comments :mediumId="article_id" type="weibo"></base--list-comments>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
     <footer class="s-footer" v-if="operate_able.length">
       <span

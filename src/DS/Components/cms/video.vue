@@ -1,6 +1,6 @@
 <template>
   <div class="cms--video">
-    <base--video controls :video="video" v-if="video"></base--video>
+    <h-video controls :video="video" v-if="video"></h-video>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="doc--list-edition">
     <h3>历史版本</h3>
-    <base--link
+    <h-link
       class="item"
       :to="`/docs/${mediumId}/histories/${item.version}`"
       v-for="(item, index) in histories"
@@ -13,7 +13,7 @@
         <span>{{ item.creator_nickname || item.creator_username }}</span>
       </div>
       <time>{{ $F.time(item.creation_time) }}</time>
-    </base--link>
+    </h-link>
   </div>
 </template>
 

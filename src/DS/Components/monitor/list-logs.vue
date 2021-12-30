@@ -2,7 +2,7 @@
   <div class="monitor--list-logs">
     <h2>告警日志</h2>
     <div>
-      <base--link :to="`/monitor/alarms/${item.id}`" v-for="item in logs" :key="item.id">
+      <h-link :to="`/monitor/alarms/${item.id}`" v-for="item in logs" :key="item.id">
         <p>
           <label>{{ item.detail }}</label>
           <span :class="{ active: item.is_alarming }">{{ item.is_alarming ? '告警中' : '已恢复' }}</span>
@@ -14,7 +14,7 @@
           </span>
           <time>{{ $F.time(item.alarm_time, 'yyyy-MM-dd hh:mm') }}</time>
         </footer>
-      </base--link>
+      </h-link>
     </div>
   </div>
 </template>

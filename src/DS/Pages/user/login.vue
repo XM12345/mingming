@@ -1,6 +1,6 @@
 <template>
   <div class="page-user-login">
-    <base--topbar title="用户登录"></base--topbar>
+    <h-topbar title="用户登录"></h-topbar>
     <div class="page-user-login-main">
       <div>
         <label for="username">账号</label>
@@ -25,7 +25,7 @@ export default {
     submit() {
       let { username, password } = this;
       this.$Model.User.login(username, password).then(data => {
-        this.$toast('登陆成功')
+        this.$toast('登陆成功');
         this.$router.back();
       });
     }

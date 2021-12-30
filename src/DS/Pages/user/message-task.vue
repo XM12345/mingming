@@ -1,10 +1,10 @@
 <template>
   <div class="page-message-task">
-    <base--topbar title="任务消息设置"></base--topbar>
+    <h-topbar title="任务消息设置"></h-topbar>
     <div class="s-main">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch" listenScroll="false">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch" listenScroll="false">
         <user--list-task :activeKey="tabKey"></user--list-task>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

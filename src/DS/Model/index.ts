@@ -13,7 +13,7 @@ import Monitor from './monitor';
 import Cms from './cms';
 import { RunTime } from '@/DS/util';
 
-let apiAddress = process.env.NODE_ENV === 'development' ? 'http://192.168.8.107:8000/api' : RunTime.getUrl();
+let apiAddress = process.env.NODE_ENV === 'development' ? 'http://192.168.7.237:8000/api' : RunTime.getUrl();
 
 export default {
   Base: new BaseModel(),

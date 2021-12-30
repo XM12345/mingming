@@ -1,12 +1,12 @@
 <template>
   <div class="page-message-follow">
-    <base--topbar title="关注消息设置"></base--topbar>
+    <h-topbar title="关注消息设置"></h-topbar>
     <div class="s-main">
       <user--list-control v-if="type == 'control'"></user--list-control>
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch" listenScroll="false" v-else>
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch" listenScroll="false" v-else>
         <user--list-control v-if="tabKey == 'control'"></user--list-control>
         <user--list-tree :activeKey="tabKey" v-else></user--list-tree>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

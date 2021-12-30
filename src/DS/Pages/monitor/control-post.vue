@@ -1,8 +1,8 @@
 <template>
   <div class="page-control-post">
-    <base--topbar :title="title">
+    <h-topbar :title="title">
       <button @click="submit">确定</button>
-    </base--topbar>
+    </h-topbar>
     <div class="s-picker">
       <header class="s-picker-header">
         <p :class="{ active: isStart == true }" @click="(isStart = true), (isEnd = false)">

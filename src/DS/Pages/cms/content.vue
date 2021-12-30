@@ -1,6 +1,6 @@
 <template>
   <div class="page-cms-content">
-    <base--topbar></base--topbar>
+    <h-topbar></h-topbar>
     <!-- 视频 -->
     <cms--video
       :baview_api_url="baview_api_url"
@@ -12,7 +12,7 @@
       <h1>{{ content.title }}</h1>
       <div class="page-cms--content-header">
         <header v-if="content.author_id">
-          <base--img :imgUrl="content.author_avatar_url"></base--img>
+          <h-user :src="content.author_avatar_url"></h-user>
           <span>{{ content.author_nickname || content.author_name }}</span>
           <time>{{ $F.time(content.publish_time, 'yyyy-MM-dd hh:mm') }}</time>
         </header>

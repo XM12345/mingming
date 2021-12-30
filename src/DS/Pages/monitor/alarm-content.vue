@@ -1,6 +1,6 @@
 <template>
   <div class="page-alarm-content">
-    <base--topbar :title="content.target_name"></base--topbar>
+    <h-topbar :title="content.target_name"></h-topbar>
     <div class="s-main">
       <div class="s-title" @click="go">
         <img src="./_images/UPS@2x.png" v-if="content.type == 'ups'" />

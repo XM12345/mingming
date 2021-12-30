@@ -22,10 +22,10 @@
             <span @click="operate(item)"></span>
           </header>
           <footer>
-            <base--link :to="`/weixin/${accountId}/content/${item.id}/${i.id}`" v-for="i in item.articles" :key="i.id">
+            <h-link :to="`/weixin/${accountId}/content/${item.id}/${i.id}`" v-for="i in item.articles" :key="i.id">
               <p>{{ i.title }}</p>
               <img :src="i.thumbUrl" alt />
-            </base--link>
+            </h-link>
           </footer>
         </section>
       </div>

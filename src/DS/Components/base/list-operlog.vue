@@ -3,7 +3,7 @@
     <h3>操作纪录</h3>
     <div class="list-comments-item" v-for="item in operlog" :key="item.id">
       <!-- weixin:avatarUrl -->
-      <base--img :imgUrl="item.icon_url || item.avatarUrl"></base--img>
+      <h-user :src="item.icon_url || item.avatarUrl"></h-user>
       <div>
         <p>
           <!-- weixin:creatorNickname || creatorUsername,subject:operatorNickname -->

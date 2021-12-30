@@ -1,8 +1,8 @@
 <template>
   <div class="page-room-content">
-    <base--topbar :title="content.name"></base--topbar>
+    <h-topbar :title="content.name"></h-topbar>
     <div class="s-main">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div class="s-control" ref="control">
           <monitor--list-message type="ups" :content="content" v-if="content.type == 'ups'"></monitor--list-message>
           <div v-if="content.type == 'detector'">
@@ -18,7 +18,7 @@
         <div class="s-logs" ref="logs">
           <monitor--list-logs :content="content" v-if="content.id"></monitor--list-logs>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

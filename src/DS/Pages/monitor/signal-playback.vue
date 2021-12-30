@@ -1,8 +1,8 @@
 <template>
   <div class="page-signal-playback">
-    <base--topbar title="回看"></base--topbar>
+    <h-topbar title="回看"></h-topbar>
     <div class="page-signal-playback-video">
-      <base--video controls autoplay :src="video && video.playback_address"></base--video>
+      <h-video controls autoplay :src="video && video.playback_address"></h-video>
     </div>
   </div>
 </template>

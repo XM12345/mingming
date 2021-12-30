@@ -1,8 +1,8 @@
 <template>
   <div class="page-clue-detail page-detail">
-    <base--topbar :title="content.title"></base--topbar>
+    <h-topbar :title="content.title"></h-topbar>
     <div class="page-clue-detail-main page-detail-main">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div ref="content" class="main-content">
           <div class="s-intro">
             <div class="s-intro-mes">
@@ -36,7 +36,7 @@
         <div ref="comments">
           <base--list-comments :mediumId="clueId" type="clue"></base--list-comments>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

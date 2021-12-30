@@ -1,6 +1,6 @@
 <template>
   <div class="page-doc-add">
-    <base--topbar title="添加文稿">
+    <h-topbar title="添加文稿">
       <div v-if="isStartSearch">
         <input
           type="text"
@@ -13,7 +13,7 @@
         <mark @click="clear" v-if="keyword != ''">✕</mark>
       </div>
       <button class="h-topbar-search" @click="startSearch" v-else></button>
-    </base--topbar>
+    </h-topbar>
     <div class="s-select">
       <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>
     </div>

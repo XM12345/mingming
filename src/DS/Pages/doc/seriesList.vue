@@ -1,8 +1,8 @@
 <template>
   <div class="page-series">
-    <base--topbar title="串联单">
-      <base--link class="h-topbar-search" to="/docs/series/search"></base--link>
-    </base--topbar>
+    <h-topbar title="串联单">
+      <h-link class="h-topbar-search" to="/docs/series/search"></h-link>
+    </h-topbar>
 
     <div class="s-select">
       <section class="h-selectbar">
@@ -47,7 +47,7 @@
         :activeKey="activeKey"
         @total="getTotal"
       ></doc--list-series>
-      <base--link class="s-series-add" to="/docs/series/add"></base--link>
+      <h-link class="s-series-add" to="/docs/series/add"></h-link>
     </div>
 
     <base--footer :footerNavs="footerNavs" @switchTo="switchTo"></base--footer>

@@ -1,8 +1,8 @@
 <template>
   <div class="page-device-content">
-    <base--topbar :title="content.name"></base--topbar>
+    <h-topbar :title="content.name"></h-topbar>
     <div class="s-main">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div class="s-control" ref="control">
           <monitor--device-ib :content="content" v-if="content.type == 'ib'"></monitor--device-ib>
           <div v-if="content.type && content.type != 'ib'">
@@ -18,7 +18,7 @@
         <div class="s-logs" ref="logs">
           <monitor--list-logs :content="content" v-if="content.id"></monitor--list-logs>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
   </div>
 </template>

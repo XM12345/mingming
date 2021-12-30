@@ -1,6 +1,6 @@
 <template>
   <div class="page-notice">
-    <base--topbar title="公告"></base--topbar>
+    <h-topbar title="公告"></h-topbar>
     <general--list-notice></general--list-notice>
   </div>
 </template>

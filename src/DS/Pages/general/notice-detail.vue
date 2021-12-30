@@ -1,6 +1,6 @@
 <template>
   <div class="page-notice-detail">
-    <base--topbar title="公告"></base--topbar>
+    <h-topbar title="公告"></h-topbar>
     <div class="page-notice-detail-main">
       <header class="main-header">
         <h3>{{ content.title }}</h3>

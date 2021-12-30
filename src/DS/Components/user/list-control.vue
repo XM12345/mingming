@@ -17,7 +17,7 @@
         <mark @click.stop="del(item, index)" v-if="isDelete && index == activeIndex">删除</mark>
       </li>
     </ul>
-    <base--link to="/monitor/control/settings" class="s-add">+</base--link>
+    <h-link to="/monitor/control/settings" class="s-add">+</h-link>
   </div>
 </template>
 

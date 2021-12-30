@@ -1,6 +1,6 @@
 <template>
   <div class="page-doc-user-add">
-    <base--topbar :title="type_name"></base--topbar>
+    <h-topbar :title="type_name"></h-topbar>
     <ul class="s-users">
       <li v-for="(item, index) in contents" :key="item.id" @click="check(item, index)">
         <span>{{ item.nickname }}</span>

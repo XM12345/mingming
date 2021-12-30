@@ -2,9 +2,9 @@
   <div id="app">
     <!-- 使用vue-navigation插件缓存页面 -->
     <navigation>
-      <base--page>
+      <h-page>
         <router-view />
-      </base--page>
+      </h-page>
     </navigation>
   </div>
 </template>

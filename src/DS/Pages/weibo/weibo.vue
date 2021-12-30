@@ -1,8 +1,8 @@
 <template>
   <div class="page-weibo">
-    <base--topbar title="微博文稿">
-      <base--link class="h-topbar-search" to="/weibo/search"></base--link>
-    </base--topbar>
+    <h-topbar title="微博文稿">
+      <h-link class="h-topbar-search" to="/weibo/search"></h-link>
+    </h-topbar>
 
     <div class="s-select">
       <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>

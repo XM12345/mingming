@@ -1,12 +1,12 @@
 <template>
   <div class="page-series-add">
-    <base--topbar :title="series_id ? '编辑串联单' : '新建串联单'">
+    <h-topbar :title="series_id ? '编辑串联单' : '新建串联单'">
       <p>
         <button @click="post((isCommit = true))">提交</button>
         <button @click="post((isCommit = false))">保存</button>
       </p>
-    </base--topbar>
-    <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch" listenScroll="false">
+    </h-topbar>
+    <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch" listenScroll="false">
       <div class="s-general" v-if="tabKey == 'message'">
         <p @click="select('column')">
           <label for="col"><i>*</i>栏目</label>
@@ -61,7 +61,7 @@
           <span @click="addDoc">添加文稿</span>
         </footer>
       </div>
-    </base--tab>
+    </h-tab>
     <!-- 弹出弹窗 -->
     <h-popup class="s-popup-operate" v-model="isModalList" position="bottom">
       <ul class="s-popup-main" v-if="list.length">

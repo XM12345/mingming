@@ -1,11 +1,11 @@
 <template>
   <div class="page-weixin-content page-detail">
-    <base--topbar title="微信文稿详情"></base--topbar>
+    <h-topbar title="微信文稿详情"></h-topbar>
     <div
       class="page-weixin-content-main page-detail-main"
       :style="{ 'padding-bottom': operate_able.length ? '70px' : '0' }"
     >
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div ref="message">
           <base--list-message :content="content" type="weixin" v-if="content"></base--list-message>
         </div>
@@ -15,7 +15,7 @@
         <div ref="records">
           <base--list-operlog :mediumId="content_id" :accountId="account_id" type="weixin"></base--list-operlog>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
     <footer class="s-footer" v-if="operate_able.length">
       <span :class="`s-${item.key}`" v-for="item in operate_able" :key="item.key" @click="handle(item.key)">{{

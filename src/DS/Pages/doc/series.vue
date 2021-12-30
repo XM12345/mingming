@@ -1,8 +1,8 @@
 <template>
   <div class="page-sheet-detail page-detail">
-    <base--topbar :title="content.title"></base--topbar>
+    <h-topbar :title="content.title"></h-topbar>
     <div class="page-detail-main" :style="{ 'padding-bottom': operate_able.length ? '70px' : '0' }">
-      <base--tab :navItems="navItems" :tabKey="tabKey" @switch="onSwitch">
+      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div ref="docs">
           <div class="s-intro">
             <div class="s-intro-mes">
@@ -25,7 +25,7 @@
         <div ref="comments">
           <base--list-comments :mediumId="series_id" type="series"></base--list-comments>
         </div>
-      </base--tab>
+      </h-tab>
     </div>
     <footer class="s-footer" v-if="operate_able.length">
       <span :class="`s-${item.key}`" v-for="item in operate_able" :key="item.key" @click="handle(item.key)">{{

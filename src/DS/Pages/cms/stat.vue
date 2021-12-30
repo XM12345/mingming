@@ -1,6 +1,5 @@
 <template>
   <div class="page-cms-stat page-detail">
-    <!--  <base--topbar title="统计"></base--topbar> -->
     <div class="s-main page-detail-main">
       <div class="s-stat">
         <h2><span>发布数据</span></h2>

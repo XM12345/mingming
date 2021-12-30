@@ -6,9 +6,7 @@
     "dev": "npm run start",
     "start": "npm run serve -- --port 8092",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "serve:hybrid": "vue-cli-service serve --config hybrid",
-    "build:hybrid": "vue-cli-service build --config hybrid"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "axios": "^0.24.0",
@@ -16,8 +14,8 @@
     "cors": "^2.8.5",
     "echarts": "^4.7.0",
     "es6-promise": "^4.2.8",
-    "flv.js": "^1.5.0",
-    "hls.js": "^0.13.2",
+    "flv.js": "^1.6.2",
+    "hls.js": "^1.1.2",
     "lodash": "^4.17.11",
     "mixin-object": "^3.0.0",
     "mobile-view": "^2.6.0",
