@@ -62,7 +62,7 @@ export default {
       if (fields && (type == 'series' || type == 'doc' || type == 'subject')) {
         fields.map(item => {
           if (item.type == 1) {
-            item.value = item.items.map(item => item.name).toString();
+            item.value = item.items?.map(item => item.name).toString();
           } else if (item.type == 2) {
             item.value = this.$F.time(parseInt(item.content), 'yyyy-MM-dd hh:mm');
           } else if (item.type == 3) {
@@ -98,10 +98,10 @@ export default {
           ];
           fields.map(item => {
             if (item.input_type == 2 && item.multiple == false) {
-              item.value = item.value.nick;
+              item.value = item.value?.nick;
             } else if (item.input_type == 2 && item.multiple == true) {
               if (item.value) {
-                item.value = item.value.map(item => item.nick).toString();
+                item.value = item.value?.map(item => item.nick).toString();
               }
             } else if (item.input_type == 3) {
               item.value = this.$F.time(parseInt(item.value), 'yyyy-MM-dd hh:mm');
@@ -121,11 +121,11 @@ export default {
           break;
 
         case 'weibo':
-          let reporter = content.reporters.map(item => item.nickname || item.username).toString();
-          let editor = content.editors.map(item => item.nickname || item.username).toString();
+          let reporter = content.reporters?.map(item => item.nickname || item.username).toString();
+          let editor = content.editors?.map(item => item.nickname || item.username).toString();
           this.contents = [
             { key: '标题', name: content.title },
-            { key: '栏目', name: content.account.account_name },
+            { key: '栏目', name: content.account?.account_name },
             { key: '记者', name: reporter },
             { key: '编辑', name: editor },
             { key: '状态', name: content.audit_node_state }
