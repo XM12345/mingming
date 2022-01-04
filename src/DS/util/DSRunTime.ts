@@ -1,42 +1,3 @@
-/**
- * 安卓URL参数 ?token=<AppManager.getInstance().getIApp().getCurrentToken()>&client=android
- * 安卓原生APP注入的js
- * window.DfsxNative = {
- *   platform: 'android',
- *   version: <AndroidUtil.getAppVersionCode(getContext())>,
- *   isLogin: <AppManager.getInstance().getIApp().isLogin()>,
- *   userToken: <AppManager.getInstance().getIApp().getCurrentToken()>,
- *   login: function () {
- *     window.login.loginApp()
- *   },
- *   back: function () {
- *    // 回调原生的返回
- *   }
- *
- * };
- *
- */
-
-/*
-
-let {
-  DfsxNative = {
-    platform: 'web',
-    version: config.version,
-    isLogin: Vue.prototype.$Model.User.isLogin(),
-    userToken: this.$Model.Base._token,
-    login: () => {
-      this.$toast('需要登录');
-      this.$hui.push('/user/login');
-    },
-    back: () => {
-      history.back();
-    },
-  }
-} = window;
-
-*/
-
 class DSEvent {
   private _listeners: Record<string, Function[]> = {};
 
@@ -168,27 +129,25 @@ export class DSRunTime extends DSEvent {
     return AGENT[this.app] || 0;
   }
 
-  constructor() {
+  constructor(DfsxNative?: IDfsxNative) {
     super();
     if (DSRunTime.instance) {
       return DSRunTime.instance;
     }
     DSRunTime.instance = this;
-    this.init(
-      window.DfsxNative || {
-        platform: '',
-        version: <string>process.env.VUE_APP_VERSION,
-        isLogin: false,
-        userToken: ''
-      }
-    );
+    this.init(DfsxNative);
   }
 
   init(DfsxNative?: IDfsxNative) {
     this._DfsxNative = DfsxNative;
     // 判断是否嵌入在APP 获取具体平台；
     console.log('DSRunTime init get DfsxNative', DfsxNative);
-    let { platform = '', version = '', isLogin = false, userToken = '' } = DfsxNative || ({} as any);
+    let {
+      platform = '',
+      version = <string>process.env.VUE_APP_VERSION,
+      isLogin = false,
+      userToken = ''
+    } = DfsxNative || ({} as any);
 
     let queryStr = location.search || '';
     if (!platform) {
@@ -268,7 +227,7 @@ export class DSRunTime extends DSEvent {
       return false;
     }
   }
-  
+
   /** 原生返回 */
   nativeBack() {
     if (this._DfsxNative && this._DfsxNative.back) {
@@ -309,16 +268,20 @@ export class DSRunTime extends DSEvent {
   }
 }
 
+let _DfsxNative = window.DfsxNative;
+let runTime = new DSRunTime();
+runTime.init(_DfsxNative);
+
 Object.defineProperty(window, 'DfsxNative', {
   get: () => {
     console.log('DSRunTime get DfsxNative');
-    return new DSRunTime()._DfsxNative;
+    return _DfsxNative;
   },
   set: DfsxNative => {
     console.log('DSRunTime set DfsxNative', DfsxNative);
-    let runTime = new DSRunTime();
-    runTime.init(DfsxNative);
+    _DfsxNative = DfsxNative;
+    runTime.init(_DfsxNative);
   }
 });
 window.DfsxWeb = { name: 'DfsxWeb' };
-export default DSRunTime;
+export default runTime;

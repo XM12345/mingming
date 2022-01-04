@@ -1,2 +1,2 @@
 import DSRunTime from './DSRunTime';
-export let RunTime = new DSRunTime();
+export let RunTime = DSRunTime;
