@@ -1,44 +1,57 @@
 <template>
-  <div class="page-cms--list-message">
-    <h3 class="s-title">基本信息</h3>
-    <div class="s-column">
-      <p class="s-column-line" v-for="item in contents" :key="item.id" v-if="content">
-        <label class="s-column-line-key">{{ item.key }}</label>
-        <span class="s-column-line-value">{{ item.name }}</span>
+  <div :class="[B()]">
+    <h3 :class="[B('__title')]">基本信息</h3>
+    <div :class="[B('__list')]">
+      <p :class="[B('__item')]" v-for="item in contents" :key="item.id" v-if="content">
+        <label :class="[B('__item_key')]">{{ item.key }}</label>
+        <span :class="[B('__item_value')]">{{ item.name }}</span>
       </p>
 
-      <p class="s-column-line" v-for="item in content.fields" :key="item.id">
-        <!--clue input_type:1、文本框输入（字符串）；2、选择框（单选为下拉框）；3、时间类型 -->
-        <!-- doc,subject,series: type:0-普通文本，1-用户，2-日期 -->
-        <!-- doc:"type":<int|扩展字段类型：0-普通文本，1-用户列表，2-日期，3时间，4-选项列表>, -->
-        <label class="s-column-line-key">{{ item.name }}:</label>
-        <span class="s-column-line-value">{{ item.value }}</span>
+      <p :class="[B('__item')]" v-for="(item, index) in content.fields" :key="index">
+        <label :class="[B('__item_key')]">{{ item.name }}:</label>
+        <span :class="[B('__item_value')]">{{ item.value }}</span>
       </p>
-      <p v-if="type == 'series'">
-        <label class="s-column-line-key">提要:</label>
-        <span class="s-column-line-value" v-html="content.content"></span>
+      <p v-if="type == 'series'" :class="[B('__item')]">
+        <label :class="[B('__item_key')]">提要:</label>
+        <span :class="[B('__item_value')]" v-html="content.content"></span>
       </p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+enum EDocMessageFieldType {
+  '普通文本' = 0,
+  '用户列表' = 1,
+  '日期' = 2,
+  '时间' = 3,
+  '选项列表' = 4,
+  '时长帧' = 5
+}
+enum ESubjectMessageFieldType {
+  '普通文本' = 0,
+  '用户列表' = 1,
+  '日期' = 2
+}
+enum EClueMessageFieldType {
+  '普通文本' = 1,
+  '选择框' = 2,
+  '日期' = 3
+}
+export default Vue.extend({
+  name: 'base--list-message',
   props: {
-    content: {
-      default: ''
-    },
-    isFresh: {
-      default: false
-    },
-    type: {
-      type: String,
-      default: ''
-    }
+    content: { type: Object, default: () => ({}) },
+    isFresh: { type: Boolean, default: false },
+    type: { type: String, default: '' }
   },
   data() {
     return {
-      contents: []
+      EDocMessageFieldType,
+      ESubjectMessageFieldType,
+      EClueMessageFieldType,
+      contents: [] as any[]
     };
   },
   created() {
@@ -55,24 +68,22 @@ export default {
     }
   },
   methods: {
-    init() {
+    statusName(status: number) {
+      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
+    },
+    time(time: number) {
+      let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');
+      let m = (((time / 60) % 60 | 0) + '').padStart(2, '0');
+      let s = ((time % 60) + '').padStart(2, '0');
+      return h + ':' + m + ':' + s;
+    },
+    dateFormat(timeStamp: number | string) {
+      return this.$F.time(Number(timeStamp), 'yyyy-MM-dd hh:mm');
+    },
+    async init() {
       let { content, type } = this;
       let { fields, creation_time } = content;
       let creationTime = this.$F.time(creation_time || content.creationTime, 'yyyy-MM-dd hh:mm');
-      if (fields && (type == 'series' || type == 'doc' || type == 'subject')) {
-        fields.map(item => {
-          if (item.type == 1) {
-            item.value = item.items?.map(item => item.name).toString();
-          } else if (item.type == 2) {
-            item.value = this.$F.time(parseInt(item.content), 'yyyy-MM-dd hh:mm');
-          } else if (item.type == 3) {
-            item.value = this.time(parseInt(item.content || 0));
-          } else {
-            item.value = item.content;
-          }
-          return item;
-        });
-      }
       switch (type) {
         case 'series':
           this.contents = [
@@ -80,14 +91,53 @@ export default {
             { key: '栏目', name: content.col_name },
             { key: '创建人', name: content.creator_nickname || content.creator_username }
           ];
+          fields?.map((item: any) => {
+            if (item.type == EDocMessageFieldType.用户列表) {
+              item.value = item.items?.map((item: any) => item.name).toString();
+            } else if (item.type == EDocMessageFieldType.日期) {
+              item.value = this.dateFormat(item.content);
+            } else if (item.type == EDocMessageFieldType.时间) {
+              item.value = this.time(Number(item.content || 0));
+            } else if (item.type == EDocMessageFieldType.时长帧) {
+              item.value = this.time(Number(item.content || 0) / 25);
+            } else {
+              item.value = item.content;
+            }
+            return item;
+          });
           break;
 
         case 'doc':
-          // <int|密级：1-公开，2-内部，3-秘密，4-机密>
           this.contents = [
             { key: '栏目', name: content.col_name },
             { key: '密级', name: ['1-公开', '2-内部', '3-秘密', '4-机密'][content.privacy - 1] }
           ];
+          let { select = [] } = (await this.$Model.Doc.fieldsCustom('docs')) || {};
+          select = select.map((item: any) => {
+            let field = fields.find((field: any) => item.id && item.id == field.id);
+            if (field) {
+              item.content = field.content;
+            } else if (item.is_system) {
+              item.content =
+                item.code == 'playType'
+                  ? this.content['play_type_name']
+                  : this.content[this.$F.humpUnderlineFormat(item.code, 'underline')];
+            }
+            return item;
+          });
+          this.content.fields = select.map((item: any) => {
+            if (item.type == EDocMessageFieldType.日期) {
+              item.value = this.dateFormat(item.content);
+            } else if (item.type == EDocMessageFieldType.时间) {
+              item.value = this.time(Number(item.content || 0));
+            } else if (item.type == EDocMessageFieldType.时长帧) {
+              item.value = this.time(Number(item.content || 0) / 25);
+            } else {
+              item.value = item.content;
+            }
+            return item;
+          });
+
           break;
 
         case 'clue':
@@ -96,15 +146,11 @@ export default {
             { key: '关键词', name: content.key_words },
             { key: '密级', name: ['1-公开', '2-内部', '3-秘密', '4-机密'][content.privacy - 1] }
           ];
-          fields.map(item => {
-            if (item.input_type == 2 && item.multiple == false) {
-              item.value = item.value?.nick;
-            } else if (item.input_type == 2 && item.multiple == true) {
-              if (item.value) {
-                item.value = item.value?.map(item => item.nick).toString();
-              }
-            } else if (item.input_type == 3) {
-              item.value = this.$F.time(parseInt(item.value), 'yyyy-MM-dd hh:mm');
+          fields.map((item: any) => {
+            if (item.input_type == EClueMessageFieldType.选择框) {
+              item.value = item.multiple ? item.value?.map((item: any) => item.nick).toString() : item.value?.nick;
+            } else if (item.input_type == EClueMessageFieldType.日期) {
+              item.value = this.$F.time(Number(item.value), 'yyyy-MM-dd hh:mm');
             }
             return item;
           });
@@ -121,8 +167,8 @@ export default {
           break;
 
         case 'weibo':
-          let reporter = content.reporters?.map(item => item.nickname || item.username).toString();
-          let editor = content.editors?.map(item => item.nickname || item.username).toString();
+          let reporter = content.reporters?.map((item: any) => item.nickname || item.username).toString();
+          let editor = content.editors?.map((item: any) => item.nickname || item.username).toString();
           this.contents = [
             { key: '标题', name: content.title },
             { key: '栏目', name: content.account?.account_name },
@@ -135,7 +181,7 @@ export default {
         case 'subject':
           let targets;
           if (content.targets) {
-            targets = content.targets.map(item => item.name).toString();
+            targets = content.targets.map((item: any) => item.name).toString();
           }
           this.contents = [
             { key: '拟报栏目', name: content.col_name },
@@ -144,12 +190,22 @@ export default {
             { key: '选题来源', name: content.source_name },
             { key: '发布渠道', name: targets }
           ];
+          fields?.map((item: any) => {
+            if (item.type == ESubjectMessageFieldType.用户列表) {
+              item.value = item.items?.map((item: any) => item.name).toString();
+            } else if (item.type == ESubjectMessageFieldType.日期) {
+              item.value = this.dateFormat(item.content);
+            } else {
+              item.value = item.content;
+            }
+            return item;
+          });
           break;
 
         case 'task':
           let users;
           if (content.users) {
-            users = content.users.map(item => item.nickname).toString();
+            users = content.users.map((item: any) => item.nickname).toString();
           }
           this.contents = [
             { key: '标题', name: content.name },
@@ -164,46 +220,35 @@ export default {
         default:
           break;
       }
-    },
-    statusName(status) {
-      return ['草稿', '一审', '二审', '三审', '', '', '', '', '', '待审', '通过', '入库', '已发布', '发布失败'][status];
-    },
-    time(time) {
-      let h = (((time / 60 / 60) | 0) + '').padStart(2, '0');
-      let m = (((time / 60) % 60 | 0) + '').padStart(2, '0');
-      let s = ((time % 60) + '').padStart(2, '0');
-      return h + ':' + m + ':' + s;
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-cms--list-message {
+.base--list-message {
   background-color: #fff;
   font-size: 14px;
   padding: 0 15px;
   border-bottom: 10px solid #f4f6f9;
-  h3.s-title {
+  &__title {
     padding: 15px 0;
     font-size: 15px;
     font-weight: normal;
     margin: 0;
   }
-  .s-column {
-    &-line {
-      margin: 20px 0;
-      &-key {
-        float: left;
-        color: #999;
-      }
-      &-value {
-        display: block;
-        min-height: 19px;
-        color: #333;
-        margin-left: 84px;
-        word-break: break-word;
-      }
+  &__item {
+    margin: 20px 0;
+    &_key {
+      float: left;
+      color: #999;
+    }
+    &_value {
+      display: block;
+      min-height: 19px;
+      color: #333;
+      margin-left: 84px;
+      word-break: break-word;
     }
   }
 }

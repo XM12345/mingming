@@ -227,7 +227,7 @@ export default {
           return item;
         });
       }
-      this.$Model.Doc.seriesCustom().then(({ list, select }) => {
+      this.$Model.Doc.fieldsCustom('series').then(({ list, select }) => {
         this.customs = (list || []).map(item => {
           let _value = []; // 选中的值
           let _valueName = []; // 选中值的名

@@ -29,6 +29,12 @@ export default class Doc extends BaseModel {
     return contents;
   }
 
+  fieldsCustom(type: 'docs' | 'series') {
+    // 获取扩展字段
+    // http://v1.api.domain.com/internal/series/fields/custom
+    return super.$get(`/${type}/fields/custom`);
+  }
+
   async follow(app: string, pk: string, type = 1) {
     // 获取用户关注栏目列表
     // http://v1.api.domain.com/internal/users/current/follow/columns/{app}?type={type}
@@ -108,12 +114,6 @@ export default class Doc extends BaseModel {
     // 设置用户消息通知类型
     // http://v1.api.domain.com/internal/users/current/message/{app}/types
     return super.$post(`/users/current/message/${app}/types`, data);
-  }
-
-  seriesCustom() {
-    // 获取扩展字段
-    // http://v1.api.domain.com/internal/series/fields/custom
-    return super.$get('/series/fields/custom');
   }
 
   seriesList(page = 1, { col = '', status = -1, name = '', size = 20 }: any = {}) {
