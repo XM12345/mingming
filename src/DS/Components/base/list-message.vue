@@ -110,7 +110,7 @@ export default Vue.extend({
         case 'doc':
           this.contents = [
             { key: '栏目', name: content.col_name },
-            { key: '密级', name: ['1-公开', '2-内部', '3-秘密', '4-机密'][content.privacy - 1] }
+            { key: '密级', name: ['公开', '内部', '秘密', '机密'][content.privacy - 1] }
           ];
           let { select = [] } = (await this.$Model.Doc.fieldsCustom('docs')) || {};
           select = select.map((item: any) => {
@@ -144,7 +144,7 @@ export default Vue.extend({
           this.contents = [
             { key: '栏目', name: content.column_name },
             { key: '关键词', name: content.key_words },
-            { key: '密级', name: ['1-公开', '2-内部', '3-秘密', '4-机密'][content.privacy - 1] }
+            { key: '密级', name: ['公开', '内部', '秘密', '机密'][content.privacy - 1] }
           ];
           fields.map((item: any) => {
             if (item.input_type == EClueMessageFieldType.选择框) {
