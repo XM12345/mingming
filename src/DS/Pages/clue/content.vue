@@ -70,7 +70,7 @@ export default Vue.extend({
   mounted() {
     // app 刷新状态
     if (window.DfsxWeb) {
-      window.DfsxWeb.freshState = this.freshState;
+      window.DfsxWeb.freshState = this.init;
     }
   },
   methods: {
@@ -101,12 +101,6 @@ export default Vue.extend({
       this.$nextTick(() => {
         (this.$refs[key] as any).scrollIntoView();
       });
-    },
-    async freshState() {
-      let content = await this.getModel();
-      if (content) {
-        this.content.state = content.state;
-      }
     }
   }
 });

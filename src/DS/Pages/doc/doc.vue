@@ -62,7 +62,7 @@ export default {
   },
   mounted() {
     // app 刷新状态
-    window.DfsxWeb.freshState = this.fresh;
+    window.DfsxWeb.freshState = this.init;
   },
   methods: {
     init() {
@@ -75,11 +75,6 @@ export default {
       this.tabKey = key;
       this.$nextTick(() => {
         this.$refs[key].scrollIntoView();
-      });
-    },
-    fresh() {
-      this.$Model.Doc.doc(this.docId).then(data => {
-        this.content.status = data.status;
       });
     },
     handle(key) {
