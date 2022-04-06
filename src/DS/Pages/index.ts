@@ -27,7 +27,7 @@ export default {
   },
   '/tasks/:task_id': {
     name: '任务详情',
-    component: require('./subject/task').default
+    component: require('./subject/task-content').default
   },
   '/signals/:signal_id': {
     name: '信号监控详情',

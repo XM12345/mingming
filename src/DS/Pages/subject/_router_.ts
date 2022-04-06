@@ -4,11 +4,11 @@ export default {
   routes: {
     '/:subject_id': {
       name: '选题详情',
-      component: require('./subject').default
+      component: require('./content').default
     },
     '/tasks/:task_id': {
       name: '任务详情',
-      component: require('./task').default
+      component: require('./task-content').default
     }
   }
 };
