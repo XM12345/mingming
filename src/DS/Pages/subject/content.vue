@@ -17,7 +17,7 @@
           <base--parse-body :content="content"></base--parse-body>
         </div>
         <div ref="message">
-          <base--list-message :content="content" type="subject" v-if="content"></base--list-message>
+          <base--list-message v-if="content" :content="content" type="subject"></base--list-message>
         </div>
         <div ref="attachments">
           <base--list-attachments :mediumId="subjectId" type="subject"></base--list-attachments>

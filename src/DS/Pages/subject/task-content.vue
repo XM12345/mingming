@@ -17,16 +17,16 @@
           <base--parse-body :content="content"></base--parse-body>
         </div>
         <div ref="message">
-          <base--list-message :content="content" :isFresh="isFresh" type="task" v-if="content"></base--list-message>
+          <base--list-message v-if="content" :content="content" :isFresh="isFresh" type="task"></base--list-message>
         </div>
         <div ref="subject">
-          <task--list-subject :subject="content.subject"></task--list-subject>
+          <subject--list-subject :subject="content.subject"></subject--list-subject>
         </div>
         <div ref="comments">
           <base--list-comments :mediumId="taskId" type="task"></base--list-comments>
         </div>
         <div ref="records">
-          <task--list-records :taskId="taskId"></task--list-records>
+          <subject--list-records :taskId="taskId"></subject--list-records>
         </div>
       </h-tab>
     </div>
