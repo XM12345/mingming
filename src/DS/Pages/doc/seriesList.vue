@@ -50,7 +50,7 @@
       <h-link class="s-series-add" to="/docs/series/add"></h-link>
     </div>
 
-    <base--footer :footerNavs="footerNavs" @switchTo="switchTo"></base--footer>
+    <h-navigation :activeType="activeKey" :navigation="navigation" @switch="switchTo"></h-navigation>
   </div>
 </template>
 
@@ -73,11 +73,31 @@ export default {
         { name: '待审', value: 9 },
         { name: '通过', value: 10 }
       ],
-      footerNavs: [
-        { name: '我的串联单', key: 'mine' },
-        { name: '串联单库', key: 'list' },
-        { name: '审核串联单', key: 'audit' },
-        { name: '回收站', key: 'recycle' }
+      navigation: [
+        {
+          text: '我的串联单',
+          type: 'mine',
+          icon: require('./_images/mine@2x.png'),
+          iconActive: require('./_images/mine-active@2x.png')
+        },
+        {
+          text: '串联单库',
+          type: 'list',
+          icon: require('./_images/list@2x.png'),
+          iconActive: require('./_images/list-active@2x.png')
+        },
+        {
+          text: '审核串联单',
+          type: 'audit',
+          icon: require('./_images/audit@2x.png'),
+          iconActive: require('./_images/audit-active@2x.png')
+        },
+        {
+          text: '回收站',
+          type: 'recycle',
+          icon: require('./_images/recycle@2x.png'),
+          iconActive: require('./_images/recycle-active@2x.png')
+        }
       ],
       pk: 'series.view',
       spreadData: [],
@@ -86,7 +106,7 @@ export default {
   },
   created() {
     // 子组件向父组件传递值
-    this.activeKey = this.$route.query['key'] || this.footerNavs[0].key;
+    this.activeKey = this.$route.query['key'] || this.navigation[0].key;
   },
   watch: {
     activeKey() {
@@ -131,6 +151,7 @@ export default {
     },
     switchTo(key) {
       this.activeKey = key;
+      this.$setQuery({ key });
     },
     selectColumn() {
       this.isColSpread = !this.isColSpread;
