@@ -17,7 +17,7 @@
           <base--parse-body :content="content"></base--parse-body>
         </div>
         <div ref="message">
-          <base--list-message v-if="content" :content="content" :isFresh="isFresh" type="task"></base--list-message>
+          <base--list-message v-if="content.id" :content="content" :isFresh="isFresh" type="task"></base--list-message>
         </div>
         <div ref="subject">
           <subject--list-subject :subject="content.subject"></subject--list-subject>

@@ -1,22 +1,26 @@
 <template>
-  <div class="page-weibo">
+  <div :class="[B()]">
     <h-topbar title="微博文稿">
       <h-link class="h-topbar-search" to="/weibo/search"></h-link>
     </h-topbar>
 
-    <div class="s-select">
+    <div :class="[B('__select')]">
       <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>
     </div>
     <weibo--list-article :account="col" :state="status"></weibo--list-article>
   </div>
 </template>
+
 <script>
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-weibo-index',
   data() {
     return {
       columns: [],
       columnName: '所有公众号',
-      col: '',
+      col: undefined,
       allStatus: [
         { name: '全部', value: -1 },
         { name: '审核中', value: 1 },
@@ -24,7 +28,7 @@ export default {
         { name: '已发布', value: 3 }
       ],
       statusName: '',
-      status: '',
+      status: undefined,
       selectBar: []
     };
   },
@@ -55,15 +59,14 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-weibo {
-  min-height: 100%;
+.page-weibo-index {
   background-color: #f4f6f9;
 
-  .s-select {
+  &__select {
     height: 51px;
     .h-selectbar {
       position: fixed;

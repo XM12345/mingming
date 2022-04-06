@@ -17,7 +17,7 @@
           <base--parse-body :content="content"></base--parse-body>
         </div>
         <div ref="message">
-          <base--list-message v-if="content" :content="content" type="subject"></base--list-message>
+          <base--list-message v-if="content.id" :content="content" type="subject"></base--list-message>
         </div>
         <div ref="attachments">
           <base--list-attachments :mediumId="subjectId" type="subject"></base--list-attachments>
@@ -87,6 +87,8 @@ export default Vue.extend({
 
 <style lang="scss">
 .page-subject-content {
+  background: #f4f6f9;
+
   &__content {
     border-bottom: 10px solid #f4f6f9;
   }

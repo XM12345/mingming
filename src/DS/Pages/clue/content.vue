@@ -21,7 +21,7 @@
         </div>
 
         <div ref="message">
-          <base--list-message v-if="content" :content="content" type="clue"></base--list-message>
+          <base--list-message v-if="content.id" :content="content" type="clue"></base--list-message>
         </div>
         <div ref="attachments">
           <base--list-attachments

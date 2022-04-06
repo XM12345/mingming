@@ -1,12 +1,12 @@
 <template>
-  <div :class="[B()]">
+  <div :class="[B()]" :style="{ height: height + 'px' }">
     <div
       v-for="item in navigation"
       :key="item.type"
       :class="[B('__item'), isActive(item.type) && 'active']"
       @click="switchTo(item.type)"
     >
-      <img :src="isActive(item.type) ? item.iconActive : item.icon" alt="" />
+      <img :style="imgStyle" :src="isActive(item.type) ? item.iconActive : item.icon" alt="" />
       <span>{{ item.text }}</span>
     </div>
   </div>
@@ -22,10 +22,20 @@ export default Vue.extend({
     navigation: {
       type: Array as PropType<{ text: string; type: string; icon: string; iconActive: string }[]>,
       required: true
-    }
+    },
+    height: { type: Number, default: 55 },
+    iconSize: { type: Number, default: 24 }
   },
   data() {
     return {};
+  },
+  computed: {
+    imgStyle(): { height: string; width: string } {
+      return {
+        height: this.iconSize + 'px',
+        width: this.iconSize + 'px'
+      };
+    }
   },
   created() {},
   methods: {

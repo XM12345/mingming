@@ -1,6 +1,6 @@
 export default {
   name: '微博文稿',
-  component: require('./weibo').default,
+  component: require('./index').default,
   routes: {
     '/search': {
       name: '微博搜索',
@@ -8,7 +8,7 @@ export default {
     },
     '/articles/:article_id': {
       name: '微博文稿详情',
-      component: require('./weibo-content').default
+      component: require('./content').default
     },
     '/articles/:article_id/push': {
       name: '微博文稿发布',
