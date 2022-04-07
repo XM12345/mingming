@@ -140,9 +140,6 @@ export default Vue.extend({
       }
     }
   }
-  .v-modal {
-    display: none;
-  }
   &__operate {
     width: 100%;
     background: #fff;
