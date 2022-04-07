@@ -17,7 +17,7 @@ export default {
     },
     '/search/:col/:columnName': {
       name: '微信搜索',
-      component: require('./weixin-search').default
+      component: require('./search').default
     }
   }
 };

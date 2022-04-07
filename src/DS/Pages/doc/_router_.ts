@@ -32,7 +32,7 @@ export default {
     },
     '/series/search': {
       name: '串联单搜索',
-      component: require('./search').default
+      component: require('./series-search').default
     },
     '/series/edit/:series_id': {
       name: '编辑串联单',
