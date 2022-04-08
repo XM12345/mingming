@@ -1,21 +1,23 @@
 <template>
-  <div class="page-doc-history">
+  <div :class="[B()]">
     <h-topbar :title="`版本${version.version}`"></h-topbar>
     <article v-html="compare"></article>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-doc-history',
   data() {
     return {
-      version: {},
+      version: {} as any,
       compare: ''
     };
   },
   created() {
-    let { params } = this.$route;
-    let { doc_id, ver } = params;
+    let { doc_id, ver } = this.$route.params;
     this.$Model.Doc.history(doc_id, ver).then(data => {
       this.version = data;
     });
@@ -23,7 +25,7 @@ export default {
       this.compare = data;
     });
   }
-};
+});
 </script>
 
 <style lang="scss">

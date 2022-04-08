@@ -56,7 +56,7 @@ export default Vue.extend({
   left: 0;
   right: 0;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   height: 55px;
   text-align: center;
@@ -64,8 +64,7 @@ export default Vue.extend({
   background-color: #fff;
   box-shadow: 0px -1px 8px rgba(0, 0, 0, 0.08);
   &__item {
-    //flex: 1;
-    padding: 0 25px;
+    flex: 1;
     &.active {
       span {
         color: #1890ff;
@@ -80,6 +79,7 @@ export default Vue.extend({
       display: block;
       font-size: 10px;
       color: #afafaf;
+      white-space: nowrap;
     }
   }
 }

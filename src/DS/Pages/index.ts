@@ -17,11 +17,11 @@ export default {
   /** 暂时兼容旧的路由，待稳定后删除，避免地址丢失 */
   '/series': {
     name: '串联单',
-    component: require('./doc/seriesList').default,
+    component: require('./doc/series-index').default,
     routes: {
       '/:series_id': {
         name: '串联单详情',
-        component: require('./doc/series').default
+        component: require('./doc/series-content').default
       }
     }
   },

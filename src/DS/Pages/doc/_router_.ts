@@ -12,7 +12,7 @@ export default {
     },
     '/:doc_id': {
       name: '文稿详情',
-      component: require('./doc').default
+      component: require('./content').default
     },
     '/:doc_id/histories/:ver': {
       name: '电视文稿历史版本',
@@ -40,7 +40,7 @@ export default {
     },
     '/series/:series_id': {
       name: '串联单详情',
-      component: require('./series').default
+      component: require('./series-content').default
     }
   }
 };
