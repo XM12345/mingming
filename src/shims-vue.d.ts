@@ -4,3 +4,4 @@ declare module "*.vue" {
 }
 declare module 'vue-navigation';
 declare module 'vant';
+declare module 'echarts';

@@ -249,18 +249,5 @@ export default Vue.extend({
   .h-parse-body article {
     padding: 10px 15px;
   }
-  .s-footer {
-    @each $img in audit_, comment, delete, publish {
-      span.s-#{$img} {
-        background-image: url('../doc/_images/#{$img}@2x.png');
-      }
-    }
-    .s-collect {
-      background-image: url('./_images/collect@2x.png');
-    }
-    .has_collection {
-      background-image: url('./_images/collected@2x.png') !important;
-    }
-  }
 }
 </style>
