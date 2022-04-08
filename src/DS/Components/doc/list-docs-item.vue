@@ -1,41 +1,40 @@
 <template>
-  <li class="doc--list-docs-item">
+  <li :class="[B()]">
     <mark v-if="index > -1">{{ index + 1 }}</mark>
-    <div @click="to(item)">
-      <h3 :class="{ isMark: index == -1 }" v-html="item.title">{{ item.title }}</h3>
+    <div @click="to(item.id)">
+      <h3 :class="{ isMark: index === -1 }" v-html="item.title">{{ item.title }}</h3>
       <p>
-        <span>{{ item.col_name }}</span
-        ><span>{{ item.used_num ? '已引用' : '未引用' }}</span
-        ><span :class="className(item.status)">{{ item.status_name }}</span>
+        <span>{{ item.col_name }}</span>
+        <span>{{ item.used_num ? '已引用' : '未引用' }}</span>
+        <span :class="className(item.status)">{{ item.status_name }}</span>
       </p>
     </div>
-    <label role="checkbox" :class="{ isChecked: item.isChecked == true }" @click="check(item)"></label>
+    <label role="checkbox" :class="{ isChecked: item.isChecked === true }" @click="check(item)"></label>
   </li>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'doc--list-docs-item',
   props: {
-    item: {
-      default: {}
-    },
-    index: {
-      default: -1
-    }
+    item: { type: Object, default: () => ({}) },
+    index: { type: Number, default: -1 }
   },
   methods: {
-    className(status) {
+    className(status: number) {
       let data = status == 0 ? 'no_start' : status == 10 ? 'success' : status == 9 ? 'fail' : '';
       return data;
     },
-    check(item) {
-      this.$emit('check');
+    check(item: any) {
+      this.$emit('check', item);
     },
-    to(item) {
-      this.$toPage('doc', item.id);
+    to(id: number) {
+      this.$toPage('doc', id);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">

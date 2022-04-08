@@ -4,11 +4,11 @@ export default {
   routes: {
     '/doc-add': {
       name: '添加文稿',
-      component: require('./doc-add').default
+      component: require('./add').default
     },
     '/doc-add/:doc_ids': {
       name: '选择文稿',
-      component: require('./doc-add').default
+      component: require('./add').default
     },
     '/:doc_id': {
       name: '文稿详情',
@@ -16,7 +16,7 @@ export default {
     },
     '/:doc_id/histories/:ver': {
       name: '电视文稿历史版本',
-      component: require('./doc-history').default
+      component: require('./history').default
     },
     '/:col_id/user/add/:type_name': {
       name: '选择用户',

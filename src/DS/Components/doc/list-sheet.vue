@@ -1,39 +1,43 @@
 <template>
-  <div class="doc--list-sheet">
-    <section class="item" v-for="item in contents" :key="item.key" @click="view(item)">
+  <div :class="[B()]">
+    <section v-for="item in contents" :key="item.key" :class="[B('__item')]" @click="view(item)">
       <div>
         <p>{{ item.title }}</p>
         <span>{{ item.creator_nickname || item.creator_username }} | {{ duration(item.text_duration) }}</span>
       </div>
       <mark :class="className(item.status)">{{ item.status_name }}</mark>
     </section>
-    <a class="s-spread" v-if="items.length > 3" @click="spread">
+    <a v-if="items.length > 3" :class="[B('__spread')]" @click="spread">
       {{ isSpread ? '收起' : `查看全部文稿 (${items.length})` }}
       <mark :class="{ active: isSpread }"></mark>
     </a>
-    <h-popup class="s-popup-view" v-model="isView">
+    <h-popup v-model="isView" :class="[B('__view')]">
       <div>
         <h1>
-          {{ pre_item.title }}
+          {{ itemView.title }}
         </h1>
-        <p>{{ pre_item.content }}</p>
+        <p>{{ itemView.content }}</p>
       </div>
     </h-popup>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+enum EDocItemType {
+  文稿 = 1,
+  预设项 = 2
+}
+
+export default Vue.extend({
+  name: 'doc--list-sheet',
   props: {
-    items: {
-      type: Array,
-      default: () => []
-    }
+    items: { type: Array, default: () => [] }
   },
   data() {
     return {
-      contents: [],
-      pre_item: {},
+      contents: [] as any[],
+      itemView: {} as any,
       isSpread: false,
       isView: false
     };
@@ -43,11 +47,11 @@ export default {
     this.contents = this.items.slice(0, 3);
   },
   methods: {
-    className(status) {
-      let data = status == 0 ? 'no_start' : status == 10 ? 'success' : 'fail';
+    className(status: number) {
+      let data = status === 0 ? 'no_start' : status === 10 ? 'success' : 'fail';
       return data;
     },
-    duration(duration) {
+    duration(duration: number) {
       if (duration > 0) {
         let h = (((duration / 60 / 60) | 0) + '').padStart(2, '0');
         let m = (((duration / 60) % 60 | 0) + '').padStart(2, '0');
@@ -65,27 +69,26 @@ export default {
         this.contents = this.items.slice(0, 3);
       }
     },
-    view(item) {
-      // type: 1-文稿,2-预设项
+    view(item: any) {
       let { type, id } = item;
-      if (type == 1) {
+      if (type == EDocItemType.文稿) {
         this.$toPage('doc', id);
       }
-      if (type == 2) {
+      if (type == EDocItemType.预设项) {
         this.$Model.Doc.items(id).then(data => {
           this.isView = true;
-          this.pre_item = data;
+          this.itemView = data;
         });
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
 .doc--list-sheet {
   background-color: #fff;
-  .item {
+  &__item {
     position: relative;
     display: block;
     padding: 15px 0;
@@ -127,7 +130,7 @@ export default {
       }
     }
   }
-  .s-spread {
+  &__spread {
     position: relative;
     display: block;
     text-align: center;
@@ -151,7 +154,7 @@ export default {
       }
     }
   }
-  .s-popup-view {
+  &__view {
     width: 80%;
     border-radius: 4px;
     div {

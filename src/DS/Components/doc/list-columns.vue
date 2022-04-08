@@ -1,43 +1,55 @@
 <template>
-  <div class="doc--list-columns">
+  <div :class="[B()]">
     <div v-for="(item, index) in tree" :key="item.id">
       <p>
-        <span @click="item.children.length && item.type == 2 ? isShowItem(item, index) : select(item)">{{
-          item.name
-        }}</span>
+        <span @click="spread(item, index)">{{ item.name }}</span>
         <mark
-          @click="isShowItem(item, index)"
-          :class="{ active: item.isFolder == false }"
           v-if="item.children.length"
+          @click="isShowItem(item, index)"
+          :class="{ active: item.isFolder === false }"
         ></mark>
       </p>
       <doc--list-columns
-        :class="{ folder: item.isFolder == true }"
+        v-if="item.children.length"
+        :class="{ folder: item.isFolder === true }"
         :tree="item.children"
         @select="select"
-        v-if="item.children.length"
       ></doc--list-columns>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+enum EDocColumnType {
+  普通栏目 = 1,
+  标题栏目 = 2
+}
+
+export default Vue.extend({
+  name: 'doc--list-columns',
   props: {
-    tree: {
-      default: () => []
-    }
+    tree: { type: Array as PropType<any[]>, default: () => [] }
+  },
+  data() {
+    return {};
   },
   methods: {
-    isShowItem(item, index) {
-      // type:1-普通栏目，2-标题栏目
+    isShowItem(item: any, index: number) {
       this.tree[index].isFolder = !this.tree[index].isFolder;
     },
-    select(item) {
+    select(item: any) {
       this.$emit('select', item);
+    },
+    spread(item: any, index: number) {
+      if (item.children.length && item.type === EDocColumnType.标题栏目) {
+        this.isShowItem(item, index);
+      } else {
+        this.select(item);
+      }
     }
   }
-};
+});
 </script>
 
 <style lang="scss">

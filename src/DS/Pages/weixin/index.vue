@@ -19,7 +19,7 @@ export default Vue.extend({
   data() {
     return {
       columnName: '所有公众号',
-      col: '',
+      col: undefined as number | undefined,
       status: -1,
       allStatus: [
         { name: '全部', value: -1 },

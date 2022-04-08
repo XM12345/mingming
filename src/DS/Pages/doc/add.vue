@@ -1,45 +1,51 @@
 <template>
-  <div class="page-doc-add">
+  <div :class="[B()]">
     <h-topbar title="添加文稿">
       <div v-if="isStartSearch">
         <input
+          ref="input"
+          v-model.trim="keyword"
           type="text"
           placeholder="请输入关键词"
-          v-model.trim="keyword"
           @input="lazySearch"
           @keyup.enter="search"
-          ref="input"
         />
-        <mark @click="clear" v-if="keyword != ''">✕</mark>
+        <mark v-if="keyword != ''" @click="clear">✕</mark>
       </div>
-      <button class="h-topbar-search" @click="startSearch" v-else></button>
+      <button v-else class="h-topbar-search" @click="startSearch"></button>
     </h-topbar>
-    <div class="s-select">
-      <base--selectbar :selectBar="selectBar" @select="select" v-if="selectBar.length"></base--selectbar>
+
+    <div :class="[B('__select')]">
+      <base--selectbar v-if="selectBar.length" :selectBar="selectBar" @select="select"></base--selectbar>
     </div>
+
     <doc--list-docs
       :col="col"
       :quote="quote"
       :status="status"
       :keyword="name"
-      :docIds="doc_ids"
+      :docIds="docIds"
       @doc-add-modify="modify"
     ></doc--list-docs>
-    <footer class="s-footer-fixed" v-if="isShowBtn">
-      <button class="s-cancel" @click="cancel">取消</button>
-      <button class="s-confirm" @click="confirm">确定</button>
+
+    <footer v-if="isShowBtn" :class="[B('__footer')]">
+      <button :class="[B('__footer_cancel')]" @click="cancel">取消</button>
+      <button :class="[B('__footer_confirm')]" @click="confirm">确定</button>
     </footer>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-doc-add',
   data() {
     return {
       columns: [],
-      col: '',
+      col: undefined as number | undefined,
       checkData: [],
-      doc_ids: [],
+      docIds: [] as number[],
       type: '',
       quote: -1,
       status: -1,
@@ -58,22 +64,23 @@ export default {
         { name: '待审', value: 9 },
         { name: '通过', value: 10 }
       ],
-      selectBar: [],
-      isShowBtn: true
+      selectBar: [] as any[],
+      isShowBtn: true,
+      intervalId: 0
     };
   },
   created() {
     let { doc_ids } = this.$route.params;
     let { type } = this.$route.query;
-    this.doc_ids = (doc_ids && doc_ids.split(',').map(Number)) || [];
-    this.type = type;
+    this.docIds = (doc_ids && doc_ids.split(',').map(Number)) || [];
+    this.type = String(type);
     this.getColumns();
   },
   mounted() {
     let originHeight = document.documentElement.clientHeight;
     window.onresize = () => {
       return (() => {
-        if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName || '')) {
           let showHeight = document.body.clientHeight;
           this.isShowBtn = !(showHeight < originHeight);
         } else {
@@ -85,7 +92,7 @@ export default {
   methods: {
     getColumns() {
       this.$Model.Doc.columns('series.add').then(data => {
-        this.columns = data.filter(item => !item.parent_id);
+        this.columns = data.filter((item: any) => !item.parent_id);
         this.selectBar = [
           { type: 'column', returnWord: 'col', value: '', valueName: '所有栏目', list: this.columns },
           {
@@ -100,8 +107,8 @@ export default {
       });
     },
     lazySearch() {
-      clearTimeout(this._jobID);
-      this._jobID = setTimeout(() => {
+      clearTimeout(this.intervalId);
+      this.intervalId = setTimeout(() => {
         this.search();
       }, 500);
     },
@@ -117,17 +124,11 @@ export default {
         this.name = this.keyword;
       }
     },
-    getTotal(total) {
-      this.total = total;
-      if (total) {
-        this.isLoad = true;
-      }
-    },
     clear() {
       this.keyword = '';
       this.isStartSearch = false;
     },
-    select(item) {
+    select(item: any) {
       switch (item.type) {
         case 'col':
           this.col = item.id;
@@ -142,14 +143,14 @@ export default {
           break;
       }
     },
-    modify(data) {
+    modify(data: any) {
       this.checkData = data;
     },
     cancel() {
       this.$router.back();
     },
     confirm() {
-      if (this.type == 'insert') {
+      if (this.type === 'insert') {
         this.$root.$emit('doc-insert-doc', this.checkData);
       } else {
         this.$root.$emit('doc-add-doc', this.checkData);
@@ -157,12 +158,13 @@ export default {
       this.$router.back();
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
 .page-doc-add {
   padding-bottom: 65px;
+
   .h-topbar header {
     & > div {
       position: absolute;
@@ -195,7 +197,8 @@ export default {
       }
     }
   }
-  .s-select {
+
+  &__select {
     height: 51px;
     .h-selectbar {
       position: fixed;
@@ -205,27 +208,28 @@ export default {
       z-index: 999;
     }
   }
-  .s-footer-fixed {
+  &__footer {
     position: fixed;
     bottom: 20px;
     left: 0;
     right: 0;
     padding: 0 13px;
-    button {
+    &_cancel,
+    &_confirm {
       width: 46%;
       font-size: 15px;
       padding: 11px 10px;
       border: 1px solid transparent;
-      &.s-cancel {
-        color: #666;
-        border: 1px solid #eaeaea;
-        background: #fff;
-      }
-      &.s-confirm {
-        float: right;
-        color: #fff;
-        background: #1890ff;
-      }
+    }
+    &_cancel {
+      color: #666;
+      border: 1px solid #eaeaea;
+      background: #fff;
+    }
+    &_confirm {
+      float: right;
+      color: #fff;
+      background: #1890ff;
     }
   }
 }

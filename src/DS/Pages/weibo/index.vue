@@ -11,16 +11,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue';
 
 export default Vue.extend({
   name: 'page-weibo-index',
   data() {
     return {
-      columns: [],
+      columns: [] as any[],
       columnName: '所有公众号',
-      col: undefined,
+      col: undefined as number | undefined,
       allStatus: [
         { name: '全部', value: -1 },
         { name: '审核中', value: 1 },
@@ -28,8 +28,8 @@ export default Vue.extend({
         { name: '已发布', value: 3 }
       ],
       statusName: '',
-      status: undefined,
-      selectBar: []
+      status: undefined as number | undefined,
+      selectBar: [] as any[]
     };
   },
   created() {
@@ -44,7 +44,7 @@ export default Vue.extend({
     });
   },
   methods: {
-    select(item) {
+    select(item: any) {
       switch (item.type) {
         case 'col':
           this.col = item.id;

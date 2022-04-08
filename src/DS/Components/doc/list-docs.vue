@@ -1,5 +1,5 @@
 <template>
-  <h-loadmore :class="[B()]" :onLoad="onLoad" ref="loadmore">
+  <h-loadmore ref="loadmore" :class="[B()]" :onLoad="onLoad">
     <template #list="{ data }">
       <ul>
         <doc--list-docs-item
@@ -13,45 +13,36 @@
   </h-loadmore>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'doc--list-docs',
   props: {
-    col: {
-      default: ''
-    },
-    quote: {
-      default: 0
-    },
-    status: {
-      default: -1
-    },
-    keyword: {
-      default: ''
-    },
-    docIds: {
-      default: () => []
-    }
+    col: { type: Number, default: undefined },
+    quote: { type: Number, default: 0 },
+    status: { type: Number, default: -1 },
+    keyword: { type: String, default: '' },
+    docIds: { type: Array, default: () => [] }
   },
   data() {
     return {
-      contents: []
+      contents: [] as any[]
     };
   },
-  created() {},
   computed: {
-    watchData() {
-      let { col, status, quote, keyword } = this;
-      return { col, status, quote, keyword };
+    watchData(): { col: number | undefined; status: number; quote: number; keyword: string } {
+      return { col: this.col, status: this.status, quote: this.quote, keyword: this.keyword };
     }
   },
   watch: {
     watchData(cur, old) {
-      this.$refs['loadmore']?.doRefresh();
+      (this.$refs['loadmore'] as any)?.doRefresh();
     }
   },
+  created() {},
   methods: {
-    onLoad(page, size) {
+    onLoad(page: number, size: number) {
       return this.$Model.Doc.seriesDocs(page, {
         status: this.status,
         col: this.col,
@@ -60,12 +51,12 @@ export default {
         size
       }).then(async result => {
         let { data } = result;
-        result.data = data.map(item => ({ ...item, isChecked: false, timeStamp: 0 }));
+        result.data = data.map((item: any) => ({ ...item, isChecked: false, timeStamp: 0 }));
         return result;
       });
     },
 
-    check(item) {
+    check(item: any) {
       item.isChecked = !item.isChecked;
       if (!item.isChecked) {
         let index = this.contents.findIndex(({ id }) => id == item.id);
@@ -74,10 +65,10 @@ export default {
         this.contents.push(item);
       }
       item.timeStamp = Date.now();
-      let CheckedData = this.contents.filter(item => item.isChecked == true);
-      CheckedData.sort((a, b) => a.timeStamp - b.timeStamp);
+      let CheckedData = this.contents.filter((item: any) => item.isChecked === true);
+      CheckedData.sort((a: any, b: any) => a.timeStamp - b.timeStamp);
       this.$emit('doc-add-modify', CheckedData);
     }
   }
-};
+});
 </script>

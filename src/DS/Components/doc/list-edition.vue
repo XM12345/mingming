@@ -1,11 +1,11 @@
 <template>
-  <div class="doc--list-edition">
+  <div :class="[B()]">
     <h3>历史版本</h3>
     <h-link
-      class="item"
-      :to="`/docs/${mediumId}/histories/${item.version}`"
       v-for="(item, index) in histories"
       :key="item.version"
+      :class="[B('__item')]"
+      :to="`/docs/${mediumId}/histories/${item.version}`"
     >
       <mark>V{{ index }}</mark>
       <div>
@@ -17,21 +17,17 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'doc--list-edition',
   props: {
-    mediumId: {
-      required: true,
-      default: undefined
-    },
-    type: {
-      type: String,
-      default: ''
-    }
+    mediumId: { required: true, type: Number, default: 0 }
   },
   data() {
     return {
-      histories: []
+      histories: [] as any[]
     };
   },
   created() {
@@ -44,20 +40,20 @@ export default {
       });
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
 .doc--list-edition {
   background-color: #fff;
   border-bottom: 10px solid #f4f6f9;
-  h3 {
+  & > h3 {
     padding: 15px;
     font-size: 15px;
     font-weight: normal;
     margin: 0;
   }
-  .item {
+  &__item {
     font-size: 12px;
     position: relative;
     display: block;

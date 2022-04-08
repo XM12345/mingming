@@ -30,7 +30,7 @@
           <base--list-operlog :mediumId="docId" type="doc"></base--list-operlog>
         </div>
         <div ref="histories">
-          <doc--list-edition :mediumId="docId" type="doc"></doc--list-edition>
+          <doc--list-edition :mediumId="docId"></doc--list-edition>
         </div>
       </h-tab>
     </div>
