@@ -1,18 +1,22 @@
 <template>
-  <div class="page-message-follow">
+  <div :class="[B()]">
     <h-topbar title="关注消息设置"></h-topbar>
-    <div class="s-main">
-      <user--list-control v-if="type == 'control'"></user--list-control>
-      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch" listenScroll="false" v-else>
-        <user--list-control v-if="tabKey == 'control'"></user--list-control>
-        <user--list-tree :activeKey="tabKey" v-else></user--list-tree>
+
+    <div :class="[B('__main')]">
+      <user--list-control v-if="type === 'control'"></user--list-control>
+      <h-tab v-else :columns="navItems" :activeIndex="tabKey" listenScroll="false" @switch="onSwitch">
+        <user--list-control v-if="tabKey === 'control'"></user--list-control>
+        <user--list-tree v-else :activeKey="tabKey"></user--list-tree>
       </h-tab>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-user-message-follow',
   data() {
     return {
       tabKey: '',
@@ -29,28 +33,22 @@ export default {
     };
   },
   created() {
-    let { query } = this.$route;
-    let { type } = query;
-    this.type = type;
+    let { type } = this.$route.query;
+    this.type = String(type || '');
     this.tabKey = this.navItems[0].key || '';
   },
   methods: {
-    onSwitch(key) {
+    onSwitch(key: string) {
       this.tabKey = key;
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-message-follow {
+.page-user-message-follow {
   position: relative;
   min-height: 100%;
   background: #f7f7f7;
-  .s-main {
-    .items {
-      height: 100%;
-    }
-  }
 }
 </style>

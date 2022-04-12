@@ -4,19 +4,18 @@
       <h-link
         v-for="item in data"
         :key="item.id"
-        :class="{ readed: item.has_read }"
+        :class="[B('__item'), item.has_read && 'readed']"
         :to="`/notices/${item.id}`"
         @click.native="item.has_read = true"
       >
-        <div>
-          <label v-if="!item.has_read"></label>
-          <p>{{ item.title }}</p>
-          <span>
-            {{ item.author_nickname || item.author_name }} |
-            {{ $F.time(parseInt(item.publish_time || item.creation_time), '', '发布') }}
-          </span>
+        <div :class="[B('__item_main')]">
+          <div :class="[B('__item_title')]">{{ item.title }}<label v-if="!item.has_read"></label></div>
+          <div :class="[B('__item_message')]">
+            <span>{{ item.author_nickname || item.author_name }}</span>
+            <time>{{ $F.time(parseInt(item.publish_time), '', '发布') }}</time>
+          </div>
         </div>
-        <mark></mark>
+        <mark :class="[B('__item_arrow')]"></mark>
       </h-link>
     </template>
   </h-loadmore>
@@ -27,6 +26,7 @@ import Vue from 'vue';
 
 export default Vue.extend({
   name: 'general--list-notice',
+  props: {},
   data() {
     return {};
   },
@@ -41,15 +41,29 @@ export default Vue.extend({
 
 <style lang="scss">
 .general--list-notice {
-  a {
-    position: relative;
-    display: block;
-    padding: 15px 0;
-    margin: 0 15px;
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 16px;
+    padding: 16px 0;
     border-bottom: 1px solid #f1f1f1;
-
-    div {
+    &.readed &_title {
+      color: #999;
+    }
+    &_main {
+      flex: 1;
+      margin-right: 10px;
+    }
+    &_title {
       position: relative;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      margin-bottom: 10px;
+      color: #333;
+      font-size: 14px;
       label {
         position: absolute;
         top: 6px;
@@ -59,23 +73,17 @@ export default Vue.extend({
         background-color: #ed4040;
         border-radius: 50%;
       }
-      p {
-        margin: 0;
-        padding-bottom: 10px;
-        color: #333;
-        font-size: 15px;
-        padding-right: 23px;
-      }
-      span {
-        color: #999;
-        font-size: 12px;
+    }
+    &_message {
+      color: #999;
+      font-size: 12px;
+      span,
+      time {
+        margin-right: 10px;
       }
     }
-    mark {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
+
+    &_arrow {
       display: inline-block;
       background: transparent;
       border: 1px solid #999;
@@ -85,11 +93,6 @@ export default Vue.extend({
       width: 10px;
       transform: rotate(-45deg) translate(0, -5px);
       transform-origin: bottom;
-    }
-    &.readed {
-      p {
-        color: #999;
-      }
     }
   }
 }

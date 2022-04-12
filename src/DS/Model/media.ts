@@ -46,7 +46,7 @@ export default class Media extends BaseModel {
     return super.$get('/task/message/configs');
   }
 
-  putConfigs(data: []) {
+  putConfigs(data: any[] = []) {
     // 修改任务消息配置
     // http://v1.api.domain.com/internal/task/message/configs
 

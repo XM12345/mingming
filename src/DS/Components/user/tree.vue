@@ -1,52 +1,45 @@
 <template>
-  <div class="message-item">
-    <div v-for="(item, index) in tree" :key="item.id">
+  <div :class="[B()]">
+    <div v-for="(item, index) in tree" :key="item.id" :class="[B('__item')]">
       <p>
         <span @click="isShowItem(item, index)">{{ item.name }}</span>
-        <mark :class="{ active: item.isFolder == false }" v-if="item.children.length"></mark>
+        <mark v-if="item.children.length" :class="{ active: item.isFolder === false }"></mark>
         <!-- type:1-普通栏目，2-标题栏目 -->
         <label
-          class="select"
-          role="checkbox"
-          :class="{ isChecked: item.is_follow == true }"
-          @click="select(item, index)"
-          :id="item.id"
           v-if="item.type != 2 && item.column_type != 2"
+          role="checkbox"
+          :class="[B('__item_select'), item.is_follow === true && 'isChecked']"
+          :id="item.id"
+          @click="select(item, index)"
         ></label>
       </p>
       <user--tree
-        :class="{ folder: item.isFolder == true }"
+        v-if="item.children.length"
+        :class="{ folder: item.isFolder === true }"
         :tree="item.children"
         :ackey="ackey"
-        v-if="item.children.length"
       ></user--tree>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue, { PropType } from 'vue';
+
+export default Vue.extend({
+  name: 'user--tree',
   props: {
-    tree: {
-      default: () => []
-    },
-    ackey: {
-      default: ''
-    }
+    tree: { type: Array as PropType<any[]>, default: () => [] },
+    ackey: { type: String, default: '' }
   },
   data() {
-    return {
-      isopen: true
-    };
-  },
-  watch: {
-    ackey() {}
+    return { isopen: true };
   },
   methods: {
-    isShowItem(item, index) {
+    isShowItem(item: any, index: number) {
       this.tree[index].isFolder = !this.tree[index].isFolder;
     },
-    select(item, index) {
+    select(item: any, index: number) {
       let { ackey } = this;
       // doc,series,subject
       this.tree[index].is_follow = !this.tree[index].is_follow;
@@ -56,14 +49,14 @@ export default {
       };
       // 'clue', 'media', 'stream'
       let checked = document.querySelectorAll('.isChecked');
-      let checked_ids = [];
+      let checked_ids: number[] = [];
       checked.forEach(item => {
         checked_ids.push(parseInt(item.id));
       });
-      if (this.tree[index].is_follow == true) {
+      if (this.tree[index].is_follow === true) {
         checked_ids.push(item.id);
       } else {
-        let cancel_index = checked_ids.findIndex(i => i == item.id);
+        let cancel_index = checked_ids.findIndex(i => i === item.id);
         checked_ids.splice(cancel_index, 1);
       }
       switch (ackey) {
@@ -78,11 +71,11 @@ export default {
           this.$Model.Clue.postFollow(checked_ids).then(() => {});
           break;
         case 'media':
-          checked_ids = checked_ids.length ? checked_ids : 0;
+          checked_ids = checked_ids.length ? checked_ids : [0];
           this.$Model.Media.attention(checked_ids.toString()).then(() => {});
           break;
         case 'stream':
-          checked_ids = checked_ids.length ? checked_ids : 0;
+          checked_ids = checked_ids.length ? checked_ids : [0];
           this.$Model.Stream.putColumns(checked_ids.toString()).then(() => {});
           break;
         default:
@@ -90,11 +83,11 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.message-item {
+.user--tree {
   display: block;
   &.folder {
     display: none;
@@ -109,7 +102,7 @@ export default {
       opacity: 1;
     }
   }
-  div {
+  &__item {
     padding-left: 10px;
     p {
       position: relative;
@@ -127,24 +120,22 @@ export default {
           border-color: #1890ff transparent transparent;
         }
       }
-      label {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        &.isChecked {
-          background: url('./_images/checked@2x.png');
-          background-repeat: no-repeat;
-          background-size: 100%;
-          border: none !important;
-          padding: 6px !important;
-        }
-        &.select {
-          margin: 0 10px;
-          padding: 5px;
-          border-radius: 50%;
-          border: 1px solid #999;
-        }
+    }
+    &_select {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      margin: 0 10px;
+      padding: 5px;
+      border-radius: 50%;
+      border: 1px solid #999;
+      &.isChecked {
+        background: url('./_images/checked@2x.png');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        border: none;
+        padding: 6px;
       }
     }
   }

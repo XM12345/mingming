@@ -1,28 +1,29 @@
 <template>
-  <div class="tree">
-    <user--tree :ackey="activeKey" :tree="contents" v-if="contents.length"></user--tree>
+  <div :class="[B()]">
+    <user--tree v-if="contents.length" :ackey="activeKey" :tree="contents"></user--tree>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'user--list-tree',
   props: {
-    activeKey: {
-      default: ''
-    }
+    activeKey: { type: String, default: '' }
   },
   data() {
     return {
-      contents: []
+      contents: [] as any[]
     };
-  },
-  created() {
-    this.init();
   },
   watch: {
     activeKey() {
       this.init();
     }
+  },
+  created() {
+    this.init();
   },
   methods: {
     init() {
@@ -32,12 +33,12 @@ export default {
         case 'series':
           let pk = activeKey == 'series' ? 'series.view' : 'doc.view';
           this.$Model.Doc.getColumns(activeKey, pk).then(data => {
-            this.contents = data.filter(item => !item.parent_id);
+            this.contents = data.filter((item: any) => !item.parent_id);
           });
           break;
         case 'subject':
           this.$Model.Subject.getColumns().then(data => {
-            this.contents = data.filter(item => !item.parent_id);
+            this.contents = data.filter((item: any) => !item.parent_id);
           });
           break;
         case 'clue':
@@ -47,12 +48,12 @@ export default {
           break;
         case 'media':
           this.$Model.Media.getColumns().then(data => {
-            this.contents = data.filter(item => !item.parent_id);
+            this.contents = data.filter((item: any) => !item.parent_id);
           });
           break;
         case 'stream':
           this.$Model.Stream.getColumns().then(data => {
-            this.contents = data.filter(item => !item.parent_id);
+            this.contents = data.filter((item: any) => !item.parent_id);
           });
           break;
         default:
@@ -60,39 +61,11 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.tree {
+.user--list-tree {
   padding: 0 10px;
-  h3 {
-    position: relative;
-    color: #333;
-    font-size: 15px;
-    font-weight: normal;
-    padding-left: 10px;
-    label {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      display: inline-block;
-      background: transparent;
-      border: 1px solid #999;
-      border-top: none;
-      border-left: none;
-      height: 9px;
-      width: 9px;
-      margin: 0 18px;
-      margin-top: -4px;
-      transform: rotate(45deg) translate(0, -5px);
-      transform-origin: bottom;
-      transition: all 0.5s;
-      &.active {
-        transform: rotate(-135deg) translate(-2px, 8px);
-      }
-    }
-  }
 }
 </style>

@@ -3,7 +3,7 @@
     <!-- 使用vue-navigation插件缓存页面 -->
     <navigation>
       <h-page>
-        <router-view class="app-view" />
+        <router-view />
       </h-page>
     </navigation>
   </div>

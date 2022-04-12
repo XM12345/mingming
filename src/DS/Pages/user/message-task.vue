@@ -1,16 +1,20 @@
 <template>
-  <div class="page-message-task">
+  <div :class="[B()]">
     <h-topbar title="任务消息设置"></h-topbar>
-    <div class="s-main">
-      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch" listenScroll="false">
+
+    <div :class="[B('__main')]">
+      <h-tab :columns="navItems" :activeIndex="tabKey" listenScroll="false" @switch="onSwitch">
         <user--list-task :activeKey="tabKey"></user--list-task>
       </h-tab>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-user-message-task',
   data() {
     return {
       tabKey: '',
@@ -27,15 +31,15 @@ export default {
     this.tabKey = this.navItems[0].key || '';
   },
   methods: {
-    onSwitch(key) {
+    onSwitch(key: string) {
       this.tabKey = key;
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-message-task {
+.page-user-message-task {
   position: relative;
   min-height: 100%;
   background: #f7f7f7;

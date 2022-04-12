@@ -3,6 +3,7 @@ export default {
   component: require('../404').default,
   routes: {
     '/notice': { name: '公告列表', component: require('./notice-index').default },
-    '/notices/:notice_id': { name: '公告详情', component: require('./notice-content').default }
+    '/notices/:notice_id': { name: '公告详情', component: require('./notice-content').default },
+    '/notices/manage/:notice_id': { name: '公告管理详情', component: require('./notice-manage-content').default }
   }
 };

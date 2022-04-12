@@ -1,52 +1,54 @@
 <template>
-  <div class="user--list-task">
-    <div class="s-item" v-if="activeKey == 'media'">
-      <h3 style="padding-left: 10px;">
+  <div :class="[B()]">
+    <div v-if="activeKey === 'media'" :class="[B('__item')]">
+      <h3 :class="[B('__item_title')]" style="padding-left: 10px">
         我的素材库
-        <label class="colspan"></label>
+        <label :class="[B('__item_colspan')]"></label>
       </h3>
-      <div v-for="(item, index) in contents.messages" :key="item.id">
-        <p>
+      <div v-for="(item, index) in contents.messages" :key="item.id" :class="[B('__item_content')]">
+        <p :class="[B('__item_type')]">
           <span>{{ item.name }}</span>
-          <label class="select" :class="{ isChecked: item.state == 1 }" @click="select(item, index)"></label>
+          <label :class="[B('__item_select'), item.state === 1 && 'isChecked']" @click="select(item, index)"></label>
         </p>
       </div>
     </div>
-    <div class="s-item" v-else>
-      <div v-for="item in contents" :key="item.id">
-        <h3>
+    <div v-else :class="[B('__item')]">
+      <div v-for="item in contents" :key="item.id" :class="[B('__item_content')]">
+        <h3 :class="[B('__item_title')]">
           {{ item.name }}
-          <label class="colspan"></label>
+          <label :class="[B('__item_colspan')]"></label>
         </h3>
-        <p v-for="i in item.types">
+        <p v-for="(i, index) in item.types" :key="index" :class="[B('__item_type')]">
           <span>{{ i.name }}</span>
-          <label class="select" :class="{ isChecked: i.is_check == true }" @click="select(i)"></label>
+          <label :class="[B('__item_select'), i.is_check === true && 'isChecked']" @click="select(i)"></label>
         </p>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'user--list-task',
   props: {
-    activeKey: {
-      default: ''
-    }
+    activeKey: { type: String, default: '' }
   },
   data() {
     return {
-      contents: []
+      contents: [] as any[]
     };
-  },
-  created() {
-    this.init();
   },
   watch: {
     activeKey() {
       this.init();
     }
   },
+  created() {
+    this.init();
+  },
+
   methods: {
     init() {
       let Model;
@@ -73,7 +75,7 @@ export default {
           break;
       }
     },
-    select(i, index) {
+    select(i: any, index: number) {
       let { activeKey } = this;
       if (activeKey == 'media') {
         if (i.state == 0) {
@@ -96,69 +98,68 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
 .user--list-task {
   padding: 0 10px;
-  .s-item {
+  &__item {
     display: block;
 
-    h3 {
+    &_title {
       position: relative;
       color: #333;
       font-size: 15px;
       font-weight: normal;
-      label {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        display: inline-block;
-        background: transparent;
-        border: 1px solid #999;
-        border-top: none;
-        border-left: none;
-        height: 9px;
-        width: 9px;
-        margin: 0 18px;
-        margin-top: -4px;
-        transform: rotate(45deg) translate(0, -5px);
-        transform-origin: bottom;
-        transition: all 0.5s;
-        &.active {
-          transform: rotate(-135deg) translate(-2px, 8px);
-        }
+    }
+    &_colspan {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      display: inline-block;
+      background: transparent;
+      border: 1px solid #999;
+      border-top: none;
+      border-left: none;
+      height: 9px;
+      width: 9px;
+      margin: 0 18px;
+      margin-top: -4px;
+      transform: rotate(45deg) translate(0, -5px);
+      transform-origin: bottom;
+      transition: all 0.5s;
+      &.active {
+        transform: rotate(-135deg) translate(-2px, 8px);
       }
     }
-    div {
-      padding-left: 10px;
 
-      p {
-        position: relative;
-        min-height: 17px;
-        font-size: 15px;
-        color: #333;
-        label {
-          position: absolute;
-          top: 50%;
-          right: 0;
-          transform: translateY(-50%);
-          &.isChecked {
-            background: url('./_images/checked@2x.png');
-            background-repeat: no-repeat;
-            background-size: 100%;
-            border: none !important;
-            padding: 6px !important;
-          }
-          &.select {
-            margin: 0 10px;
-            padding: 5px;
-            border-radius: 50%;
-            border: 1px solid #999;
-          }
-        }
+    &_content {
+      padding-left: 10px;
+    }
+
+    &_type {
+      position: relative;
+      min-height: 17px;
+      font-size: 15px;
+      color: #333;
+    }
+    &_select {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      margin: 0 10px;
+      padding: 5px;
+      border-radius: 50%;
+      border: 1px solid #999;
+      &.isChecked {
+        background: url('./_images/checked@2x.png');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        border: none;
+        padding: 6px;
       }
     }
   }
