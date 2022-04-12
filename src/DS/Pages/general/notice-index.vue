@@ -1,8 +1,11 @@
 <template>
-  <div :class="[B()]" :style="style">
+  <div :class="[B()]">
     <h-topbar title="公告"></h-topbar>
-    <general--list-notice v-if="activeType === 'index'"></general--list-notice>
-    <general--list-manage-notice v-if="activeType === 'manage'"></general--list-manage-notice>
+
+    <div :class="[B('__main')]" :style="style">
+      <general--list-notice v-if="activeType === 'index'"></general--list-notice>
+      <general--list-manage-notice v-if="activeType === 'manage'"></general--list-manage-notice>
+    </div>
 
     <h-navigation v-if="showManage" :activeType="activeType" :navigation="navigation" @switch="switchTo"></h-navigation>
   </div>

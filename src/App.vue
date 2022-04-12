@@ -3,7 +3,7 @@
     <!-- 使用vue-navigation插件缓存页面 -->
     <navigation>
       <h-page>
-        <router-view />
+        <router-view class="app-view" />
       </h-page>
     </navigation>
   </div>
@@ -40,7 +40,7 @@ body {
   }
 
   .app-view {
-    height: 100%;
+    min-height: 100%;
   }
 
   a {
