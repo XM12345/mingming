@@ -1,76 +1,80 @@
 <template>
-  <div class="page-cms-content">
+  <div :class="[B()]">
     <h-topbar></h-topbar>
-    <!-- 视频 -->
-    <cms--video
-      :baview_api_url="baview_api_url"
-      :extension="content.fields"
-      v-if="content.type == 'video'"
-    ></cms--video>
-    <!-- 标题 -->
-    <div class="s-title">
-      <h1>{{ content.title }}</h1>
-      <div class="page-cms--content-header">
-        <header v-if="content.author_id">
-          <h-user :src="content.author_avatar_url"></h-user>
-          <span>{{ content.author_nickname || content.author_name }}</span>
-          <time>{{ $F.time(content.publish_time, 'yyyy-MM-dd hh:mm') }}</time>
-        </header>
+
+    <div v-if="content" :class="[B('__main')]">
+      <cms--video
+        v-if="content.type === 'video'"
+        :baview_api_url="baview_api_url"
+        :extension="content.fields"
+      ></cms--video>
+
+      <div :class="[B('__title')]">
+        <h1>{{ content.title }}</h1>
+        <div :class="[B('__title_message')]">
+          <header v-if="content.author_id">
+            <h-user :src="content.author_avatar_url"></h-user>
+            <span>{{ content.author_nickname || content.author_name }}</span>
+            <time>{{ $F.time(content.publish_time, 'yyyy-MM-dd hh:mm') }}</time>
+          </header>
+        </div>
       </div>
+
+      <cms--summary v-if="content.summary" :content="content"></cms--summary>
+
+      <base--parse-body :content="content"></base--parse-body>
+
+      <cms--pictureset
+        v-if="content.type === 'pictureset'"
+        :baview_api_url="baviewApiUrl"
+        :extension="content.fields"
+      ></cms--pictureset>
     </div>
-    <!-- 导读 -->
-    <cms--summary :content="content" v-if="content.summary"></cms--summary>
-    <!-- 富文本 -->
-    <base--parse-body :content="content"></base--parse-body>
-    <!-- 图集 -->
-    <cms--pictureset
-      :baview_api_url="baview_api_url"
-      :extension="content.fields"
-      v-if="content.type == 'pictureset'"
-    ></cms--pictureset>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-cms-content',
   data() {
     return {
-      baview_api_url: undefined,
-      content_id: undefined,
-      content: {}
+      baviewApiUrl: '',
+      contentId: 0,
+      content: null as any
     };
   },
   async created() {
-    let { params } = this.$route;
-    this.content_id = params.content_id;
+    this.contentId = Number(this.$route.params.content_id) || 0;
     this.getBaview();
   },
   methods: {
     async getBaview() {
       let config = await this.$Model.General.config();
       let { baview_api_url } = config;
-      this.baview_api_url = baview_api_url;
+      this.baviewApiUrl = baview_api_url;
       this.getContent().then(data => {
         this.content = data;
       });
     },
     getContent() {
-      return this.$Model.Cms(this.baview_api_url).content(this.content_id);
+      return this.$Model.Cms(this.baviewApiUrl).content(this.contentId);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
 .page-cms-content {
-  .s-title {
+  &__title {
     padding: 20px 15px;
     h1 {
       font-size: 18px;
       color: #333;
       font-weight: 600;
     }
-    .page-cms--content-header {
+    &_message {
       header {
         position: relative;
         img {

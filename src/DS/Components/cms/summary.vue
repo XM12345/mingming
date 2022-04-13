@@ -1,17 +1,18 @@
 <template>
-  <header class="cms--summary" v-if="content.summary">
+  <header v-show="content.summary" :class="[B()]">
     <p>{{ content.summary }}</p>
   </header>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'cms--summary',
   props: {
-    content: {
-      default: () => ({})
-    }
+    content: { type: Object, default: () => ({}) }
   }
-};
+});
 </script>
 
 <style lang="scss">

@@ -27,10 +27,10 @@
           <doc--list-comments :docId="docId"></doc--list-comments>
         </div>
         <div ref="records">
-          <doc--list-logs :mediumId="docId"></doc--list-logs>
+          <doc--list-logs :docId="docId"></doc--list-logs>
         </div>
         <div ref="histories">
-          <doc--list-edition :docId="docId"></doc--list-edition>
+          <doc--list-edition :mediumId="docId"></doc--list-edition>
         </div>
       </h-tab>
     </div>

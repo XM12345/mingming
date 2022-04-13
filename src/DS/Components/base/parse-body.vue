@@ -1,33 +1,33 @@
 <template>
-  <div class="h-parse-body">
+  <div :class="[B()]">
     <article
       v-ds-body="[
         content.content || content.body,
         content.body_components || content.bodyComponents || content.attachments
       ]"
       ref="bodyContent"
+      :class="[B('__article')]"
     ></article>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import dsBodyDirective from './bodyDirective';
-export default {
+
+export default Vue.extend({
+  name: 'h-parse-body',
   props: {
-    content: {
-      default: ''
-    }
+    content: { type: Object, default: () => ({}) }
   },
-  directives: {
-    'ds-body': dsBodyDirective
-  }
-};
+  directives: { 'ds-body': dsBodyDirective }
+});
 </script>
 
 <style lang="scss">
 .h-parse-body {
   background: #fff;
-  article {
+  &__article {
     padding: 10px 15px 70px;
     word-break: break-all;
     overflow-x: auto;

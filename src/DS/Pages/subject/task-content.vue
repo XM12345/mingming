@@ -1,7 +1,8 @@
 <template>
   <div :class="[B()]">
-    <h-topbar :title="content.name"></h-topbar>
-    <div :class="[B('__main')]">
+    <h-topbar :title="title"></h-topbar>
+
+    <div v-if="content" :class="[B('__main')]">
       <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
         <div ref="content" :class="[B('__content')]">
           <div :class="[B('__intro')]">
@@ -17,10 +18,10 @@
           <base--parse-body :content="content"></base--parse-body>
         </div>
         <div ref="message">
-          <base--list-message v-if="content.id" :content="content" :isFresh="isFresh" type="task"></base--list-message>
+          <base--list-message :content="content" :isFresh="isFresh" type="task"></base--list-message>
         </div>
         <div ref="subject">
-          <subject--list-subject :subject="content.subject"></subject--list-subject>
+          <subject--list-subject v-if="content.subject" :subject="content.subject"></subject--list-subject>
         </div>
         <div ref="comments">
           <subject--list-task-comments :taskId="taskId"></subject--list-task-comments>
@@ -40,7 +41,7 @@ export default Vue.extend({
   name: 'page-subject-task-content',
   data() {
     return {
-      content: {} as any,
+      content: null as any,
       navItems: [
         { name: '任务内容', key: 'content' },
         { name: '基本信息', key: 'message' },
@@ -53,9 +54,13 @@ export default Vue.extend({
       isFresh: false
     };
   },
+  computed: {
+    title(): string {
+      return this.content?.name || '';
+    }
+  },
   created() {
-    let { params } = this.$route;
-    let { task_id } = params;
+    let { task_id } = this.$route.params;
     this.taskId = Number(task_id) || 0;
     this.init();
     this.tabKey = this.navItems[0].key || '';

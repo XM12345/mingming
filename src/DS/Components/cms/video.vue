@@ -1,18 +1,17 @@
 <template>
-  <div class="cms--video">
-    <h-video controls :video="video" v-if="video"></h-video>
+  <div :class="[B()]">
+    <h-video v-if="video" controls :video="video"></h-video>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'cms--video',
   props: {
-    extension: {
-      required: true
-    },
-    baview_api_url: {
-      required: true
-    }
+    extension: { required: true, type: Object, default: () => ({}) },
+    baview_api_url: { required: true, type: String, default: '' }
   },
   data() {
     return {
@@ -36,7 +35,7 @@ export default {
         });
     }
   }
-};
+});
 </script>
 
 <style lang="scss">

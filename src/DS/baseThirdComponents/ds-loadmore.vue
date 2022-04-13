@@ -1,8 +1,5 @@
 <template>
-  <van-pull-refresh class="ds-loadmore" v-model="isTopLoading" success-text="刷新成功" @refresh="onRefresh">
-    <!-- <mark class=" ds-loadmore__debug">
-      {{ { countOfRefresh, isBottomLoading, bottomAllLoaded, isTopLoading, hasError } }}
-    </mark> -->
+  <van-pull-refresh v-model="isTopLoading" :class="[B()]" success-text="刷新成功" @refresh="onRefresh">
     <van-list
       v-model="isBottomLoading"
       :finished="bottomAllLoaded"
@@ -18,8 +15,11 @@
   </van-pull-refresh>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'ds-loadmore',
   props: {
     bottomMethod: {
       type: Function,
@@ -33,17 +33,9 @@ export default {
         return () => {};
       }
     },
-    bottomAllLoaded: {
-      type: Boolean,
-      default: false
-    },
-    autoFill: {
-      type: Boolean,
-      default: false
-    },
-    isFirstLoaded: {
-      default: true
-    }
+    bottomAllLoaded: { type: Boolean, default: false },
+    autoFill: { type: Boolean, default: false },
+    isFirstLoaded: { default: true }
   },
 
   data() {
@@ -84,7 +76,7 @@ export default {
       this.isTopLoading = false;
     },
     // 对外暴露的接口
-    onBottomLoaded(e) {
+    onBottomLoaded(e: any) {
       // console.log('onBottomLoaded');
       if (e) {
         this.hasError = true;
@@ -92,7 +84,7 @@ export default {
       this.isBottomLoading = false;
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
