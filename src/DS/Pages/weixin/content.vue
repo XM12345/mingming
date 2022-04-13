@@ -8,10 +8,10 @@
           <base--list-message v-if="contentId" :content="content" type="weixin"></base--list-message>
         </div>
         <div ref="comments">
-          <base--list-comments :mediumId="contentId" :accountId="accountId" type="weixin"></base--list-comments>
+          <weixin--list-comments :contentId="contentId" :accountId="accountId"></weixin--list-comments>
         </div>
         <div ref="records">
-          <base--list-operlog :mediumId="contentId" :accountId="accountId" type="weixin"></base--list-operlog>
+          <weixin--list-logs :contentId="contentId" :accountId="accountId"></weixin--list-logs>
         </div>
       </h-tab>
     </div>

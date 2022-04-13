@@ -28,11 +28,13 @@ export default Vue.extend({
     };
   },
   created() {
-    this.tabKey = this.navItems[0].key || '';
+    let { key } = this.$route.query;
+    this.tabKey = String(key || '') || this.navItems[0].key || '';
   },
   methods: {
     onSwitch(key: string) {
       this.tabKey = key;
+      this.$setQuery({ key });
     }
   }
 });

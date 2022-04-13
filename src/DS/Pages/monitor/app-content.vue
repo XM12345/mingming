@@ -1,30 +1,33 @@
 <template>
-  <div class="page-app-content">
-    <h-topbar :title="content.name"></h-topbar>
-    <div class="s-main">
+  <div :class="[B()]">
+    <h-topbar :title="title"></h-topbar>
+
+    <div v-if="content" :class="[B('__main')]">
       <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
-        <div class="s-control" ref="control">
-          <div v-if="content.id">
+        <div ref="control" :class="[B('__control')]">
+          <div>
             <monitor--circle :content="content"></monitor--circle>
             <monitor--chartLine :content="content"></monitor--chartLine>
             <monitor--list-message type="app-control" :content="content"></monitor--list-message>
           </div>
         </div>
-        <div class="s-message" ref="message">
-          <monitor--list-message type="app" :content="content" v-if="content.id"></monitor--list-message>
+        <div ref="message" :class="[B('__message')]">
+          <monitor--list-message type="app" :content="content"></monitor--list-message>
         </div>
 
-        <div class="s-logs" ref="logs">
-          <monitor--list-logs :content="content" v-if="content.id"></monitor--list-logs>
+        <div ref="logs" :class="[B('__logs')]">
+          <monitor--list-logs :content="content"></monitor--list-logs>
         </div>
       </h-tab>
     </div>
   </div>
 </template>
 
-<script>
-import echarts from 'echarts';
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-monitor-app-content',
   data() {
     return {
       tabKey: '',
@@ -33,54 +36,58 @@ export default {
         { name: '基本信息', key: 'message' },
         { name: '告警日志', key: 'logs' }
       ],
-      content: {}
+      content: null as any,
+      appId: 0,
+      intervalId: 0
     };
   },
+  computed: {
+    title(): string {
+      return this.content?.name || '';
+    }
+  },
   created() {
+    let { app_id } = this.$route.params;
+    this.appId = Number(app_id) || 0;
     this.tabKey = this.navItems[0].key || '';
     this.init();
-    let tid = setInterval(() => {
+
+    this.intervalId = setInterval(() => {
       this.init();
     }, 5000);
     this.$once('hook:beforeDestroy', () => {
-      clearInterval(tid);
+      clearInterval(this.intervalId);
     });
   },
   methods: {
-    onSwitch(key) {
+    onSwitch(key: string) {
       this.tabKey = key;
       this.$nextTick(() => {
-        this.$refs[key].scrollIntoView();
+        (this.$refs[key] as any).scrollIntoView();
       });
     },
-    init() {
-      let { params } = this.$route;
-      let { app_id } = params;
-      //this.$Model.Monitor.appList().then(data => {});
-      this.$Model.Monitor.apps(app_id).then(data => {
-        this.content = data;
-      });
+    async init() {
+      this.content = await this.$Model.Monitor.apps(this.appId);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-app-content {
+.page-monitor-app-content {
   position: relative;
   min-height: 100%;
 
-  .s-main {
-    .s-control {
-      padding: 10px 15px;
-      border-bottom: 10px solid #f4f6f9;
-      .monitor--list-message {
-        h2 {
-          display: none;
-        }
-        border-bottom: none;
-      }
+  &__control {
+    padding: 10px 15px;
+    border-bottom: 10px solid #f4f6f9;
+  }
+
+  .monitor--list-message {
+    h2 {
+      display: none;
     }
+    border-bottom: none;
   }
 }
 </style>

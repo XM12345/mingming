@@ -1,6 +1,6 @@
 <template>
-  <div class="monitor--circle" v-if="indexes.length">
-    <div class="s-circle-item" v-for="item in indexes" :key="item.id">
+  <div v-show="indexes.length" :class="[B()]">
+    <div v-for="item in indexes" :key="item.id" :class="[B('__item')]">
       <svg viewBox="0,0,100,100">
         <circle cx="50" cy="50" r="50" stroke-width="19" stroke="#eaeaea" fill="none"></circle>
         <text
@@ -26,42 +26,43 @@
           <animate attributeName="stroke-dasharray" from="0 50" :to="dash(item)" dur="0.4s" />
         </circle>
       </svg>
-      <div class="title">{{ item.name }}</div>
-      <mark v-if="item.is_alarming" @click="toAlarms(item)">!</mark>
+      <div :class="[B('__item_title')]">{{ item.name }}</div>
+      <mark v-if="item.is_alarming" :class="[B('__item_alarm')]" @click="toAlarms(item)">!</mark>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'monitor--circle',
   props: {
-    content: {
-      type: Object
-    }
+    content: { type: Object, default: () => ({}) }
   },
   computed: {
-    indexes() {
+    indexes(): any {
       let { content } = this;
       let { indexes = [] } = content;
-      indexes = indexes.filter(item => item.unit_name == '%'); // 圆环图筛选指标单位为%
+      indexes = indexes.filter((item: any) => item.unit_name === '%'); // 圆环图筛选指标单位为%
       return indexes;
     }
   },
   methods: {
-    dash(item) {
+    dash(item: any) {
       let lineLength = 2 * Math.PI * 50;
       let dash = lineLength * (item.current_data / 100) + ' ' + lineLength * (1 - item.current_data / 100);
       return dash;
     },
-    levelColor(level) {
+    levelColor(level: number) {
       let colors = ['#26c644', '#ff802c', '#ff802c', '#fb4c4c', '#fb4c4c'];
       return colors[level];
     },
-    toAlarms(item) {
+    toAlarms(item: any) {
       this.$router.push(`/monitor/alarms/${item.alarm_id}`);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
@@ -70,7 +71,7 @@ export default {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  .s-circle-item {
+  &__item {
     position: relative;
     svg {
       position: relative;
@@ -83,13 +84,13 @@ export default {
         transition: stroke-dasharray 0.5s;
       }
     }
-    .title {
+    &_title {
       text-align: center;
       font-size: 14px;
       color: #333;
       margin: 5px 0;
     }
-    mark {
+    &_alarm {
       position: absolute;
       right: -20px;
       top: 0;

@@ -26,10 +26,10 @@
           <subject--list-tasks :mediumId="subjectId" type="tasks"></subject--list-tasks>
         </div>
         <div ref="comments">
-          <base--list-comments :mediumId="subjectId" type="subject"></base--list-comments>
+          <subject--list-comments :subjectId="subjectId"></subject--list-comments>
         </div>
         <div ref="operlog">
-          <base--list-operlog :mediumId="subjectId" type="subject"></base--list-operlog>
+          <subject--list-logs :subjectId="subjectId"></subject--list-logs>
         </div>
       </h-tab>
     </div>

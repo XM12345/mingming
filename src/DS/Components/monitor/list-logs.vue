@@ -1,8 +1,8 @@
 <template>
-  <div class="monitor--list-logs">
-    <h2>告警日志</h2>
-    <div>
-      <h-link :to="`/monitor/alarms/${item.id}`" v-for="item in logs" :key="item.id">
+  <div :class="[B()]">
+    <h2 :class="[B('__title')]">告警日志</h2>
+    <div :class="[B('__list')]">
+      <h-link v-for="item in logs" :key="item.id" :class="[B('__item')]" :to="`/monitor/alarms/${item.id}`">
         <p>
           <label>{{ item.detail }}</label>
           <span :class="{ active: item.is_alarming }">{{ item.is_alarming ? '告警中' : '已恢复' }}</span>
@@ -19,39 +19,41 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'monitor--list-logs',
   props: {
-    content: { type: Object, default: {} }
+    content: { type: Object, default: () => ({}) }
   },
   data() {
     return {
-      logs: []
+      logs: [] as any[]
     };
-  },
-  created() {
-    this.init();
   },
   watch: {
     content() {
       this.init();
     }
   },
+  created() {
+    this.init();
+  },
+
   methods: {
     init() {
-      let { content } = this;
-      let { type, id } = content;
-      this.$Model.Monitor.alarmList(type, id).then(data => {
+      this.$Model.Monitor.alarmList(this.content.type, this.content.id).then(data => {
         this.logs = data.data;
       });
     },
-    levelName(item) {
+    levelName(item: any) {
       /*  <int, 等级 1-低级2-中级3-高级4-紧急>, */
       let levels = ['低级告警', '中级告警', '高级告警', '紧急告警'];
       return levels[item.level - 1] || '';
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
@@ -59,64 +61,63 @@ export default {
   font-size: 14px;
   color: #333;
   border-bottom: 10px solid #f4f6f9;
-  h2 {
+  &__title {
     font-weight: 400;
     font-size: 14px;
     color: #999;
     margin: 10px 15px;
   }
-  div {
-    a {
-      display: block;
-      color: #333;
-      padding: 10px 15px;
-      border-bottom: 1px solid #eaeaea;
-      p {
-        margin: 0;
-        margin-bottom: 5px;
-        min-height: 19px;
-        position: relative;
-        label {
-          display: block;
-          margin-right: 50px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+
+  &__item {
+    display: block;
+    color: #333;
+    padding: 10px 15px;
+    border-bottom: 1px solid #eaeaea;
+    p {
+      margin: 0;
+      margin-bottom: 5px;
+      min-height: 19px;
+      position: relative;
+      label {
+        display: block;
+        margin-right: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      span {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        &.active {
+          color: #fb4c4c;
         }
-        span {
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #999;
-          &.active {
-            color: #fb4c4c;
+      }
+    }
+    footer {
+      color: #999;
+      span {
+        i {
+          font-style: normal;
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          background-image: url('../../Pages/monitor/_images/urgent@2x.png');
+          background-repeat: no-repeat;
+          background-size: cover;
+          vertical-align: sub;
+        }
+        &.active {
+          color: #fb4c4c;
+          i {
+            background-image: url('../../Pages/monitor/_images/urgent-active@2x.png');
           }
         }
       }
-      footer {
-        color: #999;
-        span {
-          i {
-            font-style: normal;
-            display: inline-block;
-            width: 15px;
-            height: 15px;
-            background-image: url('../../Pages/monitor/_images/urgent@2x.png');
-            background-repeat: no-repeat;
-            background-size: cover;
-            vertical-align: sub;
-          }
-          &.active {
-            color: #fb4c4c;
-            i {
-              background-image: url('../../Pages/monitor/_images/urgent-active@2x.png');
-            }
-          }
-        }
-        time {
-          float: right;
-        }
+      time {
+        float: right;
       }
     }
   }

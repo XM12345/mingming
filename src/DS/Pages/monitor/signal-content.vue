@@ -1,31 +1,38 @@
 <template>
-  <div class="page-signal-content">
-    <h-topbar :title="content.name"></h-topbar>
-    <div class="s-video">
-      <h-video controls autoplay :src="content.stream_address"></h-video>
-    </div>
-    <div class="s-main">
-      <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
-        <div class="s-control" ref="control">
-          <monitor--device-ib :content="content" v-if="content.id"></monitor--device-ib>
-        </div>
-        <div class="s-message" ref="message">
-          <monitor--list-message type="signal" :content="content" v-if="content.id"></monitor--list-message>
-        </div>
+  <div :class="[B()]">
+    <h-topbar :title="title"></h-topbar>
 
-        <div class="s-logs" ref="logs">
-          <monitor--list-logs :content="content" v-if="content.id"></monitor--list-logs>
-        </div>
-        <div class="s-playback" ref="playback">
-          <monitor--signal-playbacks :content="content" v-if="content.id"></monitor--signal-playbacks>
-        </div>
-      </h-tab>
-    </div>
+    <template v-if="content">
+      <div :class="[B('__player')]">
+        <h-video controls autoplay :src="content.stream_address"></h-video>
+      </div>
+
+      <div :class="[B('__main')]">
+        <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
+          <div ref="control" :class="[B('__control')]">
+            <monitor--device-ib :content="content"></monitor--device-ib>
+          </div>
+          <div ref="message" :class="[B('__message')]">
+            <monitor--list-message type="signal" :content="content"></monitor--list-message>
+          </div>
+
+          <div ref="logs" :class="[B('__logs')]">
+            <monitor--list-logs :content="content"></monitor--list-logs>
+          </div>
+          <div ref="playback" :class="[B('__playback')]">
+            <monitor--signal-playbacks :content="content"></monitor--signal-playbacks>
+          </div>
+        </h-tab>
+      </div>
+    </template>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-monitor-signal-content',
   data() {
     return {
       tabKey: '',
@@ -35,10 +42,19 @@ export default {
         { name: '告警日志', key: 'logs' },
         { name: '信号回看', key: 'playback' }
       ],
-      content: {}
+      content: null as any,
+      signalId: 0
     };
   },
+  computed: {
+    title(): string {
+      return this.content?.name || '';
+    }
+  },
   created() {
+    let { signal_id } = this.$route.params;
+    this.signalId = Number(signal_id) || 0;
+
     this.tabKey = this.navItems[0].key || '';
     this.init();
     let tid = setInterval(() => {
@@ -49,47 +65,43 @@ export default {
     });
   },
   methods: {
-    onSwitch(key) {
+    onSwitch(key: string) {
       this.tabKey = key;
       this.$nextTick(() => {
-        this.$refs[key].scrollIntoView();
+        (this.$refs[key] as any).scrollIntoView();
       });
     },
-    init() {
-      let { params } = this.$route;
-      let { signal_id } = params;
-      //this.$Model.Monitor.singalList().then(data => {});
-      this.$Model.Monitor.signals(signal_id).then(data => {
-        this.content = data;
-      });
+    async init() {
+      this.content = await this.$Model.Monitor.signals(this.signalId);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-signal-content {
+.page-monitor-signal-content {
   position: relative;
   min-height: 100%;
 
-  .s-video {
+  &__player {
     video {
       width: 100%;
       height: 56.25vw;
       background: #000;
     }
   }
-  .s-main {
+  &__main {
     position: absolute;
     width: 100%;
     top: calc(56.25vw + 41px);
     bottom: 0;
-
-    .s-control {
-      padding: 0 15px;
-      border-bottom: 10px solid #f4f6f9;
-    }
   }
+
+  &__control {
+    padding: 0 15px;
+    border-bottom: 10px solid #f4f6f9;
+  }
+
   .h-tab {
     &-nav {
       position: absolute;

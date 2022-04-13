@@ -1,8 +1,8 @@
 <template>
-  <div class="monitor--device-ib">
-    <div v-for="item in indexes" :key="item.id">
+  <div :class="[B()]">
+    <div v-for="item in indexes" :key="item.id" :class="[B('__item')]">
       <h-link :class="{ unnormal: item.is_alarming }" to="" @click.native="go(item)">
-        <span v-if="item.value_type == VALUE_TYPE.ENUMS">{{ item.detail || '—' }}</span>
+        <span v-if="item.value_type === VALUE_TYPE.ENUMS">{{ item.detail || '—' }}</span>
         <span v-else>{{ dataName(item) }}</span>
       </h-link>
       <p>{{ item.name }}</p>
@@ -10,13 +10,13 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'monitor--device-ib',
   props: {
-    content: {
-      type: Object,
-      default: {}
-    }
+    content: { type: Object, default: () => ({}) }
   },
   data() {
     return {
@@ -27,15 +27,15 @@ export default {
     };
   },
   computed: {
-    indexes() {
+    indexes(): any {
       let { content, VALUE_TYPE } = this;
       let { type, indexes = [] } = content;
       // 探测器顶部展示数字类型，枚举类型展示折线图在下方
-      if (type == 'detector') {
-        indexes = indexes.filter(item => item.value_type == VALUE_TYPE.NUM); // 0-数字，1-枚举
+      if (type === 'detector') {
+        indexes = indexes.filter((item: any) => item.value_type === VALUE_TYPE.NUM); // 0-数字，1-枚举
       }
-      if (type == 'tv-signal') {
-        let abnormal = indexes.filter(item => item.is_alarming == true) || [];
+      if (type === 'tv-signal') {
+        let abnormal = indexes.filter((item: any) => item.is_alarming === true) || [];
         // 若全为正常，则只显示一个指标正常，若有异常，则只显示异常的指标
         if (abnormal.length) {
           indexes = abnormal;
@@ -44,11 +44,11 @@ export default {
         }
       }
       // 枚举类型筛选枚举描述value
-      indexes.map(item => {
+      indexes.map((item: any) => {
         let { value_type, current_data, unit_name } = item;
         if (value_type == VALUE_TYPE.ENUMS) {
           this.$Model.Monitor.enums(type, item.key).then(enums => {
-            item.detail = (enums.find(i => i.value == current_data) || {}).name;
+            item.detail = (enums.find((i: any) => i.value === current_data) || {}).name;
           });
         }
         return item;
@@ -57,10 +57,10 @@ export default {
     }
   },
   methods: {
-    dataName(item) {
+    dataName(item: any) {
       return item.current_data != null ? item.current_data.toFixed(2) + item.unit_name : '—';
     },
-    go(item) {
+    go(item: any) {
       if (item.is_alarming) {
         this.$router.push(`/monitor/alarms/${item.alarm_id}`);
       } else {
@@ -68,7 +68,7 @@ export default {
       }
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
@@ -80,7 +80,7 @@ export default {
   flex-wrap: wrap;
   text-align: center;
   padding: 15px 0;
-  & > div {
+  &__item {
     width: math.div(100%, 3);
     a {
       font-size: 17px;

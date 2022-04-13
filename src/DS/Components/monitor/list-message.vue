@@ -1,38 +1,36 @@
 <template>
-  <div class="monitor--list-message">
-    <h2>基本信息</h2>
-    <div>
+  <div :class="[B()]">
+    <h2 :class="[B('__title')]">基本信息</h2>
+    <div :class="[B('__main')]">
       <p
-        :class="{ max: index == contents.length - 1 && index % 2 == 0 }"
         v-for="(item, index) in contents"
         :key="item.key"
+        :class="[B('__item'), index === contents.length - 1 && index % 2 === 0 && 'max']"
       >
-        <label class="s-column-line-key">{{ item.key }}:</label>
-        <span class="s-column-line-value" v-if="item.type == 'grade'">
+        <label :class="[B('__item_key')]">{{ item.key }}:</label>
+        <span v-if="item.type === 'grade'" :class="[B('__item_value')]">
           <i v-for="i in item.value" :key="i">&#9733;</i>
         </span>
-        <span class="s-column-line-value" v-else-if="item.type == 'size'">{{ $F.size(item.value) }}</span>
-        <span class="s-column-line-value" v-else>{{ item.value }}</span>
+        <span v-else-if="item.type === 'size'" :class="[B('__item_value')]">{{ $F.size(item.value) }}</span>
+        <span v-else :class="[B('__item_value')]">{{ item.value }}</span>
         <mark v-if="item.is_alarming" @click="toAlarms(item.alarm_id)">!</mark>
       </p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'monitor--list-message',
   props: {
-    type: {
-      type: String,
-      default: ''
-    },
-    content: {
-      type: Object
-    }
+    type: { type: String, default: '' },
+    content: { type: Object, default: () => ({}) }
   },
   data() {
     return {
-      contents: [],
+      contents: [] as { key: string; value: string; type?: string; is_alarming?: boolean; alarm_id?: number }[],
       VALUE_TYPE: {
         NUM: 0,
         ENUMS: 1
@@ -46,7 +44,7 @@ export default {
     init() {
       let { type, content, VALUE_TYPE } = this;
       let { extension, indexes = [] } = content;
-      let managers = (content.managers || []).map(item => item.nickname || item.username).toString();
+      let managers = (content.managers || []).map((item: any) => item.nickname || item.username).toString();
       switch (type) {
         case 'signal':
           this.contents = [
@@ -66,8 +64,8 @@ export default {
             { key: '所在机房', value: content.machine_room_name },
             { key: '负责人', value: managers }
           ];
-          if (extension && content.type != 'ib') {
-            if (content.type == 'server') {
+          if (extension && content.type !== 'ib') {
+            if (content.type === 'server') {
               contents.push({ key: '操作系统', value: extension.operation_system });
             }
             contents.push(
@@ -106,20 +104,20 @@ export default {
         case 'app-control':
         case 'ups':
         case 'detector':
-          if (type == 'app-control') {
-            indexes = indexes.filter(item => item.unit_name != '%');
+          if (type === 'app-control') {
+            indexes = indexes.filter((item: any) => item.unit_name !== '%');
           }
 
-          if (type == 'detector') {
-            indexes = indexes.filter(item => item.value_type == VALUE_TYPE.ENUMS);
+          if (type === 'detector') {
+            indexes = indexes.filter((item: any) => item.value_type === VALUE_TYPE.ENUMS);
           }
 
-          indexes.forEach(item => {
+          indexes.forEach((item: any) => {
             let { value_type, current_data, unit_name } = item;
             let value;
             if (value_type == VALUE_TYPE.ENUMS) {
               this.$Model.Monitor.enums(content.type, item.key).then(enums => {
-                value = (enums.find(i => i.value == current_data) || {}).name || '—';
+                value = (enums.find((i: any) => i.value === current_data) || {}).name || '—';
                 this.contents.push({
                   key: item.name,
                   value: value,
@@ -143,11 +141,11 @@ export default {
           break;
       }
     },
-    toAlarms(id) {
+    toAlarms(id: number) {
       this.$router.push(`/monitor/alarms/${id}`);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
@@ -156,44 +154,42 @@ export default {
   color: #333;
   padding: 10px 15px;
   border-bottom: 10px solid #f4f6f9;
-  h2 {
+  &__title {
     font-weight: 400;
     font-size: 14px;
     color: #999;
   }
-  div {
+
+  &__main {
     display: flex;
     flex-wrap: wrap;
-    p {
-      width: 50%;
-      margin: 5px 0;
+  }
+  &__item {
+    width: 50%;
+    margin: 5px 0;
 
-      &.max {
-        width: 100%;
-      }
-      span {
-        color: #8b8b8b;
-        padding-left: 5px;
-        word-break: break-all;
-      }
-      i {
-        font-style: normal;
-      }
-      mark {
-        /*   position: absolute;
-        right: -20px;
-        top: 0; */
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        margin-left: 5px;
-        background: #fb4c4c;
-        border-radius: 50%;
-        color: #fff;
-        font-size: 12px;
-        text-align: center;
-        vertical-align: text-bottom;
-      }
+    &.max {
+      width: 100%;
+    }
+    span {
+      color: #8b8b8b;
+      padding-left: 5px;
+      word-break: break-all;
+    }
+    i {
+      font-style: normal;
+    }
+    mark {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      margin-left: 5px;
+      background: #fb4c4c;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 12px;
+      text-align: center;
+      vertical-align: text-bottom;
     }
   }
 }

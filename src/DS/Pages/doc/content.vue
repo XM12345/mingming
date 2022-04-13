@@ -24,13 +24,13 @@
           <base--list-attachments :mediumId="docId" type="doc"></base--list-attachments>
         </div>
         <div ref="comments">
-          <base--list-comments :mediumId="docId" type="doc"></base--list-comments>
+          <doc--list-comments :docId="docId"></doc--list-comments>
         </div>
         <div ref="records">
-          <base--list-operlog :mediumId="docId" type="doc"></base--list-operlog>
+          <doc--list-logs :mediumId="docId"></doc--list-logs>
         </div>
         <div ref="histories">
-          <doc--list-edition :mediumId="docId"></doc--list-edition>
+          <doc--list-edition :docId="docId"></doc--list-edition>
         </div>
       </h-tab>
     </div>

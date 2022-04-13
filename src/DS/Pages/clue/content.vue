@@ -33,7 +33,7 @@
           ></base--list-attachments>
         </div>
         <div ref="comments">
-          <base--list-comments :mediumId="clueId" type="clue"></base--list-comments>
+          <clue--list-comments :clueId="clueId"></clue--list-comments>
         </div>
       </h-tab>
     </div>

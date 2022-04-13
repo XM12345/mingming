@@ -23,7 +23,7 @@
           <subject--list-subject :subject="content.subject"></subject--list-subject>
         </div>
         <div ref="comments">
-          <base--list-comments :mediumId="taskId" type="task"></base--list-comments>
+          <subject--list-task-comments :taskId="taskId"></subject--list-task-comments>
         </div>
         <div ref="records">
           <subject--list-records :taskId="taskId"></subject--list-records>

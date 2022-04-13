@@ -1,30 +1,34 @@
 <template>
-  <div class="page-room-content">
-    <h-topbar :title="content.name"></h-topbar>
-    <div class="s-main">
+  <div :class="[B()]">
+    <h-topbar :title="title"></h-topbar>
+
+    <div v-if="content" :class="[B('__main')]">
       <h-tab :columns="navItems" :activeIndex="tabKey" @switch="onSwitch">
-        <div class="s-control" ref="control">
-          <monitor--list-message type="ups" :content="content" v-if="content.type == 'ups'"></monitor--list-message>
-          <div v-if="content.type == 'detector'">
+        <div ref="control" :class="[B('__control')]">
+          <monitor--list-message v-if="content.type === 'ups'" type="ups" :content="content"></monitor--list-message>
+          <div v-if="content.type === 'detector'">
             <monitor--device-ib :content="content"></monitor--device-ib>
             <monitor--chartLine :content="content"></monitor--chartLine>
             <monitor--list-message type="detector" :content="content"></monitor--list-message>
           </div>
         </div>
-        <div class="s-message" ref="message">
-          <monitor--list-message type="room" :content="content" v-if="content.id"></monitor--list-message>
+        <div ref="message" :class="[B('__message')]">
+          <monitor--list-message type="room" :content="content"></monitor--list-message>
         </div>
 
-        <div class="s-logs" ref="logs">
-          <monitor--list-logs :content="content" v-if="content.id"></monitor--list-logs>
+        <div ref="logs" :class="[B('__logs')]">
+          <monitor--list-logs :content="content"></monitor--list-logs>
         </div>
       </h-tab>
     </div>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-monitor-room-content',
   data() {
     return {
       tabKey: '',
@@ -33,10 +37,20 @@ export default {
         { name: '基本信息', key: 'message' },
         { name: '告警日志', key: 'logs' }
       ],
-      content: {}
+      content: null as any,
+      roomId: 0,
+      deviceId: 0
     };
   },
+  computed: {
+    title(): string {
+      return this.content?.name || '';
+    }
+  },
   created() {
+    let { room_id, device_id } = this.$route.params;
+    this.roomId = Number(room_id) || 0;
+    this.deviceId = Number(device_id) || 0;
     this.tabKey = this.navItems[0].key || '';
     this.init();
     let tid = setInterval(() => {
@@ -47,26 +61,21 @@ export default {
     });
   },
   methods: {
-    onSwitch(key) {
+    onSwitch(key: string) {
       this.tabKey = key;
       this.$nextTick(() => {
-        this.$refs[key].scrollIntoView();
+        (this.$refs[key] as any).scrollIntoView();
       });
     },
-    init() {
-      //this.$Model.Monitor.rooms().then(data => {});
-      let { params } = this.$route;
-      let { room_id, device_id } = params;
-      this.$Model.Monitor.roomDevices(room_id, device_id).then(data => {
-        this.content = data;
-      });
+    async init() {
+      this.content = await this.$Model.Monitor.roomDevices(this.roomId, this.deviceId);
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-room-content {
+.page-monitor-room-content {
   position: relative;
   min-height: 100%;
 

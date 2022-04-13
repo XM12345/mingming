@@ -24,7 +24,7 @@
           <base--list-attachments :mediumId="seriesId" type="series"></base--list-attachments>
         </div>
         <div ref="comments">
-          <base--list-comments :mediumId="seriesId" type="series"></base--list-comments>
+          <doc--list-series-comments :seriesId="seriesId"></doc--list-series-comments>
         </div>
       </h-tab>
     </div>

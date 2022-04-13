@@ -1,22 +1,24 @@
 <template>
-  <div class="page-control-post">
+  <div :class="[B()]">
     <h-topbar :title="title">
       <button @click="submit">确定</button>
     </h-topbar>
-    <div class="s-picker">
-      <header class="s-picker-header">
-        <p :class="{ active: isStart == true }" @click="(isStart = true), (isEnd = false)">
+
+    <div :class="[B('__picker')]">
+      <header :class="[B('__picker_time')]">
+        <p :class="{ active: isStart === true }" @click="(isStart = true), (isEnd = false)">
           <span>开始时间</span>
           {{ issueStart }}
         </p>
-        <p :class="{ active: isEnd == true }" @click="(isStart = false), (isEnd = true)">
+        <p :class="{ active: isEnd === true }" @click="(isStart = false), (isEnd = true)">
           <span>结束时间</span>
           {{ issueEnd }}
         </p>
       </header>
-      <van-picker :columns="slots" @change="onValuesChange" v-if="start_time > -1"></van-picker>
+      <van-picker v-if="start_time > -1" :columns="slots" @change="onValuesChange"></van-picker>
     </div>
-    <div class="s-days">
+
+    <div :class="[B('__days')]">
       <h2>重复</h2>
       <ul>
         <li v-for="(item, index) in days" :key="index">
@@ -34,46 +36,48 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
+  name: 'page-monitor-control-post',
   data() {
     return {
-      content: {},
+      content: null as any,
       issueStart: '',
       issueEnd: '',
       isStart: true,
       isEnd: false,
       index: -1,
-      modify_data: undefined,
+      modifyData: null as any,
       start_time: -1,
       stop_time: 0,
-      slots: [],
+      slots: [] as { values: string[]; defaultIndex: number; className: string; textAlign: string }[],
       days: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
       days_of_week: [2, 3, 4, 5, 6],
       title: '新增提示'
     };
   },
   created() {
-    let { params } = this.$route;
-    let { index } = params;
-    this.index = index;
-    // 通过index判断是否是修改预警设置
+    let { index } = this.$route.params;
+    this.index = Number(index) || -1;
     if (this.index > -1) {
       this.title = '修改提示';
     }
     this.init();
   },
   methods: {
-    init() {
+    async init() {
       let valuesHour = Array.from(Array(24), (v, k) => k.toString().padStart(2, '0'));
       let valuesMin = Array.from(Array(60), (v, k) => k.toString().padStart(2, '0'));
       let indexHour = 9;
       let indexMin = 30;
-      this.$Model.Monitor.settings().then(data => {
-        this.content = data;
+      let content = await this.$Model.Monitor.settings();
+      if (content) {
+        this.content = content;
         if (this.index > -1) {
-          this.modify_data = this.content.alarm_message_calendars[this.index];
-          let { days_of_week, start_time, stop_time } = this.modify_data;
+          this.modifyData = this.content.alarm_message_calendars[this.index];
+          let { days_of_week, start_time, stop_time } = this.modifyData;
           this.days_of_week = days_of_week;
           indexHour = Math.floor(start_time / 60);
           indexMin = start_time % 60;
@@ -90,9 +94,9 @@ export default {
         this.issueStart = [(indexHour + '').padStart(2, '0'), (indexMin + '').padStart(2, '0')]
           .toString()
           .replace(/,/, ':');
-      });
+      }
     },
-    onValuesChange(picker, values) {
+    onValuesChange(picker: any, values: any) {
       let { isStart, isEnd } = this;
       let new_values = values.map(Number);
       if (isStart == true) {
@@ -103,7 +107,7 @@ export default {
         this.stop_time = new_values[0] * 60 + new_values[1];
       }
     },
-    change(item) {
+    change(item: any) {
       let { days_of_week } = this;
       if (days_of_week.includes(item)) {
         let index = days_of_week.findIndex(i => i == item);
@@ -137,16 +141,17 @@ export default {
       }
       this.$Model.Monitor.putSettings(content).then(() => {
         this.$toast('保存成功');
+        //@ts-ignore
         this.$navigation.cleanRoutes();
         this.$router.back();
       });
     }
   }
-};
+});
 </script>
 
 <style lang="scss">
-.page-control-post {
+.page-monitor-control-post {
   .h-topbar {
     button {
       position: absolute;
@@ -160,8 +165,9 @@ export default {
       background: none;
     }
   }
-  .s-picker {
-    &-header {
+
+  &__picker {
+    &_time {
       border-bottom: 1px solid #eee;
       p {
         position: relative;
@@ -180,22 +186,9 @@ export default {
         }
       }
     }
-    .picker {
-      &-slot {
-        width: 100%;
-        .picker-item {
-          color: #999;
-          font-size: 14px;
-        }
-        .picker-selected {
-          color: #1890ff;
-          font-size: 17px;
-          background-color: rgba(24, 144, 255, 0.07);
-        }
-      }
-    }
   }
-  .s-days {
+
+  &__days {
     h2 {
       font-weight: 400;
       color: #999;

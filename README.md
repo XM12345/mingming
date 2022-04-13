@@ -37,6 +37,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 线索库详情: #/news/news_id
 公告列表: #/notice
 公告详情: #/notices/notice_id
+公告管理详情: #/notices/manage/notice_id
 微博: #/weibo
 微博详情: #/weibo/articles/:article_id
 微信: #/weixin

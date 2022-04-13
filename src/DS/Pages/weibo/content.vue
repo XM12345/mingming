@@ -29,7 +29,7 @@
           <base--list-message v-if="content.id" :content="content" type="weibo"></base--list-message>
         </div>
         <div ref="comments">
-          <base--list-comments :mediumId="articleId" type="weibo"></base--list-comments>
+          <weibo--list-comments :articleId="articleId"></weibo--list-comments>
         </div>
       </h-tab>
     </div>

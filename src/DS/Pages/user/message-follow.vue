@@ -33,13 +33,14 @@ export default Vue.extend({
     };
   },
   created() {
-    let { type } = this.$route.query;
+    let { type, key } = this.$route.query;
     this.type = String(type || '');
-    this.tabKey = this.navItems[0].key || '';
+    this.tabKey = String(key || '') || this.navItems[0].key || '';
   },
   methods: {
     onSwitch(key: string) {
       this.tabKey = key;
+      this.$setQuery({ key });
     }
   }
 });
